@@ -9,9 +9,10 @@
 
                 <div class="field mt-8">
 
-                    <input placeholder="Address" pInputText id="name1" type="text"
+                    <input [(ngModel)]="address" placeholder="Address" pInputText id="address" type="text"
                         class="p-inputtext p-component p-element">
-                    <button class="ml-3" pButton label="My Account" [routerLink]="['app','dashboard']"></button>
+                    <button [disabled]="address == null" class="ml-3" pButton label="My Account"
+                        [routerLink]="['app',address]"></button>
                 </div>
             </div>
         </div>

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SplashComponent } from './components/splash/splash.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
-import { SplashComponent } from './splash/splash.component';
 
 const routes: Routes = [
   {
@@ -15,7 +15,7 @@ const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       {
-        path: 'dashboard',
+        path: ':address',
         component: DashboardComponent
       }
     ]

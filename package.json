@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.local.json ",
-    "build": "ng build --base-href /public-pool-ui/",
+    "build": "ng build --configuration=production --base-href /public-pool-ui/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

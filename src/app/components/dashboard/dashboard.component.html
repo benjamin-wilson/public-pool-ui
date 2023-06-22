@@ -1,5 +1,32 @@
-<div class="card">
-    <pre>
-        {{clientInfo$ | async | json}}
-    </pre>
-</div>
+<ng-container *ngIf="clientInfo$ | async as clientInfo">
+    <div class="card">
+
+
+        <p-table [rowHover]="true" [value]="clientInfo.workers" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name</th>
+                    <th>ID</th>
+                    <th>Hash Rate</th>
+                    <th>Best Luck</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-worker>
+                <tr [routerLink]="[worker.id]">
+                    <td>{{worker.name}}</td>
+                    <td>{{worker.id}}</td>
+                    <td>{{worker.hashRate}}</td>
+                    <td>{{worker.bestDifficulty}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+
+
+
+
+
+    </div>
+
+
+</ng-container>

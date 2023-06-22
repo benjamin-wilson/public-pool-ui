@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SplashComponent } from './components/splash/splash.component';
+import { WorkerComponent } from './components/worker/worker.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
 
 const routes: Routes = [
@@ -16,7 +17,16 @@ const routes: Routes = [
     children: [
       {
         path: ':address',
-        component: DashboardComponent
+        children: [
+          {
+            path: '',
+            component: DashboardComponent,
+          },
+          {
+            path: ':workerId',
+            component: WorkerComponent
+          }
+        ]
       }
     ]
   }

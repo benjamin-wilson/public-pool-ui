@@ -11,9 +11,13 @@ import { ClientService } from '../../services/client.service';
 })
 export class DashboardComponent {
 
+
   public clientInfo$: Observable<any>;
 
   constructor(private clientService: ClientService, private route: ActivatedRoute) {
     this.clientInfo$ = this.clientService.getClientInfo(this.route.snapshot.params['address']);
+
+
+
   }
 }

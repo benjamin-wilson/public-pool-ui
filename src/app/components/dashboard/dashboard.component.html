@@ -15,8 +15,8 @@
                 <tr [routerLink]="[worker.id]">
                     <td>{{worker.name}}</td>
                     <td>{{worker.id}}</td>
-                    <td>{{worker.hashRate}}</td>
-                    <td>{{worker.bestDifficulty}}</td>
+                    <td>{{worker.hashRate}} Gh/s</td>
+                    <td>{{worker.bestDifficulty | numberSuffix}}</td>
                 </tr>
             </ng-template>
         </p-table>

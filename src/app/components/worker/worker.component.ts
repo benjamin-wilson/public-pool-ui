@@ -30,7 +30,7 @@ export class WorkerComponent {
     this.chartData$ = this.workerInfo$.pipe(
       map((workerInfo: any) => {
 
-        const GROUP_SIZE = 20;
+        const GROUP_SIZE = 60;
         const slice = workerInfo.hashData.length % GROUP_SIZE == 0 ? workerInfo.hashData : workerInfo.hashData.slice(0, workerInfo.hashData.length - workerInfo.hashData.length % GROUP_SIZE)
         const reducedData = ((slice as any[])
           .reduce((pre, cur, idx, arr) => {
@@ -105,7 +105,7 @@ export class WorkerComponent {
         y: {
           ticks: {
             color: textColorSecondary,
-            callback: (value: number) => value + 'GH/s',
+            callback: (value: number) => value + ' GH/s',
           },
           grid: {
             color: surfaceBorder,

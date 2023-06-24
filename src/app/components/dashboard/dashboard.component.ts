@@ -20,4 +20,39 @@ export class DashboardComponent {
 
 
   }
+
+
+  public getSessionCount(name: string, workers: any[]) {
+    const workersByName = workers.filter(w => w.name == name);
+    return workersByName.length;
+  }
+
+  public getTotalHashRate(name: string, workers: any[]) {
+    const workersByName = workers.filter(w => w.name == name);
+    const sum = workersByName.reduce((pre, cur, idx, arr) => {
+      return pre += cur.hashRate;
+    }, 0);
+    return Math.floor(sum);
+  }
+
+  public getBestDifficulty(name: string, workers: any[]) {
+    const workersByName = workers.filter(w => w.name == name);
+    const best = workersByName.reduce((pre, cur, idx, arr) => {
+      if (cur.bestDifficulty > pre) {
+        return cur.bestDifficulty;
+      }
+      return pre;
+    }, 0);
+
+    return best;
+  }
+
+  public getTotalUptime(name: string, workers: any[]) {
+    const now = new Date().getTime();
+    const workersByName = workers.filter(w => w.name == name);
+    const sum = workersByName.reduce((pre, cur, idx, arr) => {
+      return pre += now - new Date(cur.startTime).getTime();
+    }, 0);
+    return new Date(now - sum);
+  }
 }

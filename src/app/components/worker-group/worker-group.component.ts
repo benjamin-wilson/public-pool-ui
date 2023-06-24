@@ -5,11 +5,11 @@ import { map, Observable, shareReplay } from 'rxjs';
 import { WorkerService } from '../../services/worker.service';
 
 @Component({
-  selector: 'app-worker',
-  templateUrl: './worker.component.html',
-  styleUrls: ['./worker.component.scss']
+  selector: 'app-worker-group',
+  templateUrl: './worker-group.component.html',
+  styleUrls: ['./worker-group.component.scss']
 })
-export class WorkerComponent {
+export class WorkerGroupComponent {
 
   public workerInfo$: Observable<any>;
 
@@ -85,6 +85,7 @@ export class WorkerComponent {
       }
     };
   }
+
 
 
 

@@ -13,6 +13,8 @@ import { SplashComponent } from './components/splash/splash.component';
 import { WorkerComponent } from './components/worker/worker.component';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
+import { DateAgoPipe } from './pipes/date-ago.pipe';
+import { WorkerGroupComponent } from './components/worker-group/worker-group.component';
 
 
 
@@ -22,7 +24,9 @@ import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
     SplashComponent,
     DashboardComponent,
     WorkerComponent,
-    NumberSuffixPipe
+    NumberSuffixPipe,
+    DateAgoPipe,
+    WorkerGroupComponent
   ],
   imports: [
     CommonModule,

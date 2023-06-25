@@ -63,9 +63,9 @@
 
     </div>
 
-    <div class="col-12" *ngIf="chartData$ | async as chartData">
+    <div *ngIf="chartData$ | async as chartData">
         <div class="card">
-            <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+            <p-chart [data]="chartData" [options]="chartOptions"></p-chart>
         </div>
     </div>
 

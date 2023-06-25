@@ -34,17 +34,51 @@ export class DashboardComponent {
     this.chartData$ = this.clientInfo$.pipe(
       map((workerInfo: any) => {
 
+        const hourly = (workerInfo.chartData as any[]).reduce((pre, cur, idx, arr) => {
+
+
+          if (idx % 11 == 0 && idx != 0) {
+            pre[pre.length - 1].y = pre[pre.length - 1].y / 12;
+          }
+
+          if (idx + 11 > arr.length) {
+            return pre;
+          }
+
+          if (idx % 11 == 0) {
+            pre.push({ y: cur.data, x: cur.label });
+          }
+          pre[pre.length - 1].y += cur.data;
+
+          return pre;
+
+        }, []);
+
+
+        const data = workerInfo.chartData.map((d: any) => { return { y: d.data, x: d.label } });
+
         return {
           labels: workerInfo.chartData.map((d: any) => d.label),
           datasets: [
             {
-              label: address,
-              data: workerInfo.chartData.map((d: any) => d.data),
+              type: 'line',
+              label: '2 Hour',
+              data: hourly,
+              fill: false,
+              backgroundColor: documentStyle.getPropertyValue('--primary-color'),
+              borderColor: documentStyle.getPropertyValue('--primary-color'),
+              tension: .4
+            },
+            {
+              type: 'line',
+              label: '5 Minute',
+              data: data,
               fill: false,
               backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
               borderColor: documentStyle.getPropertyValue('--bluegray-700'),
               tension: .4
-            }
+            },
+
           ]
         }
       })
@@ -64,16 +98,15 @@ export class DashboardComponent {
         x: {
           type: 'time',
           time: {
-            unit: 'minute', // Set the unit to 'minute'
-            stepSize: 10, // Set the desired interval between labels in minutes
-
+            unit: 'hour', // Set the unit to 'minute'
           },
           ticks: {
             color: textColorSecondary
           },
           grid: {
             color: surfaceBorder,
-            drawBorder: false
+            drawBorder: false,
+            display: true
           }
         },
         y: {

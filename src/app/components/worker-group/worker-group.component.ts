@@ -23,7 +23,7 @@ export class WorkerGroupComponent {
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-    this.workerInfo$ = this.workerService.getWorkerInfo(this.route.snapshot.params['address'], this.route.snapshot.params['workerName'], this.route.snapshot.params['workerId']).pipe(
+    this.workerInfo$ = this.workerService.getGroupWorkerInfo(this.route.snapshot.params['address'], this.route.snapshot.params['workerName']).pipe(
       shareReplay({ bufferSize: 1, refCount: true })
     )
 

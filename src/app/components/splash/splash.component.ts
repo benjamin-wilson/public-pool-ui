@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
+import { bitcoinAddressValidator } from '../../validators/bitcoin-address.validator';
 
 @Component({
   selector: 'app-splash',
@@ -7,6 +10,8 @@ import { Component } from '@angular/core';
 })
 export class SplashComponent {
 
-  public address!: string;
-  constructor() { }
+  public address: FormControl;
+  constructor() {
+    this.address = new FormControl(null, bitcoinAddressValidator());
+  }
 }

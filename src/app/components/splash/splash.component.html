@@ -14,14 +14,21 @@
                 </div>
                 <div>
                     <code>stratum+tcp://public-pool-web.airdns.org:40557</code>
+                    <br>
+                    <code>username: &lt;your address&gt;, password: x</code>
+                    <br>
+                    <br>
+                    <code>1.8% fee</code>
+                    <br>
+                    <code>No second best.</code>
                 </div>
 
-                <div class="field mt-8">
+                <div class="field mt-8 mb-8">
 
-                    <input [(ngModel)]="address" placeholder="Address" pInputText id="address" type="text"
+                    <input [formControl]="address" placeholder="Address (bc1...)" pInputText id="address" type="text"
                         class="p-inputtext p-component p-element">
-                    <button [disabled]="address == null" class="ml-3" pButton label="My Account"
-                        [routerLink]="['app',address]"></button>
+                    <button [disabled]="address.invalid" class="ml-3" pButton label="My Account"
+                        [routerLink]="['app',address.value]"></button>
                 </div>
             </div>
         </div>

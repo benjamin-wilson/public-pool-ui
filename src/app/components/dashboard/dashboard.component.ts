@@ -11,6 +11,7 @@ import { ClientService } from '../../services/client.service';
 })
 export class DashboardComponent {
 
+  public address: string;
 
   public clientInfo$: Observable<any>;
   public chartData$: Observable<any>;
@@ -18,8 +19,8 @@ export class DashboardComponent {
   public chartOptions: any;
 
   constructor(private clientService: ClientService, private route: ActivatedRoute) {
-    const address = this.route.snapshot.params['address'];
-    this.clientInfo$ = this.clientService.getClientInfo(address).pipe(
+    this.address = this.route.snapshot.params['address'];
+    this.clientInfo$ = this.clientService.getClientInfo(this.address).pipe(
       shareReplay({ refCount: true, bufferSize: 1 })
     )
 
@@ -34,25 +35,20 @@ export class DashboardComponent {
     this.chartData$ = this.clientInfo$.pipe(
       map((workerInfo: any) => {
 
-        const hourly = (workerInfo.chartData as any[]).reduce((pre, cur, idx, arr) => {
+        const GROUP_SIZE = 24; //12 = 1 hour
 
+        let chartData: any[] = workerInfo.chartData;
 
-          if (idx % 11 == 0 && idx != 0) {
-            pre[pre.length - 1].y = pre[pre.length - 1].y / 12;
+        let hourlyData = [];
+
+        for (let i = GROUP_SIZE; i < chartData.length; i += GROUP_SIZE) {
+          let sum = 0;
+          for (let j = GROUP_SIZE - 1; j >= 0; j--) {
+            sum += chartData[i - j].data;
           }
-
-          if (idx + 11 > arr.length) {
-            return pre;
-          }
-
-          if (idx % 11 == 0) {
-            pre.push({ y: cur.data, x: cur.label });
-          }
-          pre[pre.length - 1].y += cur.data;
-
-          return pre;
-
-        }, []);
+          sum = sum / GROUP_SIZE;
+          hourlyData.push({ y: sum, x: chartData[i].label });
+        }
 
 
         const data = workerInfo.chartData.map((d: any) => { return { y: d.data, x: d.label } });
@@ -63,7 +59,7 @@ export class DashboardComponent {
             {
               type: 'line',
               label: '2 Hour',
-              data: hourly,
+              data: hourlyData,
               fill: false,
               backgroundColor: documentStyle.getPropertyValue('--primary-color'),
               borderColor: documentStyle.getPropertyValue('--primary-color'),

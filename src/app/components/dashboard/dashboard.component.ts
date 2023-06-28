@@ -35,7 +35,7 @@ export class DashboardComponent {
     this.chartData$ = this.clientInfo$.pipe(
       map((workerInfo: any) => {
 
-        const GROUP_SIZE = 24; //12 = 1 hour
+        const GROUP_SIZE = 12; //6 = 1 hour
 
         let chartData: any[] = workerInfo.chartData;
 
@@ -67,7 +67,7 @@ export class DashboardComponent {
             },
             {
               type: 'line',
-              label: '5 Minute',
+              label: '10 Minute',
               data: data,
               fill: false,
               backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),

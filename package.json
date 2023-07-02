@@ -22,11 +22,15 @@
     "chart.js": "^4.3.0",
     "chartjs-adapter-moment": "^1.0.1",
     "moment": "^2.29.4",
+    "ng-particles": "^3.10.1",
+    "ngx-device-detector": "^6.0.2",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primeng": "16.0.2",
     "rxjs": "~7.8.1",
     "tslib": "^2.3.0",
+    "tsparticles": "^2.10.1",
+    "tsparticles-engine": "^2.10.1",
     "zone.js": "~0.13.1"
   },
   "devDependencies": {

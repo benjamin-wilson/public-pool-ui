@@ -4,7 +4,7 @@
         <div class="col-12">
 
             <div class="card text-center">
-                <div class="col-12 text-center mt-8 mb-4">
+                <div class="col-12 text-center mt-4 mb-4">
                     <h2 class="text-900 font-normal mb-2">Public Pool</h2>
                 </div>
 
@@ -13,12 +13,14 @@
 
                 </div>
                 <div>
-                    <code>stratum+tcp://public-pool-web.airdns.org:40557</code>
-                    <br>
-                    <code>username: &lt;your address&gt;, password: x</code>
-                    <br>
-                    <br>
-                    <code>1.8% fee</code>
+                    <div class="info">
+                        <code>stratum+tcp://public-pool-web.airdns.org:40557</code>
+                        <br>
+                        <code>username: &lt;your BTC address&gt;.&lt;worker name&gt;, password: x</code>
+                        <br>
+                        <br>
+                    </div>
+                    <code>1.8% fee includes donations to <a href="https://discord.gg/pF9smpe3yE" target="_blank">open source Bitcoin mining</a></code>
                     <br>
                     <code>No second best.</code>
                 </div>
@@ -27,7 +29,7 @@
 
                     <input [formControl]="address" placeholder="Address (bc1...)" pInputText id="address" type="text"
                         class="p-inputtext p-component p-element">
-                    <button [disabled]="address.invalid" class="ml-3" pButton label="My Account"
+                    <button [disabled]="address.invalid" class="ml-3" pButton label="My Workers"
                         [routerLink]="['app',address.value]"></button>
                 </div>
             </div>

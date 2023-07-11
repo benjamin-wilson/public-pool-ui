@@ -31,7 +31,7 @@
                         {{getSessionCount(worker.name, clientInfo.workers)}} Sessions
                     </td>
                     <td>
-                        {{getTotalHashRate(worker.name, clientInfo.workers)}} GH/s
+                        {{getTotalHashRate(worker.name, clientInfo.workers) | hashSuffix}}
                     </td>
                     <td>
                         {{getBestDifficulty(worker.name, clientInfo.workers) | numberSuffix}}
@@ -47,7 +47,7 @@
                 <tr [routerLink]="[worker.name, worker.sessionId]">
                     <td></td>
                     <td>{{worker.sessionId}}</td>
-                    <td>{{worker.hashRate}} GH/s</td>
+                    <td>{{worker.hashRate | hashSuffix}}</td>
                     <td>{{worker.bestDifficulty | numberSuffix}}</td>
                     <td>{{worker.startTime | dateAgo}}</td>
                 </tr>

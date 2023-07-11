@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable, shareReplay } from 'rxjs';
 
+import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { ClientService } from '../../services/client.service';
 
 @Component({
@@ -17,6 +18,8 @@ export class DashboardComponent {
   public chartData$: Observable<any>;
 
   public chartOptions: any;
+
+
 
   constructor(private clientService: ClientService, private route: ActivatedRoute) {
     this.address = this.route.snapshot.params['address'];
@@ -108,7 +111,7 @@ export class DashboardComponent {
         y: {
           ticks: {
             color: textColorSecondary,
-            callback: (value: number) => value + ' GH/s',
+            callback: (value: number) => HashSuffixPipe.transform(value)
           },
           grid: {
             color: surfaceBorder,

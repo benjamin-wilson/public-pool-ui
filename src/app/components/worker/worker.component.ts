@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable, shareReplay } from 'rxjs';
 
+import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { WorkerService } from '../../services/worker.service';
 
 @Component({
@@ -75,7 +76,7 @@ export class WorkerComponent {
         y: {
           ticks: {
             color: textColorSecondary,
-            callback: (value: number) => value + ' GH/s',
+            callback: (value: number) => HashSuffixPipe.transform(value)
           },
           grid: {
             color: surfaceBorder,

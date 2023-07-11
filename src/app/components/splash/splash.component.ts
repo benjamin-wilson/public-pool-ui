@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 
+import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
 import { bitcoinAddressValidator } from '../../validators/bitcoin-address.validator';
 
@@ -75,7 +76,7 @@ export class SplashComponent {
         y: {
           ticks: {
             color: textColorSecondary,
-            callback: (value: number) => value + ' GH/s',
+            callback: (value: number) => HashSuffixPipe.transform(value)
           },
           grid: {
             color: surfaceBorder,

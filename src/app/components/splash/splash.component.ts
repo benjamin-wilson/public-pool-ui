@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { map, Observable } from 'rxjs';
 
+import { AppService } from '../../services/app.service';
 import { bitcoinAddressValidator } from '../../validators/bitcoin-address.validator';
 
 @Component({
@@ -11,7 +13,77 @@ import { bitcoinAddressValidator } from '../../validators/bitcoin-address.valida
 export class SplashComponent {
 
   public address: FormControl;
-  constructor() {
+
+  public chartData$: Observable<any>;
+
+  public chartOptions: any;
+
+  constructor(private appService: AppService) {
+    this.chartData$ = this.appService.getInfo().pipe(
+      map((info: any) => {
+
+        console.log(info)
+        return {
+          labels: info.chartData.map((d: any) => d.label),
+          datasets: [
+            {
+              label: 'Public-Pool Hashrate',
+              data: info.chartData.map((d: any) => d.data),
+              fill: false,
+              backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
+              borderColor: documentStyle.getPropertyValue('--bluegray-700'),
+              tension: .4
+            }
+          ]
+        }
+      })
+    );
+
     this.address = new FormControl(null, bitcoinAddressValidator());
+
+
+
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+
+    this.chartOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            unit: 'hour', // Set the unit to 'minute'
+          },
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+            display: true
+          }
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary,
+            callback: (value: number) => value + ' GH/s',
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false
+          }
+        }
+      }
+    };
+
   }
 }

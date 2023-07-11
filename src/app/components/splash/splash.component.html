@@ -34,5 +34,15 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-12">
+
+            <div *ngIf="chartData$ | async as chartData">
+                <div class="card">
+                    <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>

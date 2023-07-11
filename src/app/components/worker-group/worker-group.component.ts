@@ -61,9 +61,7 @@ export class WorkerGroupComponent {
         x: {
           type: 'time',
           time: {
-            unit: 'minute', // Set the unit to 'minute'
-            stepSize: 10, // Set the desired interval between labels in minutes
-
+            unit: 'hour'
           },
           ticks: {
             color: textColorSecondary

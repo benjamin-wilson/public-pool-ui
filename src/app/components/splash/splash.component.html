@@ -1,4 +1,4 @@
-<div class="py-4 px-4 lg:px-8 mt-5 mx-0 lg:mx-8">
+<div class="py-4 px-4 lg:px-8 mx-0 lg:mx-8 main">
     <div class="grid justify-content-center">
 
         <div class="col-12">
@@ -13,14 +13,21 @@
 
                 </div>
                 <div>
+                    <code>Solo Bitcoin mining pool</code>
+                    <br>
+                    <br>
                     <div class="info">
+
                         <code>stratum+tcp://public-pool-web.airdns.org:21496</code>
                         <br>
                         <code>username: &lt;your BTC address&gt;.&lt;worker name&gt;, password: x</code>
                         <br>
                         <br>
                     </div>
-                    <code>1.8% fee includes donations to <a href="https://discord.gg/pF9smpe3yE" target="_blank">open source Bitcoin mining</a></code>
+                    <code>Pleb mining (under 10TH/s miners) mine with <b>NO FEES*</b></code>
+                    <br>
+                    <code>Miners with > 10TH/s will incur a 1.5% fee, a portion of which will go back into <a href="https://discord.gg/pF9smpe3yE" target="_blank">open source Bitcoin mining</a>*</code>
+                    <br>
                     <br>
                     <code>No second best.</code>
                 </div>
@@ -32,6 +39,8 @@
                     <button [disabled]="address.invalid" class="ml-3" pButton label="My Workers"
                         [routerLink]="['app',address.value]"></button>
                 </div>
+
+                <code><small>* Based on a machine-by-machine basis</small></code>
             </div>
         </div>
 

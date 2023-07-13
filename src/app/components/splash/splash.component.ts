@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { map, Observable } from 'rxjs';
+import { map, Observable, shareReplay } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
@@ -16,14 +16,16 @@ export class SplashComponent {
   public address: FormControl;
 
   public chartData$: Observable<any>;
+  public blockData$: Observable<any>;
 
   public chartOptions: any;
 
   constructor(private appService: AppService) {
-    this.chartData$ = this.appService.getInfo().pipe(
-      map((info: any) => {
 
-        console.log(info)
+    const info$ = this.appService.getInfo().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+    this.blockData$ = info$.pipe(map(info => info.blockData));
+    this.chartData$ = info$.pipe(
+      map((info: any) => {
         return {
           labels: info.chartData.map((d: any) => d.label),
           datasets: [

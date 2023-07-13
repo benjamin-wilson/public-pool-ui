@@ -18,7 +18,7 @@
                     <br>
                     <div class="info">
 
-                        <code>stratum+tcp://public-pool-web.airdns.org:21496</code>
+                        <code>stratum+tcp://public-pool.airdns.org:21496</code>
                         <br>
                         <code>username: &lt;your BTC address&gt;.&lt;worker name&gt;, password: x</code>
                         <br>
@@ -52,6 +52,31 @@
                 </div>
             </div>
 
+        </div>
+
+        <div class="col-12" *ngIf="blockData$ | async as blockData">
+            <div class="card">
+                <h4 style="text-align: center;"> Found Blocks</h4>
+                <p-table [value]="blockData">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Height</th>
+                            <th>Address</th>
+                            <th>Worker</th>
+                            <th>Session</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-block>
+                        <tr>
+                            <td>{{ block.height }}</td>
+                            <td>{{ block.minerAddress }}</td>
+                            <td>{{ block.worker }}</td>
+                            <td>{{ block.sessionId }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </div>
         </div>
     </div>
 </div>

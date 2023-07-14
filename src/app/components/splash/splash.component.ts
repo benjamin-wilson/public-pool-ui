@@ -27,7 +27,7 @@ export class SplashComponent {
     this.chartData$ = info$.pipe(
       map((info: any) => {
         return {
-          labels: info.chartData.map((d: any) => d.label),
+          labels: info.chartData.map((d: any) => new Date(d.label)),
           datasets: [
             {
               label: 'Public-Pool Hashrate',

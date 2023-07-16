@@ -64,18 +64,22 @@ export class DashboardComponent {
               label: '2 Hour',
               data: hourlyData,
               fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--primary-color'),
-              borderColor: documentStyle.getPropertyValue('--primary-color'),
-              tension: .4
+              backgroundColor: documentStyle.getPropertyValue('--yellow-600'),
+              borderColor: documentStyle.getPropertyValue('--yellow-600'),
+              tension: .4,
+              pointRadius: 1,
+              borderWidth: 1
             },
             {
               type: 'line',
               label: '10 Minute',
               data: data,
               fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-              borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-              tension: .4
+              backgroundColor: documentStyle.getPropertyValue('--primary-color'),
+              borderColor: documentStyle.getPropertyValue('--primary-color'),
+              tension: .4,
+              pointRadius: 1,
+              borderWidth: 1
             },
 
           ]

@@ -33,9 +33,11 @@ export class SplashComponent {
               label: 'Public-Pool Hashrate',
               data: info.chartData.map((d: any) => d.data),
               fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-              borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-              tension: .4
+              backgroundColor: documentStyle.getPropertyValue('--primary-color'),
+              borderColor: documentStyle.getPropertyValue('--primary-color'),
+              tension: .4,
+              pointRadius: 1,
+              borderWidth: 1
             }
           ]
         }

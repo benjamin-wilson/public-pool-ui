@@ -13,7 +13,7 @@ export class HashSuffixPipe implements PipeTransform {
 
   public transform(value: number): string {
 
-    if (value == null || value < 1) {
+    if (value == null || value == 0) {
       return '0';
     }
 

@@ -19,12 +19,14 @@ import { MenuModule } from 'primeng/menu';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PanelModule } from 'primeng/panel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { StepsModule } from 'primeng/steps';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+
 
 
 
@@ -58,7 +60,8 @@ const primeNgModules = [
     ChartModule,
     TagModule,
     StyleClassModule,
-    PanelModule
+    PanelModule,
+    SelectButtonModule
 ];
 
 

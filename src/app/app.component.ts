@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { LocalStorageService } from './services/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'public-pool-ui';
+
+  public particles$: Observable<boolean>;
+  constructor(private localService: LocalStorageService) {
+    this.particles$ = this.localService.particles$;
+  }
 }

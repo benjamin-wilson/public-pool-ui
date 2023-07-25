@@ -18,6 +18,7 @@ import { AppLayoutModule } from './layout/app.layout.module';
 import { DateAgoPipe } from './pipes/date-ago.pipe';
 import { HashSuffixPipe } from './pipes/hash-suffix.pipe';
 import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
+import { SettingsComponent } from './components/settings/settings.component';
 
 
 
@@ -31,7 +32,8 @@ import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
     DateAgoPipe,
     WorkerGroupComponent,
     BackgroundParticlesComponent,
-    HashSuffixPipe
+    HashSuffixPipe,
+    SettingsComponent
   ],
   imports: [
     CommonModule,

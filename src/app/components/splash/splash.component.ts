@@ -17,6 +17,7 @@ export class SplashComponent {
 
   public chartData$: Observable<any>;
   public blockData$: Observable<any>;
+  public userAgents$: Observable<any>;
 
   public chartOptions: any;
 
@@ -24,6 +25,7 @@ export class SplashComponent {
 
     const info$ = this.appService.getInfo().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
     this.blockData$ = info$.pipe(map(info => info.blockData));
+    this.userAgents$ = info$.pipe(map(info => info.userAgents));
     this.chartData$ = info$.pipe(
       map((info: any) => {
         return {

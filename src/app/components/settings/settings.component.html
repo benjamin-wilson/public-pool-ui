@@ -1,4 +1,5 @@
 <div class="card">
-    <p-selectButton [options]="stateOptions" [(ngModel)]="value" (ngModelChange)="particlesChanged($event)"
-        optionLabel="label" optionValue="value"></p-selectButton>
+    <h5>Background Particles </h5>
+    <p-inputSwitch [(ngModel)]="value" (ngModelChange)="particlesChanged($event)" optionLabel="label"
+        optionValue="value"></p-inputSwitch>
 </div>

@@ -13,6 +13,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MenuModule } from 'primeng/menu';
@@ -26,7 +27,6 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
-
 
 
 
@@ -61,7 +61,8 @@ const primeNgModules = [
     TagModule,
     StyleClassModule,
     PanelModule,
-    SelectButtonModule
+    SelectButtonModule,
+    InputSwitchModule
 ];
 
 

@@ -19,6 +19,7 @@ import { DateAgoPipe } from './pipes/date-ago.pipe';
 import { HashSuffixPipe } from './pipes/hash-suffix.pipe';
 import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
 import { SettingsComponent } from './components/settings/settings.component';
+import { UserAgentPipe } from './pipes/user-agent.pipe';
 
 
 
@@ -33,7 +34,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     WorkerGroupComponent,
     BackgroundParticlesComponent,
     HashSuffixPipe,
-    SettingsComponent
+    SettingsComponent,
+    UserAgentPipe
   ],
   imports: [
     CommonModule,

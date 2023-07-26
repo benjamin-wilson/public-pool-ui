@@ -75,7 +75,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-userAgent>
                         <tr>
-                            <td>{{ userAgent.userAgent }}</td>
+                            <td>{{ userAgent.userAgent | userAgent }}</td>
                             <td>{{ userAgent.count }}</td>
                         </tr>
                     </ng-template>

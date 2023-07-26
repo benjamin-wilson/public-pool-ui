@@ -7,7 +7,7 @@ export class UserAgentPipe implements PipeTransform {
 
   transform(value: string): string {
     const valueLowerCase = value.toLowerCase();
-    if (valueLowerCase.includes('bosminer-plus-tuner')) {
+    if (valueLowerCase.includes('bosminer')) {
       return 'Braiins OS';
     } else {
       return value;

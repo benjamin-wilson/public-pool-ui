@@ -16,7 +16,10 @@ import { WorkerGroupComponent } from './components/worker-group/worker-group.com
 import { WorkerComponent } from './components/worker/worker.component';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { DateAgoPipe } from './pipes/date-ago.pipe';
+import { HashSuffixPipe } from './pipes/hash-suffix.pipe';
 import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
+import { SettingsComponent } from './components/settings/settings.component';
+import { UserAgentPipe } from './pipes/user-agent.pipe';
 
 
 
@@ -29,7 +32,10 @@ import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
     NumberSuffixPipe,
     DateAgoPipe,
     WorkerGroupComponent,
-    BackgroundParticlesComponent
+    BackgroundParticlesComponent,
+    HashSuffixPipe,
+    SettingsComponent,
+    UserAgentPipe
   ],
   imports: [
     CommonModule,

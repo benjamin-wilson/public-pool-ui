@@ -1,26 +1,42 @@
-<div class="py-4 px-4 lg:px-8 mt-5 mx-0 lg:mx-8">
+<div class="py-4 px-4 lg:px-8 mx-0 lg:mx-8 main">
     <div class="grid justify-content-center">
 
         <div class="col-12">
 
             <div class="card text-center">
-                <div class="col-12 text-center mt-4 mb-4">
-                    <h2 class="text-900 font-normal mb-2">Public Pool</h2>
-                </div>
 
                 <div>
                     <img style="height: 200px;" src="assets/layout/images/logo.svg" alt="logo">
 
                 </div>
+
+                <div class="col-12 text-center">
+                    <h1 class="text-900 font-normal">Public Pool</h1>
+                </div>
+                <div class="mb-4">
+                    <a class="mr-4" href="https://github.com/benjamin-wilson/public-pool" target="_blank">
+                        <i class="pi pi-github" style="font-size: 30pt; color: white;"></i>
+                    </a>
+                    <a href="https://discord.gg/pF9smpe3yE" target="_blank">
+                        <i class="pi pi-discord" style="font-size: 30pt; color: white;"></i>
+                    </a>
+                </div>
+
                 <div>
+                    <code>Fully Open Source Solo Bitcoin Mining Pool</code>
+                    <br>
+                    <br>
                     <div class="info">
-                        <code>stratum+tcp://public-pool-web.airdns.org:21496</code>
+                        <code>stratum+tcp://public-pool.airdns.org:21496</code>
                         <br>
                         <code>username: &lt;your BTC address&gt;.&lt;worker name&gt;, password: x</code>
                         <br>
                         <br>
                     </div>
-                    <code>1.8% fee includes donations to <a href="https://discord.gg/pF9smpe3yE" target="_blank">open source Bitcoin mining</a></code>
+                    <code>Pleb mining (under 50TH/s miners) mine with <b>NO FEES*</b></code>
+                    <br>
+                    <code>Miners with > 50TH/s will incur a 1.5% fee, a portion of which will go back into <a href="https://discord.gg/pF9smpe3yE" target="_blank">open source Bitcoin mining</a>*</code>
+                    <br>
                     <br>
                     <code>No second best.</code>
                 </div>
@@ -32,6 +48,65 @@
                     <button [disabled]="address.invalid" class="ml-3 mt-3" pButton label="My Workers"
                         [routerLink]="['app',address.value]"></button>
                 </div>
+
+                <code><small>* Based on a machine-by-machine basis</small></code>
+            </div>
+        </div>
+
+        <div class="col-12">
+
+            <div *ngIf="chartData$ | async as chartData">
+                <div class="card">
+                    <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-12" *ngIf="userAgents$ | async as userAgents">
+            <div class="card">
+                <h4 style="text-align: center;">Devices</h4>
+                <p-table [value]="userAgents">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Device</th>
+                            <th>Currently Working</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-userAgent>
+                        <tr>
+                            <td>{{ userAgent.userAgent | userAgent }}</td>
+                            <td>{{ userAgent.count }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </div>
+        </div>
+
+        <div class="col-12" *ngIf="blockData$ | async as blockData">
+            <div class="card">
+                <h4 style="text-align: center;"> Found Blocks</h4>
+                <p-table [value]="blockData">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Height</th>
+                            <th>Address</th>
+                            <th>Worker</th>
+                            <th>Session</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-block>
+                        <tr>
+                            <td>{{ block.height }}</td>
+                            <td>{{ block.minerAddress }}</td>
+                            <td>{{ block.worker }}</td>
+                            <td>{{ block.sessionId }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
             </div>
         </div>
     </div>

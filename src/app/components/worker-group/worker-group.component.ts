@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable, shareReplay } from 'rxjs';
 
+import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { WorkerService } from '../../services/worker.service';
 
 @Component({
@@ -37,9 +38,11 @@ export class WorkerGroupComponent {
               label: workerInfo.name,
               data: workerInfo.chartData.map((d: any) => d.data),
               fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-              borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-              tension: .4
+              backgroundColor: documentStyle.getPropertyValue('--primary-color'),
+              borderColor: documentStyle.getPropertyValue('--primary-color'),
+              tension: .4,
+              pointRadius: 1,
+              borderWidth: 1
             }
           ]
         }
@@ -60,9 +63,7 @@ export class WorkerGroupComponent {
         x: {
           type: 'time',
           time: {
-            unit: 'minute', // Set the unit to 'minute'
-            stepSize: 10, // Set the desired interval between labels in minutes
-
+            unit: 'hour'
           },
           ticks: {
             color: textColorSecondary
@@ -75,7 +76,7 @@ export class WorkerGroupComponent {
         y: {
           ticks: {
             color: textColorSecondary,
-            callback: (value: number) => value + ' GH/s',
+            callback: (value: number) => HashSuffixPipe.transform(value)
           },
           grid: {
             color: surfaceBorder,

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable, shareReplay } from 'rxjs';
 
+import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { ClientService } from '../../services/client.service';
 
 @Component({
@@ -17,6 +18,8 @@ export class DashboardComponent {
   public chartData$: Observable<any>;
 
   public chartOptions: any;
+
+
 
   constructor(private clientService: ClientService, private route: ActivatedRoute) {
     this.address = this.route.snapshot.params['address'];
@@ -61,18 +64,22 @@ export class DashboardComponent {
               label: '2 Hour',
               data: hourlyData,
               fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--primary-color'),
-              borderColor: documentStyle.getPropertyValue('--primary-color'),
-              tension: .4
+              backgroundColor: documentStyle.getPropertyValue('--yellow-600'),
+              borderColor: documentStyle.getPropertyValue('--yellow-600'),
+              tension: .4,
+              pointRadius: 1,
+              borderWidth: 1
             },
             {
               type: 'line',
               label: '10 Minute',
               data: data,
               fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-              borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-              tension: .4
+              backgroundColor: documentStyle.getPropertyValue('--primary-color'),
+              borderColor: documentStyle.getPropertyValue('--primary-color'),
+              tension: .4,
+              pointRadius: 1,
+              borderWidth: 1
             },
 
           ]
@@ -108,7 +115,7 @@ export class DashboardComponent {
         y: {
           ticks: {
             color: textColorSecondary,
-            callback: (value: number) => value + ' GH/s',
+            callback: (value: number) => HashSuffixPipe.transform(value)
           },
           grid: {
             color: surfaceBorder,

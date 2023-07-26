@@ -6,7 +6,8 @@
     "start": "ng serve --proxy-config proxy.config.local.json ",
     "build": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "bundle-report": "ng build --configuration=production --stats-json && webpack-bundle-analyzer dist/public-pool-ui/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -34,8 +35,8 @@
     "zone.js": "~0.13.1"
   },
   "devDependencies": {
+    "@angular/cli": "^16.1.4",
     "@angular-devkit/build-angular": "^16.1.1",
-    "@angular/cli": "~16.1.1",
     "@angular/compiler-cli": "^16.1.2",
     "@types/jasmine": "~4.0.0",
     "jasmine-core": "~4.2.0",
@@ -44,6 +45,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "~5.1.3"
+    "typescript": "~5.1.3",
+    "webpack-bundle-analyzer": "^4.9.0"
   }
 }

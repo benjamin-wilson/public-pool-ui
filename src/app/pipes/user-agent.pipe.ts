@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class UserAgentPipe implements PipeTransform {
 
   transform(value: string): string {
-    value = value.toLowerCase();
-    if (value.includes('bosminer-plus-tuner')) {
+    const valueLowerCase = value.toLowerCase();
+    if (valueLowerCase.includes('bosminer-plus-tuner')) {
       return 'Braiins OS';
     } else {
       return value;

@@ -35,12 +35,11 @@ export class DashboardComponent {
 
 
 
-    this.chartData$ = this.clientInfo$.pipe(
-      map((workerInfo: any) => {
+    this.chartData$ = this.clientService.getClientInfoChart(this.address).pipe(
+      map((chartData) => {
 
         const GROUP_SIZE = 12; //6 = 1 hour
 
-        let chartData: any[] = workerInfo.chartData;
 
         let hourlyData = [];
 
@@ -54,10 +53,10 @@ export class DashboardComponent {
         }
 
 
-        const data = workerInfo.chartData.map((d: any) => { return { y: d.data, x: d.label } });
+        const data = chartData.map((d: any) => { return { y: d.data, x: d.label } });
 
         return {
-          labels: workerInfo.chartData.map((d: any) => d.label),
+          labels: chartData.map((d: any) => d.label),
           datasets: [
             {
               type: 'line',

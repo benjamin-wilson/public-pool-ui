@@ -135,7 +135,7 @@ export class DashboardComponent {
   public getTotalHashRate(name: string, workers: any[]) {
     const workersByName = workers.filter(w => w.name == name);
     const sum = workersByName.reduce((pre, cur, idx, arr) => {
-      return pre += cur.hashRate;
+      return pre += Math.floor(cur.hashRate);
     }, 0);
     return Math.floor(sum);
   }

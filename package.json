@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.local.json ",
-    "build": "ng build --configuration=production",
+    "build": "ng build --configuration=production && gzipper compress --verbose --gzip --brotli ./dist/public-pool-ui/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "bundle-report": "ng build --configuration=production --stats-json && webpack-bundle-analyzer dist/public-pool-ui/stats.json"
@@ -35,10 +35,11 @@
     "zone.js": "~0.13.1"
   },
   "devDependencies": {
-    "@angular/cli": "^16.1.4",
     "@angular-devkit/build-angular": "^16.1.1",
+    "@angular/cli": "^16.1.4",
     "@angular/compiler-cli": "^16.1.2",
     "@types/jasmine": "~4.0.0",
+    "gzipper": "^7.2.0",
     "jasmine-core": "~4.2.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

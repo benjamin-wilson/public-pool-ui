@@ -24,16 +24,18 @@ export class SplashComponent {
   constructor(private appService: AppService) {
 
     const info$ = this.appService.getInfo().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+
     this.blockData$ = info$.pipe(map(info => info.blockData));
     this.userAgents$ = info$.pipe(map(info => info.userAgents));
-    this.chartData$ = info$.pipe(
-      map((info: any) => {
+
+    this.chartData$ = this.appService.getInfoChart().pipe(
+      map((chartData: any) => {
         return {
-          labels: info.chartData.map((d: any) => d.label),
+          labels: chartData.map((d: any) => d.label),
           datasets: [
             {
               label: 'Public-Pool Hashrate',
-              data: info.chartData.map((d: any) => d.data),
+              data: chartData.map((d: any) => d.data),
               fill: false,
               backgroundColor: documentStyle.getPropertyValue('--primary-color'),
               borderColor: documentStyle.getPropertyValue('--primary-color'),

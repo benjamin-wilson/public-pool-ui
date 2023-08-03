@@ -1,0 +1,11 @@
+{
+    "/api/*": {
+        "target": "http://public-pool.airdns.org:40557",
+        "secure": false,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/api": ""
+        },
+        "changeOrigin": true
+    }
+}

@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.local.json ",
     "build": "ng build --configuration=production && gzipper compress --gzip --brotli ./dist/public-pool-ui/",
+    "build:github": "ng build --configuration=production --base-href https://benjamin-wilson.github.io/public-pool-ui/ && gzipper compress --gzip --brotli ./dist/public-pool-ui/",
     "start:prod": "ng serve --proxy-config proxy.config.prod.json ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

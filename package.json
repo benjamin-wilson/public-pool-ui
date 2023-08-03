@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.local.json ",
     "build": "ng build --configuration=production && gzipper compress --gzip --brotli ./dist/public-pool-ui/",
+    "start:prod": "ng serve --proxy-config proxy.config.prod.json ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "bundle-report": "ng build --configuration=production --source-map=true --named-chunks=true --stats-json && webpack-bundle-analyzer dist/public-pool-ui/stats.json"

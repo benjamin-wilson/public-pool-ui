@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, Observable, shareReplay } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
+import { AppService } from '../../services/app.service';
 import { ClientService } from '../../services/client.service';
 
 @Component({
@@ -19,9 +20,17 @@ export class DashboardComponent {
 
   public chartOptions: any;
 
+  public networkInfo$: Observable<any>;
 
+  constructor(
+    private clientService: ClientService,
+    private route: ActivatedRoute,
+    private appService: AppService
 
-  constructor(private clientService: ClientService, private route: ActivatedRoute) {
+  ) {
+
+    this.networkInfo$ = this.appService.getNetworkInfo();
+
     this.address = this.route.snapshot.params['address'];
     this.clientInfo$ = this.clientService.getClientInfo(this.address).pipe(
       shareReplay({ refCount: true, bufferSize: 1 })

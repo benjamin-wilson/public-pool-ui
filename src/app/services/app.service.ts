@@ -16,6 +16,9 @@ export class AppService {
     public getInfo() {
         return this.httpClient.get(`${environment.API_URL}/api/info`) as Observable<any>;
     }
+    public getNetworkInfo() {
+        return this.httpClient.get(`${environment.API_URL}/api/network`) as Observable<any>;
+    }
     public getInfoChart() {
         return this.httpClient.get(`${environment.API_URL}/api/info/chart`) as Observable<any>;
     }

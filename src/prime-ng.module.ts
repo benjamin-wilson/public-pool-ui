@@ -4,8 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { TableModule } from 'primeng/table';
-
-
+import { TooltipModule } from 'primeng/tooltip';
 
 export const primeNgServices = [
     MessageService,
@@ -17,7 +16,7 @@ const primeNgModules = [
     ChartModule,
     InputSwitchModule,
     ButtonModule,
-
+    TooltipModule
     // DropdownModule,
     // ToastModule,
     // CheckboxModule,

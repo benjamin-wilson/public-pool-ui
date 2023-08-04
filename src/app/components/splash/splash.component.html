@@ -14,28 +14,30 @@
                     <h1 class="text-900 font-normal">Public Pool</h1>
                 </div>
                 <div class="mb-4">
-                    <a class="mr-4" href="https://github.com/benjamin-wilson/public-pool" target="_blank">
-                        <i class="pi pi-github" style="font-size: 30pt; color: white;"></i>
+                    <a class="ml-4 mr-4" href="https://twitter.com/Public_Pool_BTC" target="_blank">
+                        <i class="pi pi-twitter" style="font-size: 30pt; color: white;"></i>
                     </a>
-                    <a href="https://discord.gg/pF9smpe3yE" target="_blank">
+                    <a class="ml-4 mr-4" href="https://discord.gg/pF9smpe3yE" target="_blank">
                         <i class="pi pi-discord" style="font-size: 30pt; color: white;"></i>
                     </a>
+                    <a class="ml-4 mr-4" href="https://github.com/benjamin-wilson/public-pool" target="_blank">
+                        <i class="pi pi-github" style="font-size: 30pt; color: white;"></i>
+                    </a>
+
                 </div>
 
                 <div>
                     <code>Fully Open Source Solo Bitcoin Mining Pool</code>
                     <br>
                     <br>
-                    <div class="info">
+                    <div class="info mb-2 p-4 border-dashed border-1 border-round">
                         <code>stratum+tcp://public-pool.airdns.org:21496</code>
                         <br>
                         <code>username: &lt;your BTC address&gt;.&lt;worker name&gt;, password: x</code>
-                        <br>
-                        <br>
                     </div>
-                    <code>Pleb mining (under 50TH/s miners) mine with <b>NO FEES*</b></code>
+                    <code>Pleb mining (under 50TH/s miners) mine with <b>NO FEES</b></code>
                     <br>
-                    <code>Miners with > 50TH/s will incur a 1.5% fee, a portion of which will go back into <a href="https://discord.gg/pF9smpe3yE" target="_blank">open source Bitcoin mining</a>*</code>
+                    <code>Miners with > 50TH/s will incur a 1.5% fee, a portion of which will go back into <a href="https://discord.gg/pF9smpe3yE" target="_blank">open source Bitcoin mining</a></code>
                     <br>
                     <br>
                     <code>No second best.</code>
@@ -48,8 +50,6 @@
                     <button [disabled]="address.invalid" class="ml-3 mt-3" pButton label="My Workers"
                         [routerLink]="['app',address.value]"></button>
                 </div>
-
-                <code><small>* Based on a machine-by-machine basis</small></code>
             </div>
         </div>
 
@@ -67,18 +67,22 @@
 
         <div class="col-12" *ngIf="userAgents$ | async as userAgents">
             <div class="card">
-                <h4 style="text-align: center;">Devices</h4>
+                <h4 style="text-align: center;">Online Devices</h4>
                 <p-table [value]="userAgents">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Device</th>
                             <th>Currently Working</th>
+                            <th>Best Difficulty <i class="pi pi-question-circle ml-2"
+                                    pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
+                            </th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-userAgent>
                         <tr>
                             <td>{{ userAgent.userAgent | userAgent }}</td>
                             <td>{{ userAgent.count }}</td>
+                            <td>{{ userAgent.bestDifficulty | numberSuffix}}</td>
                         </tr>
                     </ng-template>
                 </p-table>

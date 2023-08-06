@@ -38,6 +38,7 @@ export class SplashComponent {
     this.chartData$ = this.appService.getInfoChart().pipe(
       map((chartData: any) => {
         return {
+
           labels: chartData.map((d: any) => d.label),
           datasets: [
             {
@@ -66,6 +67,7 @@ export class SplashComponent {
 
 
     this.chartOptions = {
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           labels: {

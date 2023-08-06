@@ -10,3 +10,9 @@
 .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight) {
     cursor: pointer;
 }
+
+
+p-chart>div {
+    position: relative;
+    min-height: 40vh;
+}

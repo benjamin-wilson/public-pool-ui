@@ -51,16 +51,20 @@
                         [routerLink]="['app',address.value]"></button>
                 </div>
 
-                <div class="text-right">Uptime: {{uptime$ | async | dateAgo}}</div>
+
             </div>
         </div>
 
         <div class="col-12">
 
-            <div *ngIf="chartData$ | async as chartData">
-                <div class="card">
 
-                    <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+            <div *ngIf="chartData$ | async as chartData">
+                <div class="card chart">
+
+                    <div class="text-center mb-2">Uptime: {{uptime$ | async | dateAgo}}</div>
+
+
+                    <p-chart [responsive]="true" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
                 </div>
             </div>
 

@@ -22,6 +22,7 @@ export class DashboardComponent {
 
   public networkInfo$: Observable<any>;
 
+
   constructor(
     private clientService: ClientService,
     private route: ActivatedRoute,
@@ -34,7 +35,7 @@ export class DashboardComponent {
     this.address = this.route.snapshot.params['address'];
     this.clientInfo$ = this.clientService.getClientInfo(this.address).pipe(
       shareReplay({ refCount: true, bufferSize: 1 })
-    )
+    );
 
 
     const documentStyle = getComputedStyle(document.documentElement);
@@ -98,6 +99,7 @@ export class DashboardComponent {
 
 
     this.chartOptions = {
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           labels: {

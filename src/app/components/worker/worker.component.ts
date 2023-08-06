@@ -52,6 +52,7 @@ export class WorkerComponent {
 
 
     this.chartOptions = {
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           labels: {

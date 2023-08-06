@@ -77,7 +77,7 @@
 
 
         <p-table [rowHover]="true" groupRowsBy="name" dataKey="name" rowGroupMode="subheader"
-            [value]="clientInfo.workers" [tableStyle]="{ 'min-width': '50rem' }">
+            [value]="clientInfo.workers" [tableStyle]="{ 'min-width': '50rem' }" dataKey="sessionId">
 
 
             <ng-template pTemplate="header">
@@ -87,6 +87,7 @@
                     <th>Hash Rate</th>
                     <th>Session Best Difficulty</th>
                     <th>Uptime</th>
+                    <th>Last Seen</th>
                 </tr>
             </ng-template>
 
@@ -111,8 +112,9 @@
                         {{getBestDifficulty(worker.name, clientInfo.workers) | numberSuffix}}
                     </td>
                     <td>
-                        {{getTotalUptime(worker.name, clientInfo.workers) | dateAgo}} (cumulative)
+
                     </td>
+                    <td></td>
                 </tr>
             </ng-template>
 
@@ -124,6 +126,7 @@
                     <td>{{worker.hashRate | hashSuffix}}</td>
                     <td>{{worker.bestDifficulty | numberSuffix}}</td>
                     <td>{{worker.startTime | dateAgo}}</td>
+                    <td>{{worker.lastSeen | dateAgo}}</td>
                 </tr>
             </ng-template>
 

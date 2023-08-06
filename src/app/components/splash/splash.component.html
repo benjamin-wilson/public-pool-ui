@@ -79,6 +79,7 @@
                         <tr>
                             <th>Device</th>
                             <th>Currently Working</th>
+                            <th>Total Hash Rate</th>
                             <th>Best Difficulty <i class="pi pi-question-circle ml-2"
                                     pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
                             </th>
@@ -88,6 +89,7 @@
                         <tr>
                             <td>{{ userAgent.userAgent | userAgent }}</td>
                             <td>{{ userAgent.count }}</td>
+                            <td>{{ userAgent.totalHashRate | hashSuffix }}</td>
                             <td>{{ userAgent.bestDifficulty | numberSuffix}}</td>
                         </tr>
                     </ng-template>

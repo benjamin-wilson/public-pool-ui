@@ -50,6 +50,8 @@
                     <button [disabled]="address.invalid" class="ml-3 mt-3" pButton label="My Workers"
                         [routerLink]="['app',address.value]"></button>
                 </div>
+
+                <div class="text-right">Uptime: {{uptime$ | async | dateAgo}}</div>
             </div>
         </div>
 

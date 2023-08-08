@@ -74,10 +74,9 @@
         </ng-container>
     </div>
     <div class="card">
-
-
-        <p-table [rowHover]="true" groupRowsBy="name" dataKey="name" rowGroupMode="subheader"
-            [value]="clientInfo.workers" [tableStyle]="{ 'min-width': '50rem' }">
+        <p-table #dataTable [rowHover]="true" groupRowsBy="name" dataKey="name" rowGroupMode="subheader"
+            [value]="clientInfo.workers" [expandedRowKeys]="expandedRows$ | async"
+            [tableStyle]="{ 'min-width': '50rem' }">
 
 
             <ng-template pTemplate="header">

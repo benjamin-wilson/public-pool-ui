@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Table } from 'primeng/table';
 import { map, Observable, shareReplay } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
@@ -11,7 +12,7 @@ import { ClientService } from '../../services/client.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent {
+export class DashboardComponent implements AfterViewInit {
 
   public address: string;
 
@@ -22,6 +23,10 @@ export class DashboardComponent {
 
   public networkInfo$: Observable<any>;
 
+  @ViewChild('dataTable') dataTable!: Table;
+
+  public expandedRows$: Observable<any>;
+
 
   constructor(
     private clientService: ClientService,
@@ -30,12 +35,21 @@ export class DashboardComponent {
 
   ) {
 
+
+
     this.networkInfo$ = this.appService.getNetworkInfo();
 
     this.address = this.route.snapshot.params['address'];
     this.clientInfo$ = this.clientService.getClientInfo(this.address).pipe(
       shareReplay({ refCount: true, bufferSize: 1 })
     );
+
+    this.expandedRows$ = this.clientInfo$.pipe(map((info: any) => {
+
+      return info.workers.reduce((pre: any, cur: any) => { pre[cur.name] = true; return pre; }, {});
+
+    }));
+
 
 
     const documentStyle = getComputedStyle(document.documentElement);
@@ -137,6 +151,11 @@ export class DashboardComponent {
 
   }
 
+
+
+  ngAfterViewInit() {
+
+  }
 
   public getSessionCount(name: string, workers: any[]) {
     const workersByName = workers.filter(w => w.name == name);

@@ -3,6 +3,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -16,7 +17,8 @@ const primeNgModules = [
     ChartModule,
     InputSwitchModule,
     ButtonModule,
-    TooltipModule
+    TooltipModule,
+    SkeletonModule
     // DropdownModule,
     // ToastModule,
     // CheckboxModule,

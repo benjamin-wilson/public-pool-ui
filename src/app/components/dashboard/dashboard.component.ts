@@ -37,7 +37,9 @@ export class DashboardComponent implements AfterViewInit {
 
 
 
-    this.networkInfo$ = this.appService.getNetworkInfo();
+    this.networkInfo$ = this.appService.getNetworkInfo().pipe(
+      shareReplay({ refCount: true, bufferSize: 1 })
+    );
 
     this.address = this.route.snapshot.params['address'];
     this.clientInfo$ = this.clientService.getClientInfo(this.address).pipe(

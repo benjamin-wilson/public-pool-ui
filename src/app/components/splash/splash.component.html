@@ -58,43 +58,73 @@
         <div class="col-12">
 
 
-            <div *ngIf="chartData$ | async as chartData">
+            <div>
                 <div class="card chart">
 
                     <div class="text-center mb-2">Uptime: {{uptime$ | async | dateAgo}}</div>
 
+                    <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">
+                        <p-chart [responsive]="true" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
 
-                    <p-chart [responsive]="true" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+                    </ng-container>
+                    <ng-template #loadingChart>
+                        <p-skeleton width="100%" height="40vh"></p-skeleton>
+                    </ng-template>
                 </div>
             </div>
 
         </div>
 
 
-        <div class="col-12" *ngIf="userAgents$ | async as userAgents">
+        <div class="col-12">
             <div class="card">
                 <h4 style="text-align: center;">Online Devices</h4>
-                <p-table [value]="userAgents">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>Device</th>
-                            <th>Currently Working</th>
-                            <th>Total Hash Rate</th>
-                            <th>Best Difficulty <i class="pi pi-question-circle ml-2"
-                                    pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
-                            </th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-userAgent>
-                        <tr>
-                            <td>{{ userAgent.userAgent | userAgent }}</td>
-                            <td>{{ userAgent.count }}</td>
-                            <td>{{ userAgent.totalHashRate | hashSuffix }}</td>
-                            <td>{{ userAgent.bestDifficulty | numberSuffix}}</td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-
+                <ng-container *ngIf="userAgents$ | async as userAgents">
+                    <p-table [value]="userAgents">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Device</th>
+                                <th>Currently Working</th>
+                                <th>Total Hash Rate</th>
+                                <th>Best Difficulty <i class="pi pi-question-circle ml-2"
+                                        pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-userAgent>
+                            <tr></tr>
+                            <tr>
+                                <td>{{ userAgent.userAgent | userAgent }}</td>
+                                <td>{{ userAgent.count }}</td>
+                                <td>{{ userAgent.totalHashRate | hashSuffix }}</td>
+                                <td>{{ userAgent.bestDifficulty | numberSuffix}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </ng-container>
+                <ng-template #loadingTable>
+                    <p-table [value]="[{},{},{}]">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Device</th>
+                                <th>Currently Working</th>
+                                <th>Total Hash Rate</th>
+                                <th>Best Difficulty <i class="pi pi-question-circle ml-2"
+                                        pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-row>
+                            <tr></tr>
+                            <tr>
+                                <td><p-skeleton></p-skeleton></td>
+                                <td><p-skeleton></p-skeleton></td>
+                                <td><p-skeleton></p-skeleton></td>
+                                <td><p-skeleton></p-skeleton></td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </ng-template>
             </div>
         </div>
 

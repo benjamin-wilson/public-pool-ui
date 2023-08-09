@@ -58,7 +58,6 @@ export class DashboardComponent implements AfterViewInit {
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
 
-
     this.chartData$ = this.clientService.getClientInfoChart(this.address).pipe(
       map((chartData) => {
 

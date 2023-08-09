@@ -1,6 +1,6 @@
 {
     "/api/*": {
-        "target": "http://public-pool.airdns.org:40557",
+        "target": "http://public-pool.io:40557",
         "secure": false,
         "logLevel": "debug",
         "pathRewrite": {

@@ -16,3 +16,9 @@ p-chart>div {
     position: relative;
     min-height: 40vh;
 }
+
+.card {
+    &.chart {
+        padding: 10px;
+    }
+}

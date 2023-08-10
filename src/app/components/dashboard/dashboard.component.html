@@ -226,15 +226,10 @@
             </p-table>
         </ng-template>
 
-
-
-
-
-
     </div>
 
 
-    <div class="card">
+    <div class="card chart">
         <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">
             <p-chart [data]="chartData" [options]="chartOptions"></p-chart>
         </ng-container>

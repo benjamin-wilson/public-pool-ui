@@ -1,4 +1,4 @@
-<div class="py-4 px-4 lg:px-8 mx-0 lg:mx-8 main">
+<div class="py-4 px-1 md:px4 lg:px-8 mx-0 lg:mx-8 main">
     <div class="grid justify-content-center">
 
         <div class="col-12">
@@ -6,11 +6,11 @@
             <div class="card text-center">
 
                 <div>
-                    <img style="height: 200px;" src="assets/layout/images/logo.svg" alt="logo">
+                    <img id="logo" style="height: 200px;" src="assets/layout/images/logo.svg" alt="logo">
 
                 </div>
 
-                <div class="col-12 text-center">
+                <div class="col-12 text-center title">
                     <h1 class="text-900 font-normal">Public Pool</h1>
                 </div>
                 <div class="mb-4">
@@ -35,44 +35,47 @@
                         <br>
                         <code>username: &lt;your BTC address&gt;.&lt;worker name&gt;, password: x</code>
                     </div>
-                    <code>Pleb mining (under 50TH/s miners) mine with <b>NO FEES</b></code>
+                    <span>Pleb mining (under 50TH/s miners) mine with <b>NO FEES</b></span>
                     <br>
-                    <code>Miners with > 50TH/s will incur a 1.5% fee, a portion of which will go back into <a href="https://discord.gg/pF9smpe3yE" target="_blank">open source Bitcoin mining</a></code>
+                    <span>Miners with > 50TH/s will incur a 1.5% fee, a portion of which will go back into <a
+                            href="https://discord.gg/pF9smpe3yE" target="_blank">open source Bitcoin mining</a></span>
                     <br>
                     <br>
-                    <code>No second best.</code>
+                    <span>No second best.</span>
                 </div>
 
-                <div class="field mt-8 mb-8">
 
-                    <input [formControl]="address" placeholder="Address (bc1...)" pInputText id="address" type="text"
-                        class="p-inputtext p-component p-element">
-                    <button [disabled]="address.invalid" class="ml-3 mt-3" pButton label="My Workers"
-                        [routerLink]="['app',address.value]"></button>
-                </div>
 
 
             </div>
         </div>
 
         <div class="col-12">
+            <div class="card">
+                <h4>Login</h4>
+                <div class="field text-center">
 
-
-            <div>
-                <div class="card chart">
-
-                    <div class="text-center mb-2">Uptime: {{uptime$ | async | dateAgo}}</div>
-
-                    <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">
-                        <p-chart [responsive]="true" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
-
-                    </ng-container>
-                    <ng-template #loadingChart>
-                        <p-skeleton width="100%" height="40vh"></p-skeleton>
-                    </ng-template>
+                    <input [formControl]="address" placeholder="Address (bc1...)" pInputText id="address" type="text"
+                        class="p-inputtext p-component p-element">
+                    <button [disabled]="address.invalid" class="ml-3 mt-3" pButton label="My Workers"
+                        [routerLink]="['app',address.value]"></button>
                 </div>
             </div>
+        </div>
 
+        <div class="col-12">
+            <div class="card chart">
+
+                <div class="text-center mb-2">Uptime: {{uptime$ | async | dateAgo}}</div>
+
+                <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">
+                    <p-chart [responsive]="true" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+
+                </ng-container>
+                <ng-template #loadingChart>
+                    <p-skeleton width="100%" height="40vh"></p-skeleton>
+                </ng-template>
+            </div>
         </div>
 
 
@@ -150,6 +153,28 @@
                     </ng-template>
                 </p-table>
 
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="grid">
+                    <div class="col-12 md:col-4">
+                        <h3>Donate</h3>
+                        <p>Like the project? Consider a donation. </p>
+                    </div>
+                    <div class="col-12 md:col-4 text-center">
+                        <img style="height: 200px;" src="assets/layout/images/qr-code-ln.svg"
+                            alt="bc1q99n3pu025yyu0jlywpmwzalyhm36tg5u37w20d">
+                        <div>public_pool@strike.me</div>
+                    </div>
+                    <div class="col-12 md:col-4 text-center">
+                        <img style="height: 200px;" src="assets/layout/images/qr-code-onchain.svg"
+                            alt="bc1q99n3pu025yyu0jlywpmwzalyhm36tg5u37w20d">
+                        <div>bc1q99n3pu025yyu0jlywpmwzalyhm36tg5u37w20d</div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>

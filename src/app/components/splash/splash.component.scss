@@ -2,6 +2,19 @@
     min-width: 50%;
 }
 
+#logo {
+    left: 50%;
+    margin-left: -100px;
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    top: -18px;
+}
+
+.title {
+    margin-top: 55px;
+}
+
 .main {
     margin-top: 60px;
 }
@@ -14,4 +27,6 @@
 .card {
     max-width: 1024px;
     margin: 0 auto;
+
+
 }

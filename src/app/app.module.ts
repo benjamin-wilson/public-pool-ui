@@ -11,15 +11,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BackgroundParticlesComponent } from './components/background-particles/background-particles.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SettingsComponent } from './components/settings/settings.component';
 import { SplashComponent } from './components/splash/splash.component';
+import { UserAgentLinkComponent } from './components/user-agent-link/user-agent-link.component';
 import { WorkerGroupComponent } from './components/worker-group/worker-group.component';
 import { WorkerComponent } from './components/worker/worker.component';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { DateAgoPipe } from './pipes/date-ago.pipe';
 import { HashSuffixPipe } from './pipes/hash-suffix.pipe';
 import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
-import { SettingsComponent } from './components/settings/settings.component';
-import { UserAgentPipe } from './pipes/user-agent.pipe';
 
 
 
@@ -35,7 +35,7 @@ import { UserAgentPipe } from './pipes/user-agent.pipe';
     BackgroundParticlesComponent,
     HashSuffixPipe,
     SettingsComponent,
-    UserAgentPipe
+    UserAgentLinkComponent
   ],
   imports: [
     CommonModule,

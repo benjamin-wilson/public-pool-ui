@@ -1,0 +1,31 @@
+<ng-container [ngSwitch]="userAgent">
+    <ng-container *ngSwitchCase="'NerdMiner'">
+        <a (click)="cancelClick($event)" href="https://github.com/BitMaker-hub/NerdMiner_v2" target="_blank">Nerd Miner
+            <i class="pi pi-external-link"> </i>
+            <i class="pi pi-star-fill"></i>
+        </a>
+    </ng-container>
+    <ng-container *ngSwitchCase="'bitaxe'">
+        <a (click)="cancelClick($event)" href="https://github.com/skot/bitaxe/" target="_blank">Bitaxe
+            <i class="pi pi-external-link"></i>
+            <i class="pi pi-star-fill"></i>
+        </a>
+    </ng-container>
+    <ng-container *ngSwitchCase="'cpuminer'">
+        <a (click)="cancelClick($event)" href="https://github.com/pooler/cpuminer" target="_blank">cpuminer
+            <i class="pi pi-external-link"></i>
+        </a>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Braiins OS'">
+        <a (click)="cancelClick($event)" href="https://braiins.com/os/plus" target="_blank">Braiins OS
+            <i class="pi pi-external-link"></i>
+        </a>
+    </ng-container>
+    <ng-container *ngSwitchCase="'termux-miner'">
+        <a (click)="cancelClick($event)" href="https://github.com/wong-fi-hung/termux-miner"
+            target="_blank">termux-miner
+            <i class="pi pi-external-link"></i>
+        </a>
+    </ng-container>
+    <ng-container *ngSwitchDefault>{{userAgent}}</ng-container>
+</ng-container>

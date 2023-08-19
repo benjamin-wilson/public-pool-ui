@@ -37,3 +37,17 @@ Install pm2 (https://pm2.keymetrics.io/)
 ```bash
 $ pm2 serve --spa dist/public-pool-ui/ 3335 --name ui
 ```
+
+## Docker
+
+```bash
+$ docker build -t public-pool-ui .
+$ docker run --name public-pool-ui --rm -p 8080:80 public-pool-ui
+```
+
+From Docker commands, website will be accessible on [http://localhost:8080](http://localhost:8080). By default Caddy server listen on port 80, but we bind it to port 8080 which allows you to launch image without root permissions.
+
+Available variables:
+* `DOMAIN`: website domain (default: `localhost`)
+* `LOGLEVEL`: loglevel in stdout (default: `INFO`)
+* `LOGFORMAT`: log format in stdout (default: `json`)

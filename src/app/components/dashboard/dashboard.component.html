@@ -1,241 +1,277 @@
-<ng-container>
-    <div class="grid">
-        <div class="col-12 lg:col-6 xl:col-3">
-
-            <div class="card mb-4">
-                <div class="flex justify-content-between mb-3">
-                    <div>
-                        <span class="block text-500 font-medium mb-3">Your Best Difficulty <i
-                                class="pi pi-question-circle ml-2"
-                                pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i></span>
-                        <div class="text-900 font-medium text-xl">
-
-                            <ng-container
-                                *ngIf="clientInfo$ | async as clientInfo; else loading">{{clientInfo.bestDifficulty |
-                                numberSuffix}}</ng-container>
-                            <ng-template #loading>
-                                <p-skeleton></p-skeleton>
-                            </ng-template>
-                        </div>
-                    </div>
-                    <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
-                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                        <i class="pi pi-star text-orange-500 text-xl"></i>
-                    </div>
-                </div>
-                <span class="text-green-500 font-medium">
-
-                    <ng-container *ngIf="clientInfo$ | async as clientInfo; else loading">{{clientInfo.bestDifficulty |
-                        number}}</ng-container>
-                    <ng-template #loading>
-                        <p-skeleton></p-skeleton>
-                    </ng-template>
-                </span>
+<ng-container
+  *ngIf="{
+    clientInfo: clientInfo$ | async,
+    networkInfo: networkInfo$ | async
+  } as data"
+>
+  <div class="grid">
+    <div class="col-12 lg:col-6 xl:col-3">
+      <div class="card mb-4">
+        <div class="flex justify-content-between mb-3">
+          <div>
+            <span class="block text-500 font-medium mb-3"
+              >Your Best Difficulty
+              <i
+                class="pi pi-question-circle ml-2"
+                pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."
+              ></i
+            ></span>
+            <div class="text-900 font-medium text-xl">
+              <ng-container *ngIf="data.clientInfo; else loading">{{
+                data.clientInfo.bestDifficulty | numberSuffix
+              }}</ng-container>
+              <ng-template #loading>
+                <p-skeleton></p-skeleton>
+              </ng-template>
             </div>
-
-
+          </div>
+          <div
+            class="flex align-items-center justify-content-center bg-orange-100 border-round"
+            [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+          >
+            <i class="pi pi-star text-orange-500 text-xl"></i>
+          </div>
         </div>
-
-        <ng-container>
-            <div class="col-12 lg:col-6 xl:col-3">
-                <div class="card mb-4">
-                    <div class="flex justify-content-between mb-3">
-                        <div>
-                            <span class="block text-500 font-medium mb-3">Network Difficulty</span>
-                            <div class="text-900 font-medium text-xl">
-                                <ng-container
-                                    *ngIf="networkInfo$ | async as networkInfo; else loading">{{networkInfo.difficulty |
-                                    numberSuffix}}</ng-container>
-                                <ng-template #loading><p-skeleton></p-skeleton></ng-template>
-                            </div>
-
-                        </div>
-                        <!-- <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
-                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                        <i class="pi pi-star text-orange-500 text-xl"></i>
-                    </div> -->
-                    </div>
-                    <span class="text-green-500 font-medium">
-                        <ng-container *ngIf="networkInfo$ | async as networkInfo; else loading">
-                            {{networkInfo.difficulty
-                            | number}}</ng-container>
-                        <ng-template #loading><p-skeleton></p-skeleton></ng-template>
-                    </span>
-                </div>
-            </div>
-            <div class="col-12 lg:col-6 xl:col-3">
-                <div class="card mb-4">
-                    <div class="flex justify-content-between mb-3">
-                        <div>
-                            <span class="block text-500 font-medium mb-3">Network Hash Rate </span>
-                            <div class="text-900 font-medium text-xl">
-                                <ng-container *ngIf="networkInfo$ | async as networkInfo; else loading">
-                                    {{networkInfo.networkhashps | hashSuffix}}</ng-container>
-                                <ng-template #loading><p-skeleton></p-skeleton></ng-template>
-                            </div>
-                        </div>
-                        <!-- <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
-                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                        <i class="pi pi-star text-orange-500 text-xl"></i>
-                    </div> -->
-                    </div>
-                    <span class="text-green-500 font-medium">&nbsp;</span>
-                </div>
-            </div>
-            <div class="col-12 lg:col-6 xl:col-3">
-                <div class="card mb-4">
-                    <div class="flex justify-content-between mb-3">
-                        <div>
-                            <span class="block text-500 font-medium mb-3">Block Height</span>
-                            <div class="text-900 font-medium text-xl">
-                                <ng-container *ngIf="networkInfo$ | async as networkInfo; else loading">
-                                    {{networkInfo.blocks}}</ng-container>
-                                <ng-template #loading><p-skeleton></p-skeleton></ng-template>
-                            </div>
-                        </div>
-                        <!-- <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
-                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                        <i class="pi pi-star text-orange-500 text-xl"></i>
-                    </div> -->
-                    </div>
-                    <span class="text-green-500 font-medium">Weight:
-                        <ng-container *ngIf="networkInfo$ | async as networkInfo; else loading">
-                            {{networkInfo.currentblockweight | number}}</ng-container>
-                        <ng-template #loading><p-skeleton></p-skeleton></ng-template>
-                    </span>
-                </div>
-            </div>
-        </ng-container>
+        <span class="text-green-500 font-medium">
+          <ng-container *ngIf="data.clientInfo; else loading">{{
+            data.clientInfo.bestDifficulty | number
+          }}</ng-container>
+          <ng-template #loading>
+            <p-skeleton></p-skeleton>
+          </ng-template>
+        </span>
+      </div>
     </div>
-    <div class="card">
-        <ng-container *ngIf="clientInfo$ | async as clientInfo; else loadingTable">
-            <p-table #dataTable [rowHover]="true" groupRowsBy="name" dataKey="name" rowGroupMode="subheader"
-                [value]="clientInfo.workers" [expandedRowKeys]="expandedRows$ | async"
-                [tableStyle]="{ 'min-width': '50rem' }">
-
-
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Name</th>
-                        <th>Session ID</th>
-                        <th>Hash Rate</th>
-                        <th>Session Best Difficulty</th>
-                        <th>Uptime</th>
-                        <th>Last Seen</th>
-                    </tr>
-                </ng-template>
-
-
-                <ng-template pTemplate="groupheader" let-worker let-rowIndex="rowIndex" let-expanded="expanded">
-                    <tr [routerLink]="[worker.name]">
-                        <td>
-                            <button (click)="$event.stopImmediatePropagation()" type="button" pButton pRipple
-                                [pRowToggler]="worker" class="p-button-text p-button-rounded p-button-plain mr-2"
-                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-
-                            <span class="worker-name font-bold ml-2">{{worker.name}} </span>
-
-                        </td>
-                        <td>
-                            {{getSessionCount(worker.name, clientInfo.workers)}} Sessions
-                        </td>
-                        <td>
-                            {{getTotalHashRate(worker.name, clientInfo.workers) | hashSuffix}}
-                        </td>
-                        <td>
-                            {{getBestDifficulty(worker.name, clientInfo.workers) | numberSuffix}}
-                        </td>
-                        <td>
-
-                        </td>
-                        <td></td>
-                    </tr>
-                </ng-template>
-
-
-                <ng-template pTemplate="rowexpansion" let-worker>
-                    <tr [routerLink]="[worker.name, worker.sessionId]">
-                        <td></td>
-                        <td>{{worker.sessionId}}</td>
-                        <td>{{worker.hashRate | hashSuffix}}</td>
-                        <td>{{worker.bestDifficulty | numberSuffix}}</td>
-                        <td>{{worker.startTime | dateAgo}}</td>
-                        <td>{{worker.lastSeen | dateAgo}}</td>
-                    </tr>
-                </ng-template>
-
-
-            </p-table>
-        </ng-container>
-        <ng-template #loadingTable>
-            <p-table #dataTable [rowHover]="true" groupRowsBy="loading" dataKey="loading" rowGroupMode="subheader"
-                [value]="[{loading: 'loading'}]" [expandedRowKeys]="{loading: true}"
-                [tableStyle]="{ 'min-width': '50rem' }">
-
-
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Name</th>
-                        <th>Session ID</th>
-                        <th>Hash Rate</th>
-                        <th>Session Best Difficulty</th>
-                        <th>Uptime</th>
-                        <th>Last Seen</th>
-                    </tr>
-                </ng-template>
-
-
-                <ng-template pTemplate="groupheader" let-worker let-rowIndex="rowIndex" let-expanded="expanded">
-                    <tr>
-                        <td>
-                            <button (click)="$event.stopImmediatePropagation()" type="button" pButton pRipple
-                                [pRowToggler]="worker" class="p-button-text p-button-rounded p-button-plain mr-2"
-                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-
-                            <span class="worker-name font-bold ml-2">{{worker.name}} </span>
-
-                        </td>
-                        <td>
-                            <p-skeleton></p-skeleton>
-                        </td>
-                        <td>
-                            <p-skeleton></p-skeleton>
-                        <td>
-                            <p-skeleton></p-skeleton>
-                        </td>
-                        <td>
-
-                        </td>
-                        <td></td>
-                    </tr>
-                </ng-template>
-
-
-                <ng-template pTemplate="rowexpansion" let-worker>
-                    <tr>
-                        <td></td>
-                        <td><p-skeleton></p-skeleton></td>
-                        <td><p-skeleton></p-skeleton></td>
-                        <td><p-skeleton></p-skeleton></td>
-                        <td><p-skeleton></p-skeleton></td>
-                        <td><p-skeleton></p-skeleton></td>
-                    </tr>
-                </ng-template>
-
-
-            </p-table>
+    <ng-container>
+      <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-4">
+          <div class="flex justify-content-between mb-3">
+            <div>
+              <span class="block text-500 font-medium mb-3"
+                >Network Difficulty</span
+              >
+              <div class="text-900 font-medium text-xl">
+                <ng-container *ngIf="data.networkInfo; else loading">{{
+                  data.networkInfo.difficulty | numberSuffix
+                }}</ng-container>
+                <ng-template #loading><p-skeleton></p-skeleton></ng-template>
+              </div>
+            </div>
+            <!-- <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
+                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                        <i class="pi pi-star text-orange-500 text-xl"></i>
+                    </div> -->
+          </div>
+          <span class="text-green-500 font-medium">
+            <ng-container *ngIf="data.networkInfo; else loading">
+              {{ data.networkInfo.difficulty | number }}</ng-container
+            >
+            <ng-template #loading><p-skeleton></p-skeleton></ng-template>
+          </span>
+        </div>
+      </div>
+      <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-4">
+          <div class="flex justify-content-between mb-3">
+            <div>
+              <span class="block text-500 font-medium mb-3"
+                >Network Hash Rate
+              </span>
+              <div class="text-900 font-medium text-xl">
+                <ng-container *ngIf="data.networkInfo; else loading">
+                  {{
+                    data.networkInfo.networkhashps | hashSuffix
+                  }}</ng-container
+                >
+                <ng-template #loading><p-skeleton></p-skeleton></ng-template>
+              </div>
+            </div>
+            <!-- <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
+                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                        <i class="pi pi-star text-orange-500 text-xl"></i>
+                    </div> -->
+          </div>
+          <span class="text-green-500 font-medium">&nbsp;</span>
+        </div>
+      </div>
+      <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-4">
+          <div class="flex justify-content-between mb-3">
+            <div>
+              <span class="block text-500 font-medium mb-3">Block Height</span>
+              <div class="text-900 font-medium text-xl">
+                <ng-container *ngIf="data.networkInfo; else loading">
+                  {{ data.networkInfo.blocks }}</ng-container
+                >
+                <ng-template #loading><p-skeleton></p-skeleton></ng-template>
+              </div>
+            </div>
+            <!-- <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
+                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                        <i class="pi pi-star text-orange-500 text-xl"></i>
+                    </div> -->
+          </div>
+          <span class="text-green-500 font-medium"
+            >Weight:
+            <ng-container *ngIf="data.networkInfo; else loading">
+              {{ data.networkInfo.currentblockweight | number }}</ng-container
+            >
+            <ng-template #loading><p-skeleton></p-skeleton></ng-template>
+          </span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="card">
+    <ng-container *ngIf="data.clientInfo; else loadingTable">
+      <p-table
+        #dataTable
+        [rowHover]="true"
+        groupRowsBy="name"
+        dataKey="name"
+        rowGroupMode="subheader"
+        [value]="data.clientInfo.workers"
+        [expandedRowKeys]="expandedRows$ | async"
+        [tableStyle]="{ 'min-width': '50rem' }"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Name</th>
+            <th>Session ID</th>
+            <th>Hash Rate</th>
+            <th>Session Best Difficulty</th>
+            <th>Uptime</th>
+            <th>Last Seen</th>
+          </tr>
         </ng-template>
+        <ng-template
+          pTemplate="groupheader"
+          let-worker
+          let-rowIndex="rowIndex"
+          let-expanded="expanded"
+        >
+          <tr [routerLink]="[worker.name]">
+            <td>
+              <button
+                (click)="$event.stopImmediatePropagation()"
+                type="button"
+                pButton
+                pRipple
+                [pRowToggler]="worker"
+                class="p-button-text p-button-rounded p-button-plain mr-2"
+                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              ></button>
 
-    </div>
-
-
-    <div class="card chart">
-        <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">
-            <p-chart [data]="chartData" [options]="chartOptions"></p-chart>
-        </ng-container>
-        <ng-template #loadingChart>
-            <p-skeleton width="100%" height="40vh"></p-skeleton>
+              <span class="worker-name font-bold ml-2">{{ worker.name }} </span>
+            </td>
+            <td>
+              {{
+                getSessionCount(worker.name, data.clientInfo.workers)
+              }}
+              Sessions
+            </td>
+            <td>
+              {{
+                getTotalHashRate(worker.name, data.clientInfo.workers)
+                  | hashSuffix
+              }}
+            </td>
+            <td>
+              {{
+                getBestDifficulty(worker.name, data.clientInfo.workers)
+                  | numberSuffix
+              }}
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
         </ng-template>
+        <ng-template pTemplate="rowexpansion" let-worker>
+          <tr [routerLink]="[worker.name, worker.sessionId]">
+            <td></td>
+            <td>{{ worker.sessionId }}</td>
+            <td>{{ worker.hashRate | hashSuffix }}</td>
+            <td>{{ worker.bestDifficulty | numberSuffix }}</td>
+            <td>{{ worker.startTime | dateAgo }}</td>
+            <td>{{ worker.lastSeen | dateAgo }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-container>
+    <ng-template #loadingTable>
+      <p-table
+        #dataTable
+        [rowHover]="true"
+        groupRowsBy="loading"
+        dataKey="loading"
+        rowGroupMode="subheader"
+        [value]="[{ loading: 'loading' }]"
+        [expandedRowKeys]="{ loading: true }"
+        [tableStyle]="{ 'min-width': '50rem' }"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Name</th>
+            <th>Session ID</th>
+            <th>Hash Rate</th>
+            <th>Session Best Difficulty</th>
+            <th>Uptime</th>
+            <th>Last Seen</th>
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="groupheader"
+          let-worker
+          let-rowIndex="rowIndex"
+          let-expanded="expanded"
+        >
+          <tr>
+            <td>
+              <button
+                (click)="$event.stopImmediatePropagation()"
+                type="button"
+                pButton
+                pRipple
+                [pRowToggler]="worker"
+                class="p-button-text p-button-rounded p-button-plain mr-2"
+                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              ></button>
 
-    </div>
+              <span class="worker-name font-bold ml-2">{{ worker.name }} </span>
+            </td>
+            <td>
+              <p-skeleton></p-skeleton>
+            </td>
+            <td>
+              <p-skeleton></p-skeleton>
+            </td>
+
+            <td>
+              <p-skeleton></p-skeleton>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-worker>
+          <tr>
+            <td></td>
+            <td><p-skeleton></p-skeleton></td>
+            <td><p-skeleton></p-skeleton></td>
+            <td><p-skeleton></p-skeleton></td>
+            <td><p-skeleton></p-skeleton></td>
+            <td><p-skeleton></p-skeleton></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
+  </div>
+  <div class="card chart">
+    <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">
+      <p-chart [data]="chartData" [options]="chartOptions"></p-chart>
+    </ng-container>
+    <ng-template #loadingChart>
+      <p-skeleton width="100%" height="40vh"></p-skeleton>
+    </ng-template>
+  </div>
 </ng-container>

@@ -23,7 +23,7 @@ import { ClientService } from '../../services/client.service';
 export class DashboardComponent implements AfterViewInit, OnInit {
   @ViewChild('dataTable') dataTable!: Table;
 
-  private readonly autoRefresh$ = interval(60000).pipe(startWith(0));
+  private readonly autoRefresh$ = interval(600000).pipe(startWith(0));
 
   chartOptions: any;
   chartData$: Observable<any> | undefined;

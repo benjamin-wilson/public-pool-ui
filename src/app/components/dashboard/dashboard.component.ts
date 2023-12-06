@@ -55,6 +55,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       )
     );
 
+    // TODO: this probably triggers an extra api call
     this.expandedRows$ = this.clientInfo$.pipe(
       map((info: any) => {
         return info.workers.reduce((pre: any, cur: any) => {

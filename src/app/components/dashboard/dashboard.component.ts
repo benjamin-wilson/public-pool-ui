@@ -71,7 +71,7 @@ export class DashboardComponent implements AfterViewInit {
         for (let i = GROUP_SIZE; i < chartData.length; i += GROUP_SIZE) {
           let sum = 0;
           for (let j = GROUP_SIZE - 1; j >= 0; j--) {
-            sum += chartData[i - j].data;
+            sum += parseInt(chartData[i - j].data);
           }
           sum = sum / GROUP_SIZE;
           hourlyData.push({ y: sum, x: chartData[i].label });

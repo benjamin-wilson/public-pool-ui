@@ -7,6 +7,8 @@ import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
 import { ClientService } from '../../services/client.service';
 
+
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -26,6 +28,7 @@ export class DashboardComponent implements AfterViewInit {
   @ViewChild('dataTable') dataTable!: Table;
 
   public expandedRows$: Observable<any>;
+
 
 
   constructor(

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, Observable, shareReplay } from 'rxjs';
 
+import { environment } from '../../../environments/environment';
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
 import { bitcoinAddressValidator } from '../../validators/bitcoin-address.validator';
@@ -22,14 +23,18 @@ export class SplashComponent {
 
   public chartOptions: any;
 
-
+  public stratumURL = '';
 
   constructor(private appService: AppService) {
 
     const info$ = this.appService.getInfo().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
 
-
+    if (environment.STRATUM_URL.length > 1) {
+      this.stratumURL = environment.STRATUM_URL;
+    } else {
+      this.stratumURL = window.location.hostname + ':3333';
+    }
 
     this.blockData$ = info$.pipe(map(info => info.blockData));
     this.userAgents$ = info$.pipe(map(info => info.userAgents));

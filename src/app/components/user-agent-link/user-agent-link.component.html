@@ -31,5 +31,10 @@
             target="_blank">termux-miner
         </a>
     </ng-container>
+    <ng-container *ngSwitchCase="'LeafMiner'">
+        <a (click)="cancelClick($event)" href="https://github.com/matteocrippa/leafminer"
+            target="_blank">LeafMiner
+        </a>
+    </ng-container>
     <ng-container *ngSwitchDefault>{{userAgent}}</ng-container>
 </ng-container>

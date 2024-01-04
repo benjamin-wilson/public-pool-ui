@@ -20,5 +20,9 @@ p-chart>div {
 .card {
     &.chart {
         padding: 10px;
+
+        @media (max-width: 769px) {
+            margin-bottom: 20px;
+          }
     }
 }

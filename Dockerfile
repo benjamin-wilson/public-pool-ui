@@ -23,13 +23,8 @@ RUN npm i && npm run build
 # Docker final environment #
 ############################
 
-FROM caddy:2.7.4-alpine
-
-EXPOSE 80
-WORKDIR /var/www/html
-
+FROM nginx:alpine
+#change listen port to something different (8778)
+RUN sed -i 's/80/8778/g' /etc/nginx/conf.d/default.conf
+WORKDIR /usr/share/nginx/html
 COPY --from=build /build/dist/public-pool-ui .
-COPY docker/Caddyfile.tpl /etc/Caddyfile.tpl
-COPY docker/entrypoint.sh /entrypoint.sh
-
-CMD ["/bin/sh", "/entrypoint.sh"]

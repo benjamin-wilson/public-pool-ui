@@ -8,7 +8,7 @@ else
     rm -f /etc/Caddyfile.tpl
 fi
 
-echo "Starting UI: http://${DOMAIN:-localhost}"
+echo "Starting UI on port 80"
 echo "Logs output: ${LOGLEVEL:-INFO} (${LOGFORMAT:-json})"
 
 exec caddy run --config /etc/Caddyfile

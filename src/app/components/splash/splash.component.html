@@ -148,7 +148,8 @@
                             <tr>
                                 <td>{{ highScore.bestDifficulty | numberSuffix }}</td>
                                 <td><app-user-agent-link
-                                        [userAgent]="highScore.bestDifficultyUserAgent"></app-user-agent-link></td>
+                                        [userAgent]="highScore.bestDifficultyUserAgent ? highScore.bestDifficultyUserAgent : 'unknown'"></app-user-agent-link>
+                                </td>
                                 <td>{{ highScore.updatedAt | dateAgo}} ago</td>
                             </tr>
                         </ng-template>

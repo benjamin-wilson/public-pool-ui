@@ -1,4 +1,4 @@
-http://%%DOMAIN%% {
+:80 {
     root * /var/www/html
     file_server
 

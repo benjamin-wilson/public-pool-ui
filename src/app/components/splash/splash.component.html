@@ -138,14 +138,16 @@
                     <p-table [value]="highScores">
                         <ng-template pTemplate="header">
                             <tr>
+                                <th>Rank</th>
                                 <th>Difficulty</th>
                                 <th>Device</th>
                                 <th>When</th>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-highScore>
+                        <ng-template pTemplate="body" let-highScore let-i="rowIndex">
                             <tr></tr>
                             <tr>
+                                <td>#{{i+1}}</td>
                                 <td>{{ highScore.bestDifficulty | numberSuffix }}</td>
                                 <td><app-user-agent-link
                                         [userAgent]="highScore.bestDifficultyUserAgent ? highScore.bestDifficultyUserAgent : 'unknown'"></app-user-agent-link>

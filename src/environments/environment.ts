@@ -1,5 +1,7 @@
+import config from '../assets/config/config.json';
+
 export const environment = {
-    production: false,
-    API_URL: 'http://localhost:3334',
-    STRATUM_URL: 'public-pool.io:21496'
+    production: config.PRODUCTION,
+    API_URL: config.API_URL,
+    STRATUM_URL: config.STRATUM_URL
 };

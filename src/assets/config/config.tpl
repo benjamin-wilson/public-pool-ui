@@ -1,0 +1,5 @@
+{
+   "ENVIRONMENT": "<ENVIRONMENT",
+   "API_URL": "<API_URL>",
+   "STRATUM_URL": "<STRATUM_URL>"
+}

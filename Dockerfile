@@ -23,13 +23,10 @@ RUN npm i && npm run build
 # Docker final environment #
 ############################
 
-FROM caddy:2.7.4-alpine
+FROM nginx:1.21.3-alpine
+
+COPY --from=build /build/dist/public-pool-ui /usr/share/nginx/html
 
 EXPOSE 80
-WORKDIR /var/www/html
 
-COPY --from=build /build/dist/public-pool-ui .
-COPY docker/Caddyfile.tpl /etc/Caddyfile.tpl
-COPY docker/entrypoint.sh /entrypoint.sh
-
-CMD ["/bin/sh", "/entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

@@ -105,7 +105,8 @@ export class SplashComponent {
           grid: {
             color: surfaceBorder,
             drawBorder: false
-          }
+          },
+          type: 'logarithmic',
         }
       }
     };

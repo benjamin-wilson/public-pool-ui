@@ -64,6 +64,7 @@
                 <div class="text-center mb-2">Uptime: {{uptime$ | async | dateAgo}}</div>
 
                 <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">
+                    
                     <p-chart [responsive]="true" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
 
                 </ng-container>

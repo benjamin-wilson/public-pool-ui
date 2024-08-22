@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.local.json ",
-    "start:prod": "ng serve --proxy-config proxy.config.prod.json ",
+    "start:prod": "ng serve --configuration=production",
     "build": "ng build --configuration=production && gzipper compress --gzip --brotli ./dist/public-pool-ui/",
     "build:electron": "ng build --configuration=electron --base-href ./",
     "build:github": "ng build --configuration=production && echo \"web.public-pool.io\" > dist/public-pool-ui/CNAME",

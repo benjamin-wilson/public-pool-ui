@@ -1,11 +1,11 @@
 {
-    "/api/*": {
-        "target": "http://public-pool.io:40557",
-        "secure": false,
+    "/api": {
+        "target": "https://public-pool.io:40557",
+        "secure": true,
+        "changeOrigin": true,
         "logLevel": "debug",
         "pathRewrite": {
-            "^/api": ""
-        },
-        "changeOrigin": true
+            "^/api": "/api"
+        }
     }
 }

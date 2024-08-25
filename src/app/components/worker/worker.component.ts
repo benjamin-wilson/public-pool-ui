@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable, shareReplay } from 'rxjs';
+import { combineLatest, map, Observable, shareReplay } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { WorkerService } from '../../services/worker.service';
+import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe';
+import { AppService } from 'src/app/services/app.service';
 
 @Component({
   selector: 'app-worker',
@@ -18,7 +20,15 @@ export class WorkerComponent {
 
   public chartOptions: any;
 
-  constructor(private workerService: WorkerService, private route: ActivatedRoute) {
+  public networkInfo$: Observable<any>;
+  private networkInfo:any;
+
+
+  constructor(
+    private workerService: WorkerService, 
+    private route: ActivatedRoute,
+    private appService: AppService
+  ) {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
@@ -26,10 +36,16 @@ export class WorkerComponent {
 
     this.workerInfo$ = this.workerService.getWorkerInfo(this.route.snapshot.params['address'], this.route.snapshot.params['workerName'], this.route.snapshot.params['workerId']).pipe(
       shareReplay({ bufferSize: 1, refCount: true })
-    )
+    );
 
-    this.chartData$ = this.workerInfo$.pipe(
-      map((workerInfo: any) => {
+    this.networkInfo$ = this.appService.getNetworkInfo().pipe(
+      shareReplay({ refCount: true, bufferSize: 1 })
+    );
+
+    this.chartData$ = combineLatest([ this.workerInfo$, this.networkInfo$]).pipe(
+      map(([workerInfo, networkInfo]) => {
+
+        this.networkInfo = networkInfo;
 
         return {
           labels: workerInfo.chartData.map((d: any) => d.label),
@@ -64,7 +80,7 @@ export class WorkerComponent {
         x: {
           type: 'time',
           time: {
-            unit: 'hour'
+            unit: 'day'
           },
           ticks: {
             color: textColorSecondary
@@ -77,7 +93,9 @@ export class WorkerComponent {
         y: {
           ticks: {
             color: textColorSecondary,
-            callback: (value: number) => HashSuffixPipe.transform(value)
+            callback: (value: number) => {
+              return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
+            }
           },
           grid: {
             color: surfaceBorder,

@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Table } from 'primeng/table';
-import { map, Observable, shareReplay } from 'rxjs';
+import { combineLatest, map, Observable, shareReplay } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
 import { ClientService } from '../../services/client.service';
+import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe';
 
 
 
@@ -24,6 +25,7 @@ export class DashboardComponent implements AfterViewInit {
   public chartOptions: any;
 
   public networkInfo$: Observable<any>;
+  private networkInfo:any;
 
   @ViewChild('dataTable') dataTable!: Table;
 
@@ -35,10 +37,7 @@ export class DashboardComponent implements AfterViewInit {
     private clientService: ClientService,
     private route: ActivatedRoute,
     private appService: AppService
-
   ) {
-
-
 
     this.networkInfo$ = this.appService.getNetworkInfo().pipe(
       shareReplay({ refCount: true, bufferSize: 1 })
@@ -55,17 +54,16 @@ export class DashboardComponent implements AfterViewInit {
 
     }));
 
-
-
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
 
-    this.chartData$ = this.clientService.getClientInfoChart(this.address).pipe(
-      map((chartData) => {
+    this.chartData$ = combineLatest([this.clientService.getClientInfoChart(this.address),  this.networkInfo$]).pipe(
+      map(([chartData, networkInfo]) => {
 
+        this.networkInfo = networkInfo;
         const GROUP_SIZE = 12; //6 = 1 hour
 
 
@@ -143,7 +141,9 @@ export class DashboardComponent implements AfterViewInit {
         y: {
           ticks: {
             color: textColorSecondary,
-            callback: (value: number) => HashSuffixPipe.transform(value)
+            callback: (value: number) => {
+              return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
+            }
           },
           grid: {
             color: surfaceBorder,

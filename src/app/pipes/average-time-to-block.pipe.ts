@@ -16,6 +16,9 @@ export class AverageTimeToBlockPipe implements PipeTransform {
 
   public transform(value: number, difficulty: number): string {
     const blockTimeInSeconds = this.calculateBlockTime(value, difficulty);
+    if(blockTimeInSeconds > 8000000000000){
+      return '~∞';
+    }
     const date = new Date(new Date().getTime() + (blockTimeInSeconds * 1000));
     return AverageTimeToBlockPipe._dateAgo.transform(date);
   }

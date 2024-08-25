@@ -92,7 +92,7 @@ export class SplashComponent {
         x: {
           type: 'time',
           time: {
-            unit: 'hour', // Set the unit to 'minute'
+            unit: 'day', // Set the unit to 'minute'
           },
           ticks: {
             color: textColorSecondary

@@ -26,11 +26,12 @@ export class DateAgoPipe implements PipeTransform {
         counter = Math.floor(seconds / intervals[i]);
         
         if (counter > 0)
-          if (counter === 1) {
-            return number + ' ' + i + ''; // singular (1 day ago)
-          } else {
-            return number + ' ' + i + 's'; // plural (2 days ago)
-          }
+          return number + ' ' + i + 's'; // plural (2 days ago)
+          // if (counter === 1) {
+          //   return number + ' ' + i + ''; // singular (1 day ago)
+          // } else {
+          //   return number + ' ' + i + 's'; // plural (2 days ago)
+          // }
       }
     }
     return value;

@@ -2,7 +2,7 @@
 # Docker build environment #
 ############################
 
-FROM node:18.16.1-bookworm-slim AS build
+FROM node:18-bookworm-slim AS build
 
 # Upgrade all packages and install dependencies
 RUN apt-get update \
@@ -23,7 +23,7 @@ RUN npm i && npm run build
 # Docker final environment #
 ############################
 
-FROM caddy:2.7.4-alpine
+FROM caddy:alpine
 
 EXPOSE 80
 WORKDIR /var/www/html

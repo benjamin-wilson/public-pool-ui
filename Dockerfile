@@ -23,7 +23,7 @@ RUN npm i && npm run build
 # Docker final environment #
 ############################
 
-FROM caddy:alpine
+FROM caddy:alpine AS final
 
 EXPOSE 80
 WORKDIR /var/www/html

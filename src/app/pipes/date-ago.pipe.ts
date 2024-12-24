@@ -24,9 +24,9 @@ export class DateAgoPipe implements PipeTransform {
       for (const i in intervals) {
         const number = (seconds / intervals[i]).toFixed(1);
         counter = Math.floor(seconds / intervals[i]);
-        
+
         if (counter > 0)
-          return number + ' ' + i + 's'; // plural (2 days ago)
+          return number + ' ' + i + 's ago'; // plural (2 days ago)
           // if (counter === 1) {
           //   return number + ' ' + i + ''; // singular (1 day ago)
           // } else {

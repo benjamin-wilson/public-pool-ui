@@ -4,6 +4,11 @@
             <i class="pi pi-star-fill"></i>
         </a>
     </ng-container>
+    <ng-container *ngSwitchCase="'NerdNOS'">
+      <a (click)="cancelClick($event)" href="https://github.com/WantClue/NerdMiner_v2/tree/nerdnos" target="_blank">NerdNOS
+          <i class="pi pi-star-fill"></i>
+      </a>
+    </ng-container>
     <ng-container *ngSwitchCase="'NerdAxe'">
         <a (click)="cancelClick($event)" href="https://github.com/BitMaker-hub/NerdAxeUltra" target="_blank">NerdAxe
             <i class="pi pi-star-fill"></i>
@@ -28,7 +33,7 @@
         <a (click)="cancelClick($event)" href="https://github.com/shufps/0xaxe" target="_blank">0xAxe
             <i class="pi pi-star-fill"></i>
         </a>
-    </ng-container>  
+    </ng-container>
     <ng-container *ngSwitchCase="'bitaxe'">
         <a (click)="cancelClick($event)" href="https://github.com/skot/bitaxe/" target="_blank">Bitaxe
             <i class="pi pi-star-fill"></i>

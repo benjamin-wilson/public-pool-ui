@@ -8,7 +8,7 @@ export class NumberSuffixPipe implements PipeTransform {
 
   transform(value: number): string {
 
-    const suffixes = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
+    const suffixes = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'R', 'Q'];
 
     if (value == null || value < 0) {
       return '0';

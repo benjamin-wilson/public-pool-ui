@@ -22,4 +22,7 @@ export class AppService {
     public getInfoChart() {
         return this.httpClient.get(`${environment.API_URL}/api/info/chart`) as Observable<any>;
     }
+    public getExternalHighScores() {
+        return this.httpClient.get(`${environment.API_URL}/api/share/top-difficulties`) as Observable<any>;
+    }
 }

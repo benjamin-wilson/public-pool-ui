@@ -187,7 +187,32 @@
             </div>
         </div>
 
-
+        <div class="col-12" *ngIf="externalHighScores$ | async as externalHighScores">
+            <div class="card">
+                <h4 style="text-align: center;">External High Scores</h4>
+                <p-table [value]="externalHighScores">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Rank</th>
+                            <th>Difficulty</th>
+                            <th>Device</th>
+                            <th>When</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-externalHighScore let-i="rowIndex">
+                        <tr></tr>
+                        <tr>
+                            <td>#{{i+1}}</td>
+                            <td>{{ externalHighScore.difficulty | numberSuffix }}</td>
+                            <td><app-user-agent-link
+                                    [userAgent]="externalHighScore.userAgent ? externalHighScore.userAgent : 'unknown'"></app-user-agent-link>
+                            </td>
+                            <td>{{ externalHighScore.time | dateAgo}} ago</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
 
 
         <div class="col-12" *ngIf="blockData$ | async as blockData">

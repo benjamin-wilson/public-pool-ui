@@ -28,7 +28,7 @@
         <a (click)="cancelClick($event)" href="https://github.com/shufps/0xaxe" target="_blank">0xAxe
             <i class="pi pi-star-fill"></i>
         </a>
-    </ng-container>  
+    </ng-container>
     <ng-container *ngSwitchCase="'bitaxe'">
         <a (click)="cancelClick($event)" href="https://github.com/skot/bitaxe/" target="_blank">Bitaxe
             <i class="pi pi-star-fill"></i>
@@ -61,5 +61,5 @@
             <i class="pi pi-star-fill"></i>
         </a>
     </ng-container>
-    <ng-container *ngSwitchDefault>{{userAgent}}</ng-container>
+    <ng-container *ngSwitchDefault>{{userAgent | slice:0:12}}</ng-container>
 </ng-container>

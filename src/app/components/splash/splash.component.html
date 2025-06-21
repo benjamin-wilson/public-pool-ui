@@ -64,7 +64,7 @@
                 <div class="text-center mb-2">Uptime: {{uptime$ | async | dateAgo}}</div>
 
                 <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">
-                    
+
                     <p-chart [responsive]="true" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
 
                 </ng-container>
@@ -137,7 +137,7 @@
                     month, the miner who submits the highest difficulty will be rewarded with 100% of the affiliate
                     earnings.</p>
 
-                    
+
                 <div class="grid" style="padding-top: 20px;">
                     <div class="col-12 md:col-4">
                         <a href="https://www.solosatoshi.com/aff/7/" target="_blank">
@@ -145,18 +145,8 @@
                                 <h4 class="text-center"> Solo Satoshi (USA)</h4>
                                 <img id="solosatoshi" style="height: 200px;  width: 200px; object-fit: contain;"
                                     src="assets/layout/images/solo-logo.webp" alt="solosatoshi">
-                                    <h5>Discount Code (6.5%): <code>RealPleb </code></h5>
+                                <h5>Discount Code (6.5%): <code>RealPleb </code></h5>
 
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-12 md:col-4">
-                        <a href="https://unfdxj-c2.myshopify.com?ref=public_pool" target="_blank">
-                            <div class="text-center">
-                                <h4>PlebSource (USA)</h4>
-                                <img id="altair" style="height: 200px; width: 200px; object-fit: cover;"
-                                    src="assets/layout/images/plebsource.webp" alt="altair">
-                                <h5>Discount Code (6%): <code>publicpool</code></h5>
                             </div>
                         </a>
                     </div>
@@ -190,8 +180,17 @@
                             </div>
                         </a>
                     </div>
-
                     <div class="col-12 md:col-4">
+                        <a href="https://unfdxj-c2.myshopify.com?ref=public_pool" target="_blank">
+                            <div class="text-center">
+                                <h4>PlebSource (USA)</h4>
+                                <img id="altair" style="height: 200px; width: 200px; object-fit: cover;"
+                                    src="assets/layout/images/plebsource.webp" alt="altair">
+                                <!-- <h5>Discount Code (6%): <code>publicpool</code></h5> -->
+                            </div>
+                        </a>
+                    </div>
+                    <!-- <div class="col-12 md:col-4">
                         <a href="https://gobrrr.me/?coupon=solo" target="_blank">
                             <div class="text-center">
                                 <h4 class="text-center"> Go Brrr (Austria)</h4>
@@ -200,7 +199,7 @@
 
                             </div>
                         </a>
-                    </div>
+                    </div> -->
                     <div class="col-12 md:col-4">
                         <a href="https://miningwholesale.eu/?wpam_id=143" target="_blank">
                             <div class="text-center">

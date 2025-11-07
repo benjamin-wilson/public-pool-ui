@@ -159,7 +159,7 @@
                         <td>{{worker.sessionId}}</td>
                         <td>{{worker.hashRate | hashSuffix}}</td>
                         <td>{{worker.bestDifficulty | numberSuffix}}</td>
-                        <td>{{worker.startTime | dateAgo}}</td>
+                        <td>{{worker.startTime | dateAgo:{hasSuffix: false} }}</td>
                         <td>{{worker.lastSeen | dateAgo}}</td>
                     </tr>
                 </ng-template>

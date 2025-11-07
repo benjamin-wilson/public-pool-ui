@@ -6,7 +6,6 @@ import { combineLatest, map, Observable, shareReplay } from 'rxjs';
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
 import { ClientService } from '../../services/client.service';
-import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe';
 
 
 
@@ -142,7 +141,7 @@ export class DashboardComponent implements AfterViewInit {
           ticks: {
             color: textColorSecondary,
             callback: (value: number) => {
-              return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
+              return HashSuffixPipe.transform(value);
             }
           },
           grid: {

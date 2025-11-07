@@ -20,9 +20,6 @@ import { AppLayoutModule } from './layout/app.layout.module';
 import { DateAgoPipe } from './pipes/date-ago.pipe';
 import { HashSuffixPipe } from './pipes/hash-suffix.pipe';
 import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
-import { AverageTimeToBlockPipe } from './pipes/average-time-to-block.pipe';
-
-
 
 @NgModule({
   declarations: [

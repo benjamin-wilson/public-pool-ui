@@ -4,7 +4,6 @@ import { combineLatest, map, Observable, shareReplay } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { WorkerService } from '../../services/worker.service';
-import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe';
 import { AppService } from 'src/app/services/app.service';
 
 @Component({
@@ -25,7 +24,7 @@ export class WorkerComponent {
 
 
   constructor(
-    private workerService: WorkerService, 
+    private workerService: WorkerService,
     private route: ActivatedRoute,
     private appService: AppService
   ) {
@@ -94,7 +93,7 @@ export class WorkerComponent {
           ticks: {
             color: textColorSecondary,
             callback: (value: number) => {
-              return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
+              return HashSuffixPipe.transform(value);
             }
           },
           grid: {

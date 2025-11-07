@@ -6,8 +6,6 @@
     "start": "ng serve --proxy-config proxy.config.local.json ",
     "start:prod": "ng serve --configuration=production",
     "build": "ng build --configuration=production && gzipper compress --gzip --brotli ./dist/public-pool-ui/",
-    "build:electron": "ng build --configuration=electron --base-href ./",
-    "build:github": "ng build --configuration=production && echo \"web.public-pool.io\" > dist/public-pool-ui/CNAME",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "bundle-report": "ng build --configuration=production --source-map=true --named-chunks=true --stats-json && webpack-bundle-analyzer dist/public-pool-ui/stats.json"
@@ -23,7 +21,6 @@
     "@angular/platform-browser-dynamic": "18.1.0",
     "@angular/router": "18.1.0",
     "bitcoin-address-validation": "^2.2.3",
-    "chart.js": "^4.4.3",
     "chartjs-adapter-moment": "^1.0.1",
     "moment": "^2.30.1",
     "ng-particles": "^3.12.0",

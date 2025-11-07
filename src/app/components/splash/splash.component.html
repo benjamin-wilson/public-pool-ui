@@ -65,7 +65,7 @@
                 <div class="text-center mb-2">Uptime: {{uptime$ | async | dateAgo}}</div>
 
                 <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">
-                    
+
                     <p-chart [responsive]="true" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
 
                 </ng-container>
@@ -85,7 +85,7 @@
                             <tr>
                                 <th>Device</th>
                                 <th>Currently Working</th>
-                                <th>Total Hash Rate</th>
+                                <th>Total Hashrate</th>
                                 <th>Best Difficulty <i class="pi pi-question-circle ml-2"
                                         pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
                                 </th>
@@ -111,7 +111,7 @@
                             <tr>
                                 <th>Device</th>
                                 <th>Currently Working</th>
-                                <th>Total Hash Rate</th>
+                                <th>Total Hashrate</th>
                                 <th>Best Difficulty <i class="pi pi-question-circle ml-2"
                                         pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
                                 </th>
@@ -167,7 +167,7 @@
                             <tr>
                                 <th>Device</th>
                                 <th>Currently Working</th>
-                                <th>Total Hash Rate</th>
+                                <th>Total Hashrate</th>
                                 <th>Best Difficulty <i class="pi pi-question-circle ml-2"
                                         pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
                                 </th>

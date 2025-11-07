@@ -4,20 +4,19 @@
 
 FROM node:lts-bookworm-slim AS build
 
-# Upgrade all packages and install dependencies
-RUN apt-get update \
-    && apt-get upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        python3 \
-        build-essential \
-    && apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 WORKDIR /build
+
+COPY package*.json ./
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3 build-essential && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    npm install
 
 COPY . .
 
-# Build Public Pool UI using NPM
-RUN npm i && npm run build
+ENV NODE_ENV=production
+RUN npm run build
 
 ############################
 # Docker final environment #
@@ -32,4 +31,4 @@ COPY --from=build /build/dist/public-pool-ui .
 COPY docker/Caddyfile.tpl /etc/Caddyfile.tpl
 COPY docker/entrypoint.sh /entrypoint.sh
 
-CMD ["/bin/sh", "/entrypoint.sh"]
+CMD ["sh", "-c", "/entrypoint.sh"]

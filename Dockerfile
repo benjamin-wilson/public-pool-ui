@@ -4,20 +4,19 @@
 
 FROM node:lts-bookworm-slim AS build
 
-# Upgrade all packages and install dependencies
-RUN apt-get update \
-    && apt-get upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        python3 \
-        build-essential \
-    && apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  python3 && \
+  apt clean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /build
 
 COPY . .
 
 # Build Public Pool UI using NPM
-RUN npm i && npm run build
+RUN npm ci && npm run build
 
 ############################
 # Docker final environment #

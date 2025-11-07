@@ -1,13 +1,11 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { combineLatest, map, Observable, shareReplay } from 'rxjs';
-
-import { environment } from '../../../environments/environment';
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
+import { EnvService } from 'src/app/services/env.service';
 import { bitcoinAddressValidator } from '../../validators/bitcoin-address.validator';
 import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe';
-
 
 @Component({
   selector: 'app-splash',
@@ -30,17 +28,16 @@ export class SplashComponent {
 
   private info$: Observable<any>;
 
-  private networkInfo:any;
+  private networkInfo: any;
 
-  constructor(private appService: AppService, private cdr: ChangeDetectorRef) {
+  constructor(
+    private appService: AppService,
+    private envService: EnvService,
+  ) {
 
     this.info$ = this.appService.getInfo().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
-    if (environment.STRATUM_URL.length > 1) {
-      this.stratumURL = environment.STRATUM_URL;
-    } else {
-      this.stratumURL = window.location.hostname + ':3333';
-    }
+    this.stratumURL = this.envService.stratumUrl;
 
     this.blockData$ = this.info$.pipe(map(info => info.blockData));
     this.userAgents$ = this.info$.pipe(map(info => info.userAgents));
@@ -107,7 +104,7 @@ export class SplashComponent {
           ticks: {
             color: textColorSecondary,
             callback: (value: number) => {
-                return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
+              return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
             }
           },
           grid: {

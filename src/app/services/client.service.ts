@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import { environment } from '../../environments/environment';
+import { EnvService } from './env.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +9,14 @@ import { environment } from '../../environments/environment';
 export class ClientService {
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private envService: EnvService,
   ) { }
 
   public getClientInfo(address: string) {
-    return this.httpClient.get(`${environment.API_URL}/api/client/${address}`);
+    return this.httpClient.get(`${this.envService.apiUrl}/api/client/${address}`);
   }
   public getClientInfoChart(address: string) {
-    return this.httpClient.get(`${environment.API_URL}/api/client/${address}/chart`) as Observable<any[]>;
+    return this.httpClient.get(`${this.envService.apiUrl}/api/client/${address}/chart`) as Observable<any[]>;
   }
 }

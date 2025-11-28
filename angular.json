@@ -36,10 +36,7 @@
               "includePaths": [
                 "src/styles"
               ]
-            },
-            "scripts": [
-              "node_modules/chart.js/dist/chart.js"
-            ]
+            }
           },
           "configurations": {
             "electron": {

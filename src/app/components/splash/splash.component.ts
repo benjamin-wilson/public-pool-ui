@@ -27,10 +27,11 @@ export class SplashComponent {
   public chartOptions: any;
 
   public stratumURL = '';
+  public secureStratumURL = '';
 
   private info$: Observable<any>;
 
-  private networkInfo:any;
+  private networkInfo: any;
 
   constructor(private appService: AppService, private cdr: ChangeDetectorRef) {
 
@@ -40,6 +41,12 @@ export class SplashComponent {
       this.stratumURL = environment.STRATUM_URL;
     } else {
       this.stratumURL = window.location.hostname + ':3333';
+    }
+
+    if (environment.SECURE_STRATUM_URL.length > 1) {
+      this.secureStratumURL = environment.SECURE_STRATUM_URL;
+    } else {
+      this.secureStratumURL = window.location.hostname + ':4333';
     }
 
     this.blockData$ = this.info$.pipe(map(info => info.blockData));
@@ -107,7 +114,7 @@ export class SplashComponent {
           ticks: {
             color: textColorSecondary,
             callback: (value: number) => {
-                return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
+              return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
             }
           },
           grid: {

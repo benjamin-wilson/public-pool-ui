@@ -22,6 +22,7 @@ export class SplashComponent {
   public blockData$: Observable<any>;
   public userAgents$: Observable<any>;
   public highScores$: Observable<any>;
+  public externalHighScores$: Observable<any>;
   public uptime$: Observable<string>;
 
   public chartOptions: any;
@@ -35,6 +36,7 @@ export class SplashComponent {
   constructor(private appService: AppService, private cdr: ChangeDetectorRef) {
 
     this.info$ = this.appService.getInfo().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+    this.externalHighScores$ = this.appService.getExternalHighScores().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
     if (environment.STRATUM_URL.length > 1) {
       this.stratumURL = environment.STRATUM_URL;

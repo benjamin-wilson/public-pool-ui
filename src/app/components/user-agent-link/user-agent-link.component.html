@@ -91,5 +91,10 @@
             <i class="pi pi-star-fill"></i>
         </a>
     </ng-container>
+    <ng-container *ngSwitchCase="'bitforge'">
+        <a (click)="cancelClick($event)" href="https://github.com/wantclue/forge-os/" target="_blank">BitForge
+            <i class="pi pi-star-fill"></i>
+        </a>
+    </ng-container>
     <ng-container *ngSwitchDefault>{{userAgent | slice:0:12}}</ng-container>
 </ng-container>

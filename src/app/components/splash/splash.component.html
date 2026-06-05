@@ -34,6 +34,16 @@
                         <code>stratum+tcp://{{stratumURL}}</code>
                         <br>
                         <code>username: &lt;your BTC address&gt;.&lt;worker name&gt;, password: x</code>
+                        <ng-container *ngIf="sv2$ | async as sv2">
+                            <ng-container *ngIf="sv2?.poolAuthorityPublicKey">
+                                <br>
+                                <code class="sv2-authority-key">SV2 Pool Authority Public Key: {{sv2.poolAuthorityPublicKey}}</code>
+                                <ng-container *ngIf="sv2.authorityKeyConfigured === false">
+                                    <br>
+                                    <small class="text-orange-300">Set SV2_AUTHORITY_PRIVKEY for a stable production key.</small>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
                     </div>
                     <span><b>NO FEES</b></span>
                     <br>

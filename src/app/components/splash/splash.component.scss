@@ -36,7 +36,7 @@
         padding: 1rem;
         text-align: center;
     }
-    
+
     .info code {
         max-width: 90%;
         margin: 0 auto;
@@ -49,7 +49,7 @@
         font-size: large;
         padding: 0.5rem;
     }
-    
+
     .info code {
         white-space: pre-wrap;
         word-wrap: break-word;
@@ -63,6 +63,13 @@
         font-size: medium;
         padding: 0.25rem;
     }
+}
+
+.sv2-authority-key {
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .card {

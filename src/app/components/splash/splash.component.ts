@@ -23,6 +23,7 @@ export class SplashComponent {
   public userAgents$: Observable<any>;
   public highScores$: Observable<any>;
   public uptime$: Observable<string>;
+  public sv2$: Observable<any>;
 
   public chartOptions: any;
 
@@ -45,6 +46,7 @@ export class SplashComponent {
     this.blockData$ = this.info$.pipe(map(info => info.blockData));
     this.userAgents$ = this.info$.pipe(map(info => info.userAgents));
     this.highScores$ = this.info$.pipe(map(info => info.highScores));
+    this.sv2$ = this.info$.pipe(map(info => info.sv2));
     this.uptime$ = this.info$.pipe(map(info => info.uptime))
 
     this.chartData$ = combineLatest([this.appService.getInfoChart(), this.appService.getNetworkInfo()]).pipe(

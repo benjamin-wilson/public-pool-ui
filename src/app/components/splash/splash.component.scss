@@ -40,6 +40,7 @@
     .info code {
         max-width: 90%;
         margin: 0 auto;
+        white-space: pre-wrap;
     }
 }
 
@@ -70,6 +71,7 @@
     max-width: 100%;
     overflow-wrap: anywhere;
     word-break: break-word;
+    font-size: small;
 }
 
 .card {

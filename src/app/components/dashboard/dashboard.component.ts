@@ -1,13 +1,11 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Table } from 'primeng/table';
-import { combineLatest, map, Observable, shareReplay } from 'rxjs';
+import { map, Observable, shareReplay, switchMap, timer, distinctUntilChanged, forkJoin } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
 import { ClientService } from '../../services/client.service';
-import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe';
-
 
 
 @Component({
@@ -15,57 +13,58 @@ import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements AfterViewInit {
-
-  public address: string;
-
+export class DashboardComponent {
   public clientInfo$: Observable<any>;
   public chartData$: Observable<any>;
+  public networkInfo$: Observable<any>;
+  public expandedRows$: Observable<any>;
 
   public chartOptions: any;
 
-  public networkInfo$: Observable<any>;
-  private networkInfo:any;
-
   @ViewChild('dataTable') dataTable!: Table;
-
-  public expandedRows$: Observable<any>;
-
-
 
   constructor(
     private clientService: ClientService,
     private route: ActivatedRoute,
     private appService: AppService
   ) {
+    const address = this.route.snapshot.params['address'];
+    const cssVars = this.getCssVars([
+      '--text-color',
+      '--primary-color',
+      '--text-color-secondary',
+      '--surface-border',
+      '--yellow-600'
+    ]);
 
-    this.networkInfo$ = this.appService.getNetworkInfo().pipe(
+    const combined$ = timer(0, 60_000).pipe(
+      switchMap(() =>
+        forkJoin({
+          networkInfo: this.appService.getNetworkInfo(),
+          clientInfo: this.clientService.getClientInfo(address)
+        })
+      ),
       shareReplay({ refCount: true, bufferSize: 1 })
     );
 
-    this.address = this.route.snapshot.params['address'];
-    this.clientInfo$ = this.clientService.getClientInfo(this.address).pipe(
-      shareReplay({ refCount: true, bufferSize: 1 })
+    this.networkInfo$ = combined$.pipe(
+      map(result => result.networkInfo),
+      distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
     );
 
-    this.expandedRows$ = this.clientInfo$.pipe(map((info: any) => {
+    this.clientInfo$ = combined$.pipe(
+      map(result => result.clientInfo),
+      distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
+    );
 
-      return info.workers.reduce((pre: any, cur: any) => { pre[cur.name] = true; return pre; }, {});
+    this.expandedRows$ = this.clientInfo$.pipe(map((info: any) =>
+      Object.fromEntries((info.workers ?? []).map((worker: any) => [worker.name, true]))
+    ));
 
-    }));
-
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-
-    this.chartData$ = combineLatest([this.clientService.getClientInfoChart(this.address),  this.networkInfo$]).pipe(
-      map(([chartData, networkInfo]) => {
-
-        this.networkInfo = networkInfo;
-        const GROUP_SIZE = 12; //6 = 1 hour
-
+    this.chartData$ = timer(0, 600_000).pipe(
+      switchMap(() => this.clientService.getClientInfoChart(address)),
+      map((chartData: any[]) => {
+        const GROUP_SIZE = 12; // 6 = 1 hour
 
         let hourlyData = [];
 
@@ -78,8 +77,7 @@ export class DashboardComponent implements AfterViewInit {
           hourlyData.push({ y: sum, x: chartData[i].label });
         }
 
-
-        const data = chartData.map((d: any) => { return { y: d.data, x: d.label } });
+        const data = chartData.map((d: any) => ({ y: d.data, x: d.label }));
 
         return {
           labels: chartData.map((d: any) => d.label),
@@ -89,8 +87,8 @@ export class DashboardComponent implements AfterViewInit {
               label: '2 Hour',
               data: hourlyData,
               fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--yellow-600'),
-              borderColor: documentStyle.getPropertyValue('--yellow-600'),
+              backgroundColor: cssVars['yellow600'],
+              borderColor: cssVars['yellow600'],
               tension: .4,
               pointRadius: 1,
               borderWidth: 1
@@ -100,26 +98,25 @@ export class DashboardComponent implements AfterViewInit {
               label: '10 Minute',
               data: data,
               fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--primary-color'),
-              borderColor: documentStyle.getPropertyValue('--primary-color'),
+              backgroundColor: cssVars['primaryColor'],
+              borderColor: cssVars['primaryColor'],
               tension: .4,
               pointRadius: 1,
               borderWidth: 1
-            },
-
+            }
           ]
-        }
-      })
+        };
+      }),
+      distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
+      shareReplay({ refCount: true, bufferSize: 1 })
     );
-
-
 
     this.chartOptions = {
       maintainAspectRatio: false,
       plugins: {
         legend: {
           labels: {
-            color: textColor
+            color: cssVars['textColor']
           }
         }
       },
@@ -130,23 +127,21 @@ export class DashboardComponent implements AfterViewInit {
             unit: 'hour', // Set the unit to 'minute'
           },
           ticks: {
-            color: textColorSecondary
+            color: cssVars['textColorSecondary']
           },
           grid: {
-            color: surfaceBorder,
+            color: cssVars['surfaceBorder'],
             drawBorder: false,
             display: true
           }
         },
         y: {
           ticks: {
-            color: textColorSecondary,
-            callback: (value: number) => {
-              return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
-            }
+            color: cssVars['textColorSecondary'],
+            callback: (value: number) => HashSuffixPipe.transform(value)
           },
           grid: {
-            color: surfaceBorder,
+            color: cssVars['surfaceBorder'],
             drawBorder: false
           }
         }
@@ -155,10 +150,14 @@ export class DashboardComponent implements AfterViewInit {
 
   }
 
+  private getCssVars(varNames: string[]): Record<string, string> {
+    const documentStyle = getComputedStyle(document.documentElement);
 
-
-  ngAfterViewInit() {
-
+    return varNames.reduce((vars, name) => {
+      const key = name.replace(/^--/, '').replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
+      vars[key] = documentStyle.getPropertyValue(name).trim();
+      return vars;
+    }, {} as Record<string, string>);
   }
 
   public getSessionCount(name: string, workers: any[]) {

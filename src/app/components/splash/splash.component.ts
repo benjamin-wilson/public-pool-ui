@@ -2,9 +2,9 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { combineLatest, map, Observable, shareReplay } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
+import { AppConfigService } from '../../services/app-config.service';
 import { bitcoinAddressValidator } from '../../validators/bitcoin-address.validator';
 import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe';
 
@@ -33,15 +33,11 @@ export class SplashComponent {
 
   private networkInfo:any;
 
-  constructor(private appService: AppService, private cdr: ChangeDetectorRef) {
+  constructor(private appService: AppService, private appConfig: AppConfigService, private cdr: ChangeDetectorRef) {
 
     this.info$ = this.appService.getInfo().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
-    if (environment.STRATUM_URL.length > 1) {
-      this.stratumURL = environment.STRATUM_URL;
-    } else {
-      this.stratumURL = window.location.hostname + ':3333';
-    }
+    this.stratumURL = this.appConfig.stratumUrl;
 
     this.blockData$ = this.info$.pipe(map(info => info.blockData));
     this.userAgents$ = this.info$.pipe(map(info => info.userAgents));

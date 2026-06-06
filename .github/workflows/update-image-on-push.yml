@@ -1,4 +1,4 @@
-name: "Update image when Dockerfile is changed"
+name: "Update image on push"
 
 on:
   push:
@@ -6,16 +6,19 @@ on:
     - master
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   rebuild-container:
-    name: "Rebuild Container with the latest base image"
+    name: "Build and push image"
     runs-on: ubuntu-latest
     steps:
       - 
         name: Prepare outputs
         id: prep
-        run: |
-          echo "::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+        run: echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
       - 
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3.0.0
@@ -32,12 +35,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - 
-        name: Login to DockerHub
-        uses: docker/login-action@v3.0.0 
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - 
         name: Checkout repository
         uses: actions/checkout@v4
       - 
@@ -45,7 +42,7 @@ jobs:
         id: get_short_sha
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - 
-        name: Build and push to Docker Hub and GitHub Packages Docker Registry
+        name: Build and push to GitHub Container Registry
         uses: docker/build-push-action@v5.1.0
         id: docker_build_push
         with:
@@ -54,11 +51,9 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/public-pool-ui:latest
             ghcr.io/${{ github.repository_owner }}/public-pool-ui:${{ steps.get_short_sha.outputs.sha_short }}
-            ${{ secrets.DOCKER_USERNAME }}/public-pool-ui:latest
-            ${{ secrets.DOCKER_USERNAME }}/public-pool-ui:${{ steps.get_short_sha.outputs.sha_short }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
-          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/public-pool-ui:latest
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/public-pool-ui:latest
           cache-to: type=inline

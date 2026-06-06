@@ -7,6 +7,10 @@ on:
     - cron: '22 14 * * 0'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   build:
     name: Build and scan images
@@ -21,12 +25,12 @@ jobs:
         with:
           push: false
           load: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/public-pool-ui:latest
+          tags: public-pool-ui:trivy
       - 
         name: Run Trivy vulnerability scanner against "latest" image
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '${{ secrets.DOCKER_USERNAME }}/public-pool-ui:latest'
+          image-ref: public-pool-ui:trivy
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'

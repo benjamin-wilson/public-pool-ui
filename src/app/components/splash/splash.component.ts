@@ -27,12 +27,15 @@ export class SplashComponent {
   public accounting$: Observable<any>;
 
   public chartOptions: any;
+  public copiedLabel: string | null = null;
 
   public stratumURL = '';
+  public secureStratumURL = '';
 
   private info$: Observable<any>;
 
-  private networkInfo:any;
+  private networkInfo: any;
+  private copiedTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private appService: AppService, private appConfig: AppConfigService, private cdr: ChangeDetectorRef) {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -45,6 +48,7 @@ export class SplashComponent {
     );
 
     this.stratumURL = this.appConfig.stratumUrl;
+    this.secureStratumURL = this.appConfig.secureStratumUrl;
 
     this.blockData$ = this.info$.pipe(map(info => info.blockData));
     this.userAgents$ = this.info$.pipe(map(info => info.userAgents));
@@ -58,6 +62,7 @@ export class SplashComponent {
     this.chartData$ = combineLatest([this.appService.getInfoChart(), this.appService.getNetworkInfo()]).pipe(
       map(([chartData, networkInfo]) => {
         this.networkInfo = networkInfo;
+        const primaryColor = documentStyle.getPropertyValue('--primary-color');
         return {
 
           labels: chartData.map((d: any) => d.label),
@@ -65,12 +70,13 @@ export class SplashComponent {
             {
               label: 'Public-Pool Hashrate',
               data: chartData.map((d: any) => this.toChartPoint(d)),
-              fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--primary-color'),
-              borderColor: documentStyle.getPropertyValue('--primary-color'),
+              fill: true,
+              backgroundColor: (context: any) => this.getChartGradient(context, primaryColor),
+              borderColor: primaryColor,
               tension: .4,
-              pointRadius: 1,
-              borderWidth: 1
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              borderWidth: 2
             }
           ]
         }
@@ -113,7 +119,7 @@ export class SplashComponent {
           ticks: {
             color: textColorSecondary,
             callback: (value: number) => {
-                return HashSuffixPipe.transform(value);
+              return HashSuffixPipe.transform(value);
             }
           },
           grid: {
@@ -157,5 +163,87 @@ export class SplashComponent {
     }
 
     return lines;
+  }
+
+  public getNetworkDifficultyProgress(accounting: any): number {
+    const percent = Number(accounting?.networkDifficultyPercent ?? 0);
+    if (!Number.isFinite(percent) || percent <= 0) {
+      return 0;
+    }
+    return Math.min(percent, 100);
+  }
+
+  public copyText(value: string, label: string) {
+    const complete = () => {
+      this.copiedLabel = label;
+      if (this.copiedTimeout != null) {
+        clearTimeout(this.copiedTimeout);
+      }
+      this.copiedTimeout = setTimeout(() => {
+        this.copiedLabel = null;
+        this.copiedTimeout = null;
+      }, 1500);
+    };
+
+    if (window.navigator?.clipboard != null) {
+      void window.navigator.clipboard.writeText(value).then(complete, () => this.copyTextFallback(value, complete));
+      return;
+    }
+
+    this.copyTextFallback(value, complete);
+  }
+
+  private copyTextFallback(value: string, complete: () => void) {
+    const input = document.createElement('textarea');
+    input.value = value;
+    input.setAttribute('readonly', 'true');
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    document.body.appendChild(input);
+    input.select();
+
+    try {
+      document.execCommand('copy');
+      complete();
+    } finally {
+      document.body.removeChild(input);
+    }
+  }
+
+  private getChartGradient(context: any, color: string) {
+    const chart = context.chart;
+    const chartArea = chart.chartArea;
+
+    if (chartArea == null) {
+      return this.toRgba(color, 0.2);
+    }
+
+    const gradient = chart.ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+    gradient.addColorStop(0, this.toRgba(color, 0.32));
+    gradient.addColorStop(0.65, this.toRgba(color, 0.09));
+    gradient.addColorStop(1, this.toRgba(color, 0));
+    return gradient;
+  }
+
+  private toRgba(color: string, alpha: number): string {
+    const trimmed = color.trim();
+    const hex = trimmed.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+    if (hex != null) {
+      const value = hex[1].length === 3
+        ? hex[1].split('').map(part => part + part).join('')
+        : hex[1];
+      const red = parseInt(value.slice(0, 2), 16);
+      const green = parseInt(value.slice(2, 4), 16);
+      const blue = parseInt(value.slice(4, 6), 16);
+      return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+    }
+
+    const rgb = trimmed.match(/^rgba?\(([^)]+)\)$/i);
+    if (rgb != null) {
+      const parts = rgb[1].split(',').map(part => part.trim()).slice(0, 3);
+      return `rgba(${parts.join(', ')}, ${alpha})`;
+    }
+
+    return trimmed || `rgba(99, 102, 241, ${alpha})`;
   }
 }

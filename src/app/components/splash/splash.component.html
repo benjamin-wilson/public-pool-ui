@@ -2,116 +2,143 @@
     <div class="grid justify-content-center">
 
         <div class="col-12">
-
-            <div class="card text-center">
-
-                <div>
-                    <img id="logo" style="height: 200px;" src="assets/layout/images/logo.svg" alt="logo">
-
-                </div>
-
-                <div class="col-12 text-center title">
-                    <h1 class="text-900 font-normal">Public Pool</h1>
-                </div>
-                <div class="mb-4">
-                    <a class="ml-4 mr-4" href="https://twitter.com/Public_Pool_BTC" target="_blank">
-                        <i class="pi pi-twitter" style="font-size: 30pt; color: white;"></i>
-                    </a>
-                    <a class="ml-4 mr-4" href="https://discord.gg/pF9smpe3yE" target="_blank">
-                        <i class="pi pi-discord" style="font-size: 30pt; color: white;"></i>
-                    </a>
-                    <a class="ml-4 mr-4" href="https://github.com/benjamin-wilson/public-pool" target="_blank">
-                        <i class="pi pi-github" style="font-size: 30pt; color: white;"></i>
-                    </a>
-
-                </div>
-
-                <div>
-                    <code>Fully Open Source Solo Bitcoin Mining Pool</code>
-                    <br>
-                    <br>
-                    <div class="info mb-2 p-4 border-dashed border-1 border-round">
-                        <code>stratum+tcp://{{stratumURL}}</code>
-                        <br>
-                        <code>username: &lt;your BTC address&gt;.&lt;worker name&gt;, password: x</code>
-                        <ng-container *ngIf="sv2$ | async as sv2">
-                            <ng-container *ngIf="sv2?.poolAuthorityPublicKey">
-                                <br>
-                                <code class="sv2-authority-key">SV2 Pool Authority Public Key: {{sv2.poolAuthorityPublicKey}}</code>
-                                <ng-container *ngIf="sv2.authorityKeyConfigured === false">
-                                    <br>
-                                    <small class="text-orange-300">Set SV2_AUTHORITY_PRIVKEY for a stable production key.</small>
-                                </ng-container>
-                            </ng-container>
-                        </ng-container>
+            <div class="card hero-card">
+                <div class="grid align-items-center">
+                    <div class="col-12 lg:col-5">
+                        <div class="hero-brand">
+                            <img class="hero-logo" src="assets/layout/images/logo.svg" alt="Public Pool logo">
+                            <div class="min-w-0">
+                                <h1 class="text-900 font-normal m-0">Public Pool</h1>
+                                <code>Fully Open Source Solo Bitcoin Mining Pool</code>
+                                <div class="hero-footer">
+                                    <span><b>NO FEES</b></span>
+                                    <span>No second best.</span>
+                                </div>
+                                <div class="hero-links">
+                                    <a href="https://twitter.com/Public_Pool_BTC" target="_blank">
+                                        <i class="pi pi-twitter"></i>
+                                    </a>
+                                    <a href="https://discord.gg/pF9smpe3yE" target="_blank">
+                                        <i class="pi pi-discord"></i>
+                                    </a>
+                                    <a href="https://github.com/benjamin-wilson/public-pool" target="_blank">
+                                        <i class="pi pi-github"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <span><b>NO FEES</b></span>
-                    <br>
-                    <span>No second best.</span>
-                </div>
-
-
-
-
-            </div>
-        </div>
-
-        <div class="col-12">
-            <div class="card">
-                <h4>Login</h4>
-                <div class="field text-center">
-
-                    <input [formControl]="address" placeholder="Address (bc1...)" pInputText id="address" type="text"
-                        class="p-inputtext p-component p-element">
-                    <button [disabled]="address.invalid" class="ml-3 mt-3" pButton label="My Workers"
-                        [routerLink]="['app',address.value]"></button>
+                    <div class="col-12 lg:col-7">
+                        <div class="connection-panel">
+                            <div class="connection-panel-header">
+                                <span>Connection</span>
+                                <small *ngIf="copiedLabel">{{copiedLabel}} copied</small>
+                            </div>
+                            <div class="connection-row">
+                                <span>Stratum V1</span>
+                                <code>stratum+tcp://{{stratumURL}}</code>
+                                <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
+                                    (click)="copyText('stratum+tcp://' + stratumURL, 'Stratum V1')" title="Copy Stratum V1 URL"></button>
+                            </div>
+                            <div class="connection-row">
+                                <span>Stratum V1 + TLS</span>
+                                <code>stratum+tls://{{secureStratumURL}}</code>
+                                <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
+                                    (click)="copyText('stratum+tls://' + secureStratumURL, 'Stratum V1 + TLS')" title="Copy Stratum V1 + TLS URL"></button>
+                            </div>
+                            <div class="connection-row">
+                                <span>Stratum V2</span>
+                                <code>stratum+tcp://{{stratumURL}}</code>
+                                <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
+                                    (click)="copyText('stratum+tcp://' + stratumURL, 'Stratum V2')" title="Copy Stratum V2 URL"></button>
+                            </div>
+                            <ng-container *ngIf="sv2$ | async as sv2">
+                                <div class="connection-row" *ngIf="sv2?.poolAuthorityPublicKey">
+                                    <span>SV2 Authority</span>
+                                    <code class="sv2-authority-key">{{sv2.poolAuthorityPublicKey}}</code>
+                                    <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
+                                        (click)="copyText(sv2.poolAuthorityPublicKey, 'SV2 authority')" title="Copy SV2 authority key"></button>
+                                </div>
+                                <small class="text-orange-300" *ngIf="sv2.authorityKeyConfigured === false">
+                                    Set SV2_AUTHORITY_PRIVKEY for a stable production key.
+                                </small>
+                            </ng-container>
+                            <div class="connection-row">
+                                <span>Username</span>
+                                <code>&lt;your BTC address&gt;.&lt;worker name&gt;</code>
+                                <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
+                                    (click)="copyText('<your BTC address>.<worker name>', 'Username')" title="Copy username format"></button>
+                            </div>
+                        </div>
+                        <div class="lookup-panel">
+                            <div class="lookup-heading">Worker Lookup</div>
+                            <div class="login-panel">
+                                <input [formControl]="address" placeholder="Address (bc1...)" pInputText id="address"
+                                    type="text" class="p-inputtext p-component p-element">
+                                <button [disabled]="address.invalid" pButton label="My Workers"
+                                    [routerLink]="['app',address.value]"></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-12" *ngIf="accounting$ | async as accounting">
-            <div class="accounting-card-grid">
-                <div class="card accounting-card">
-                    <div class="flex justify-content-between gap-3 mb-3">
-                        <div class="min-w-0">
-                            <span class="block text-500 font-medium mb-3">Accepted Shares</span>
-                            <div class="text-900 font-medium text-xl accounting-value">{{accounting.totalAcceptedShares | numberSuffix}}</div>
-                        </div>
-                        <div class="flex align-items-center justify-content-center bg-green-100 border-round"
-                            [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                            <i class="pi pi-check text-green-500 text-xl"></i>
-                        </div>
+            <div class="card round-card">
+                <div class="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-2 mb-4">
+                    <div>
+                        <h4 class="m-0">Current Round</h4>
+                        <span class="text-500">Shares and best diff since the last pool block.</span>
                     </div>
-                    <span class="text-green-500 font-medium">{{accounting.acceptedSharesLast10Minutes | numberSuffix}}</span>
-                    <span class="text-500"> in the last 10m</span>
+                    <div class="round-progress-summary">
+                        <span class="text-green-500 font-medium">{{(accounting.networkDifficultyPercent || 0) |
+                            number:'1.0-3'}}%</span>
+                        <span class="text-500"> of Network Diff</span>
+                    </div>
                 </div>
-                <div class="card accounting-card">
-                    <div class="flex justify-content-between gap-3 mb-3">
-                        <div class="min-w-0">
-                            <span class="block text-500 font-medium mb-3">Credited Difficulty</span>
-                            <div class="text-900 font-medium text-xl accounting-value">{{accounting.totalCreditedDifficulty | numberSuffix}}</div>
-                        </div>
-                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
-                            [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                            <i class="pi pi-database text-blue-500 text-xl"></i>
-                        </div>
-                    </div>
-                    <span class="text-green-500 font-medium">{{accounting.creditedDifficultyLastHour | numberSuffix}}</span>
-                    <span class="text-500"> in the last hour</span>
+                <div class="round-progress" [attr.aria-valuenow]="getNetworkDifficultyProgress(accounting)"
+                    aria-valuemin="0" aria-valuemax="100">
+                    <div class="round-progress-fill"
+                        [ngStyle]="{width: getNetworkDifficultyProgress(accounting) + '%'}"></div>
                 </div>
-                <div class="card accounting-card">
-                    <div class="flex justify-content-between gap-3 mb-3">
-                        <div class="min-w-0">
-                            <span class="block text-500 font-medium mb-3">Best Submitted Share</span>
-                            <div class="text-900 font-medium text-xl accounting-value">{{accounting.bestSubmissionDifficulty | numberSuffix}}</div>
+                <div class="round-metric-grid">
+                    <div class="round-metric">
+                        <div class="round-metric-copy">
+                            <span>Accepted Shares</span>
+                            <strong>{{accounting.totalAcceptedShares | numberSuffix}}</strong>
                         </div>
-                        <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
-                            [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                            <i class="pi pi-star text-orange-500 text-xl"></i>
-                        </div>
+                        <i class="pi pi-check text-green-500"></i>
+                        <small><span class="text-green-500 font-medium">{{accounting.acceptedSharesLast10Minutes |
+                                numberSuffix}}</span> in the last 10m</small>
                     </div>
-                    <span class="text-green-500 font-medium" *ngIf="accounting.latestShareAt">{{accounting.latestShareAt | dateAgo:true}}</span>
-                    <span class="text-500" *ngIf="!accounting.latestShareAt">No shares yet</span>
+                    <div class="round-metric">
+                        <div class="round-metric-copy">
+                            <span>Accumulated Work</span>
+                            <strong>{{accounting.totalCreditedDifficulty | numberSuffix}}</strong>
+                        </div>
+                        <i class="pi pi-database text-blue-500"></i>
+                        <small><span class="text-green-500 font-medium">{{accounting.creditedDifficultyLastHour |
+                                numberSuffix}}</span> in the last hour</small>
+                    </div>
+                    <div class="round-metric">
+                        <div class="round-metric-copy">
+                            <span>Shares Since Last Block</span>
+                            <strong>{{accounting.workSinceLastBlock | numberSuffix}}</strong>
+                        </div>
+                        <i class="pi pi-percentage text-purple-500"></i>
+                        <small>{{(accounting.currentRoundAcceptedShares || 0) | number}} accepted round shares</small>
+                    </div>
+                    <div class="round-metric">
+                        <div class="round-metric-copy">
+                            <span>Best Share</span>
+                            <strong>{{accounting.bestSubmissionDifficulty | numberSuffix}}</strong>
+                        </div>
+                        <i class="pi pi-star text-orange-500"></i>
+                        <small *ngIf="accounting.bestSubmissionDifficultyAt">{{accounting.bestSubmissionDifficultyAt
+                            | dateAgo:true}}</small>
+                        <small *ngIf="!accounting.bestSubmissionDifficultyAt">No shares since last block</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -119,10 +146,30 @@
         <div class="col-12">
             <div class="card chart">
 
-                <div class="text-center mb-2">Uptime: {{uptime$ | async | dateAgo}}</div>
+                <div class="chart-header" *ngIf="accounting$ | async as accounting">
+                    <div>
+                        <h4 class="m-0">Pool Hashrate</h4>
+                        <span class="text-500">Uptime: {{uptime$ | async | dateAgo}}</span>
+                    </div>
+                    <div class="chart-stat-grid">
+                        <div>
+                            <span>10m</span>
+                            <strong>{{accounting.hashRateLast10Minutes | hashSuffix}}</strong>
+                        </div>
+                        <div>
+                            <span>1h</span>
+                            <strong>{{accounting.hashRateLastHour | hashSuffix}}</strong>
+                        </div>
+                        <div>
+                            <span>Latest Share</span>
+                            <strong *ngIf="accounting.latestShareAt">{{accounting.latestShareAt | dateAgo:true}}</strong>
+                            <strong *ngIf="!accounting.latestShareAt">None</strong>
+                        </div>
+                    </div>
+                </div>
 
                 <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">
-                    
+
                     <p-chart [responsive]="true" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
 
                 </ng-container>
@@ -137,24 +184,23 @@
             <div class="card">
                 <h4 style="text-align: center;">Online Devices</h4>
                 <ng-container *ngIf="userAgents$ | async as userAgents">
-                    <p-table [value]="userAgents">
+                    <p-table [value]="userAgents" styleClass="compact-table">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>Device</th>
-                                <th>Currently Working</th>
-                                <th>Total Hash Rate</th>
-                                <th>Best Difficulty <i class="pi pi-question-circle ml-2"
+                                <th class="numeric-cell">Working</th>
+                                <th class="numeric-cell">Hashrate</th>
+                                <th class="numeric-cell">Best Difficulty <i class="pi pi-question-circle ml-2"
                                         pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
                                 </th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-userAgent>
-                            <tr></tr>
                             <tr>
                                 <td><app-user-agent-link [userAgent]="userAgent.userAgent"></app-user-agent-link></td>
-                                <td>{{ userAgent.count }}</td>
-                                <td>{{ userAgent.totalHashRate | hashSuffix }}</td>
-                                <td>{{ userAgent.bestDifficulty | numberSuffix}}</td>
+                                <td class="numeric-cell">{{ userAgent.count }}</td>
+                                <td class="numeric-cell">{{ userAgent.totalHashRate | hashSuffix }}</td>
+                                <td class="numeric-cell">{{ userAgent.bestDifficulty | numberSuffix}}</td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -163,19 +209,18 @@
                     </div>
                 </ng-container>
                 <ng-template #loadingTable>
-                    <p-table [value]="[{},{},{}]">
+                    <p-table [value]="[{},{},{}]" styleClass="compact-table">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>Device</th>
-                                <th>Currently Working</th>
-                                <th>Total Hash Rate</th>
-                                <th>Best Difficulty <i class="pi pi-question-circle ml-2"
+                                <th class="numeric-cell">Working</th>
+                                <th class="numeric-cell">Hashrate</th>
+                                <th class="numeric-cell">Best Difficulty <i class="pi pi-question-circle ml-2"
                                         pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
                                 </th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-row>
-                            <tr></tr>
                             <tr>
                                 <td><p-skeleton></p-skeleton></td>
                                 <td><p-skeleton></p-skeleton></td>
@@ -188,29 +233,70 @@
             </div>
         </div>
 
+        <div class="col-12">
+            <div class="card">
+                <h4 style="text-align: center;">Affiliate Program</h4>
+                <p>Purchase products through the affiliate links below to enjoy discounts on mining hardware. Affiliate
+                    earnings are used for pool hosting costs and allow 0% fees. Your support is appreciated.</p>
+
+
+                <div class="grid" style="padding-top: 20px;">
+                    <div class="col-12 md:col-4">
+                        <a href="https://www.solosatoshi.com/aff/7/" target="_blank">
+                            <div class="text-center">
+                                <h4 class="text-center"> Solo Satoshi (USA)</h4>
+                                <img id="solosatoshi" style="height: 200px;  width: 200px; object-fit: contain;"
+                                    src="assets/layout/images/solo-logo.webp" alt="solosatoshi">
+                                <h5>Discount Code (6.5%): <code>RealPleb </code></h5>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <a href="https://www.thesolomining.co/" target="_blank">
+                            <div class="text-center">
+                                <h4 class="text-center"> The Solo Mining Co (UK)</h4>
+                                <img id="soloco" style="height: 200px;  width: 200px; object-fit: cover;"
+                                    src="assets/layout/images/soloco.png" alt="soloco">
+                                <h5>Discount Code: <code>solo</code></h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <a href="https://miningwholesale.eu/?wpam_id=143" target="_blank">
+                            <div class="text-center">
+                                <h4 class="text-center"> Mining Wholesale (EU)</h4>
+                                <img id="GoBrrr" style="height: 200px;  width: 200px; object-fit: contain;"
+                                    src="assets/layout/images/mining-wholesale.png" alt="GoBrrr">
+
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="col-12" *ngIf="highScores$ | async as highScores">
             <div class="card">
                 <h4 style="text-align: center;">High Scores</h4>
                 <ng-container>
-                    <p-table [value]="highScores">
+                    <p-table [value]="highScores" styleClass="compact-table">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>Rank</th>
-                                <th>Difficulty</th>
+                                <th class="numeric-cell">Rank</th>
+                                <th class="numeric-cell">Difficulty</th>
                                 <th>Device</th>
-                                <th>When</th>
+                                <th class="numeric-cell">When</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-highScore let-i="rowIndex">
-                            <tr></tr>
                             <tr>
-                                <td>#{{i+1}}</td>
-                                <td>{{ highScore.bestDifficulty | numberSuffix }}</td>
+                                <td class="numeric-cell">#{{i+1}}</td>
+                                <td class="numeric-cell">{{ highScore.bestDifficulty | numberSuffix }}</td>
                                 <td><app-user-agent-link
                                         [userAgent]="highScore.bestDifficultyUserAgent ? highScore.bestDifficultyUserAgent : 'unknown'"></app-user-agent-link>
                                 </td>
-                                <td>{{ highScore.updatedAt | dateAgo:true}}</td>
+                                <td class="numeric-cell">{{ highScore.updatedAt | dateAgo:true}}</td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -219,19 +305,18 @@
                     </div>
                 </ng-container>
                 <ng-template #loadingTable>
-                    <p-table [value]="[{},{},{}]">
+                    <p-table [value]="[{},{},{}]" styleClass="compact-table">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>Device</th>
-                                <th>Currently Working</th>
-                                <th>Total Hash Rate</th>
-                                <th>Best Difficulty <i class="pi pi-question-circle ml-2"
+                                <th class="numeric-cell">Working</th>
+                                <th class="numeric-cell">Hashrate</th>
+                                <th class="numeric-cell">Best Difficulty <i class="pi pi-question-circle ml-2"
                                         pTooltip="If you find a solution with a difficulty higher than the network difficulty, you've found a block."></i>
                                 </th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-row>
-                            <tr></tr>
                             <tr>
                                 <td><p-skeleton></p-skeleton></td>
                                 <td><p-skeleton></p-skeleton></td>
@@ -250,10 +335,10 @@
         <div class="col-12" *ngIf="blockData$ | async as blockData">
             <div class="card">
                 <h4 style="text-align: center;"> Found Blocks</h4>
-                <p-table [value]="blockData">
+                <p-table [value]="blockData" styleClass="compact-table">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>Height</th>
+                            <th class="numeric-cell">Height</th>
                             <th>Address</th>
                             <th>Worker</th>
                             <th>Session</th>
@@ -261,7 +346,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-block>
                         <tr>
-                            <td>{{ block.height }}</td>
+                            <td class="numeric-cell">{{ block.height }}</td>
                             <td>{{ block.minerAddress }}</td>
                             <td>{{ block.worker }}</td>
                             <td>{{ block.sessionId }}</td>

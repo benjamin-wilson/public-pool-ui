@@ -1,73 +1,12 @@
 #address {
-    min-width: 50%;
-}
-
-#logo {
-    left: 50%;
-    margin-left: -100px;
-    height: 200px;
-    width: 200px;
-    position: absolute;
-    top: -18px;
-}
-
-.title {
-    margin-top: 55px;
+    min-width: 0;
 }
 
 .main {
-    margin-top: 60px;
-}
-
-.info {
-    font-weight: bold;
-    font-size: x-large;
-}
-
-.info code {
-    display: inline-block;
-    white-space: nowrap;
-    font-size: inherit;
-}
-
-/* Desktop styles */
-@media screen and (min-width: 769px) {
-    .info {
-        padding: 1rem;
-        text-align: center;
-    }
-
-    .info code {
-        max-width: 90%;
-        margin: 0 auto;
-    }
-}
-
-/* Tablet and mobile styles */
-@media screen and (max-width: 768px) {
-    .info {
-        font-size: large;
-        padding: 0.5rem;
-    }
-
-    .info code {
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        font-size: 0.9em;
-    }
-}
-
-/* Very small screens */
-@media screen and (max-width: 480px) {
-    .info {
-        font-size: medium;
-        padding: 0.25rem;
-    }
+    margin-top: 1rem;
 }
 
 .sv2-authority-key {
-    display: inline-block;
-    max-width: 100%;
     overflow-wrap: anywhere;
     word-break: break-word;
 }
@@ -75,34 +14,275 @@
 .card {
     max-width: 1024px;
     margin: 0 auto;
-
-
 }
 
-.accounting-card-grid {
+.hero-card {
+    padding: 2rem;
+}
+
+.hero-brand {
+    align-items: center;
+    display: flex;
+    gap: 1.25rem;
+}
+
+.hero-logo {
+    flex: 0 0 auto;
+    height: 112px;
+    width: 112px;
+}
+
+.hero-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.hero-links a {
+    align-items: center;
+    color: var(--text-color);
+    display: inline-flex;
+    font-size: 1.75rem;
+    justify-content: center;
+    opacity: 0.85;
+}
+
+.hero-links a:hover {
+    opacity: 1;
+}
+
+.connection-panel {
+    border: 1px solid var(--surface-border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.connection-panel-header {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    display: flex;
+    justify-content: space-between;
+    padding: 0.55rem 0.75rem;
+}
+
+.connection-panel-header span {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.connection-panel-header small {
+    color: var(--primary-color);
+}
+
+.connection-row {
+    align-items: center;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 7.5rem minmax(0, 1fr) 2.5rem;
+    padding: 0.65rem 0.75rem;
+}
+
+.connection-row + .connection-row {
+    border-top: 1px solid var(--surface-border);
+}
+
+.connection-row span {
+    color: var(--text-color-secondary);
+    font-size: 0.875rem;
+}
+
+.connection-row code {
+    overflow-wrap: anywhere;
+}
+
+.lookup-panel {
+    border: 1px solid var(--surface-border);
+    border-radius: 6px;
+    margin-top: 1rem;
+    padding: 0.75rem;
+}
+
+.lookup-heading {
+    color: var(--text-color-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.login-panel {
+    align-items: center;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.hero-footer {
+    color: var(--text-color-secondary);
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.round-card {
+    padding: 1.5rem;
+}
+
+.round-progress-summary {
+    white-space: nowrap;
+}
+
+.round-progress {
+    background: var(--surface-border);
+    border-radius: 999px;
+    height: 0.55rem;
+    overflow: hidden;
+    width: 100%;
+}
+
+.round-progress-fill {
+    background: var(--primary-color);
+    border-radius: inherit;
+    height: 100%;
+    transition: width 180ms ease;
+}
+
+.round-metric-grid {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin: 0 auto;
-    max-width: 1024px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 1.25rem;
 }
 
-.accounting-card {
-    height: 100%;
+.round-metric {
+    border: 1px solid var(--surface-border);
+    border-radius: 6px;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 1rem;
+}
+
+.round-metric-copy {
     min-width: 0;
-    width: 100%;
+}
+
+.round-metric-copy span,
+.chart-stat-grid span {
+    color: var(--text-color-secondary);
+    display: block;
+    font-size: 0.875rem;
+    margin-bottom: 0.35rem;
+}
+
+.round-metric-copy strong,
+.chart-stat-grid strong {
+    color: var(--text-color);
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.round-metric i {
+    align-items: center;
+    border-radius: 6px;
+    display: inline-flex;
+    font-size: 1.4rem;
+    height: 2.5rem;
+    justify-content: center;
+    width: 2.5rem;
+}
+
+.round-metric small {
+    color: var(--text-color-secondary);
+    grid-column: 1 / -1;
+}
+
+.chart-header {
+    align-items: flex-start;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.chart-stat-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    min-width: min(100%, 26rem);
+}
+
+.chart-stat-grid div {
+    border: 1px solid var(--surface-border);
+    border-radius: 6px;
+    padding: 0.75rem;
 }
 
 .accounting-value {
     overflow-wrap: anywhere;
 }
 
-@media screen and (max-width: 768px) {
-    .accounting-card-grid {
-        grid-template-columns: 1fr;
+.pi-star-fill {
+    color: gold;
+}
+
+:host ::ng-deep .compact-table .p-datatable-thead > tr > th,
+:host ::ng-deep .compact-table .p-datatable-tbody > tr > td {
+    padding: 0.55rem 0.75rem;
+}
+
+:host ::ng-deep .compact-table .p-datatable-thead > tr > th {
+    color: var(--text-color-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+:host ::ng-deep .compact-table .numeric-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 960px) {
+    .hero-card {
+        padding: 1.25rem;
+    }
+
+    .chart-header {
+        flex-direction: column;
+    }
+
+    .chart-stat-grid {
+        width: 100%;
     }
 }
 
-.pi-star-fill {
-    color: gold;
+@media screen and (max-width: 768px) {
+    .hero-brand {
+        align-items: flex-start;
+    }
+
+    .hero-logo {
+        height: 80px;
+        width: 80px;
+    }
+
+    .connection-row {
+        grid-template-columns: minmax(0, 1fr) 2.5rem;
+    }
+
+    .connection-row span {
+        grid-column: 1 / -1;
+    }
+
+    .login-panel,
+    .round-metric-grid,
+    .chart-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-footer {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
 }

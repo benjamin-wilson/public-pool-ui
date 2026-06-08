@@ -44,18 +44,20 @@ export class WorkerGroupComponent {
     this.chartData$ = combineLatest([this.workerInfo$, this.networkInfo$]).pipe(
       map(([workerInfo, networkInfo]) => {
         this.networkInfo = networkInfo;
+        const primaryColor = documentStyle.getPropertyValue('--primary-color');
         return {
           labels: workerInfo.chartData.map((d: any) => d.label),
           datasets: [
             {
               label: workerInfo.name,
               data: workerInfo.chartData.map((d: any) => this.toChartPoint(d)),
-              fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--primary-color'),
-              borderColor: documentStyle.getPropertyValue('--primary-color'),
+              fill: true,
+              backgroundColor: (context: any) => this.getChartGradient(context, primaryColor),
+              borderColor: primaryColor,
               tension: .4,
-              pointRadius: 1,
-              borderWidth: 1
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              borderWidth: 2
             }
           ]
         }
@@ -139,6 +141,43 @@ export class WorkerGroupComponent {
     }
 
     return lines;
+  }
+
+  private getChartGradient(context: any, color: string) {
+    const chart = context.chart;
+    const chartArea = chart.chartArea;
+
+    if (chartArea == null) {
+      return this.toRgba(color, 0.2);
+    }
+
+    const gradient = chart.ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+    gradient.addColorStop(0, this.toRgba(color, 0.32));
+    gradient.addColorStop(0.65, this.toRgba(color, 0.09));
+    gradient.addColorStop(1, this.toRgba(color, 0));
+    return gradient;
+  }
+
+  private toRgba(color: string, alpha: number): string {
+    const trimmed = color.trim();
+    const hex = trimmed.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+    if (hex != null) {
+      const value = hex[1].length === 3
+        ? hex[1].split('').map(part => part + part).join('')
+        : hex[1];
+      const red = parseInt(value.slice(0, 2), 16);
+      const green = parseInt(value.slice(2, 4), 16);
+      const blue = parseInt(value.slice(4, 6), 16);
+      return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+    }
+
+    const rgb = trimmed.match(/^rgba?\(([^)]+)\)$/i);
+    if (rgb != null) {
+      const parts = rgb[1].split(',').map(part => part.trim()).slice(0, 3);
+      return `rgba(${parts.join(', ')}, ${alpha})`;
+    }
+
+    return trimmed || `rgba(99, 102, 241, ${alpha})`;
   }
 
 }

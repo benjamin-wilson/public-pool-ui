@@ -23,4 +23,7 @@ export class AppService {
     public getInfoChart() {
         return this.httpClient.get(`${this.appConfig.apiUrl}/api/info/chart`) as Observable<any>;
     }
+    public getAccounting() {
+        return this.httpClient.get(`${this.appConfig.apiUrl}/api/info/accounting`) as Observable<any>;
+    }
 }

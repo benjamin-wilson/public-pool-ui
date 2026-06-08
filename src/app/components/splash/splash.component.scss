@@ -79,6 +79,30 @@
 
 }
 
+.accounting-card-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0 auto;
+    max-width: 1024px;
+}
+
+.accounting-card {
+    height: 100%;
+    min-width: 0;
+    width: 100%;
+}
+
+.accounting-value {
+    overflow-wrap: anywhere;
+}
+
+@media screen and (max-width: 768px) {
+    .accounting-card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .pi-star-fill {
     color: gold;
 }

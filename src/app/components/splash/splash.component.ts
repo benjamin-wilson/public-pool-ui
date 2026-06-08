@@ -24,6 +24,7 @@ export class SplashComponent {
   public highScores$: Observable<any>;
   public uptime$: Observable<string>;
   public sv2$: Observable<any>;
+  public accounting$: Observable<any>;
 
   public chartOptions: any;
 
@@ -34,8 +35,14 @@ export class SplashComponent {
   private networkInfo:any;
 
   constructor(private appService: AppService, private appConfig: AppConfigService, private cdr: ChangeDetectorRef) {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-    this.info$ = this.appService.getInfo().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+    this.info$ = this.appService.getInfo().pipe(
+      shareReplay({ refCount: true, bufferSize: 1 })
+    );
 
     this.stratumURL = this.appConfig.stratumUrl;
 
@@ -44,6 +51,9 @@ export class SplashComponent {
     this.highScores$ = this.info$.pipe(map(info => info.highScores));
     this.sv2$ = this.info$.pipe(map(info => info.sv2));
     this.uptime$ = this.info$.pipe(map(info => info.uptime))
+    this.accounting$ = this.appService.getAccounting().pipe(
+      shareReplay({ refCount: true, bufferSize: 1 })
+    );
 
     this.chartData$ = combineLatest([this.appService.getInfoChart(), this.appService.getNetworkInfo()]).pipe(
       map(([chartData, networkInfo]) => {
@@ -54,7 +64,7 @@ export class SplashComponent {
           datasets: [
             {
               label: 'Public-Pool Hashrate',
-              data: chartData.map((d: any) => d.data),
+              data: chartData.map((d: any) => this.toChartPoint(d)),
               fill: false,
               backgroundColor: documentStyle.getPropertyValue('--primary-color'),
               borderColor: documentStyle.getPropertyValue('--primary-color'),
@@ -69,20 +79,18 @@ export class SplashComponent {
 
     this.address = new FormControl(null, bitcoinAddressValidator());
 
-
-
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-
     this.chartOptions = {
       maintainAspectRatio: false,
       plugins: {
         legend: {
           labels: {
             color: textColor
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: (context: any) => this.getTooltipLabel(context),
+            afterLabel: (context: any) => this.getTooltipDetails(context)
           }
         }
       },
@@ -105,7 +113,7 @@ export class SplashComponent {
           ticks: {
             color: textColorSecondary,
             callback: (value: number) => {
-                return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
+                return HashSuffixPipe.transform(value);
             }
           },
           grid: {
@@ -117,5 +125,37 @@ export class SplashComponent {
       }
     };
 
+  }
+
+  private toChartPoint(point: any) {
+    return {
+      x: point.label,
+      y: Number(point.data),
+      acceptedCount: point.acceptedCount,
+      shares: point.shares
+    };
+  }
+
+  private getTooltipLabel(context: any) {
+    return `${context.dataset.label}: ${HashSuffixPipe.transform(context.parsed.y)}`;
+  }
+
+  private getTooltipDetails(context: any) {
+    const raw = context.raw || {};
+    const lines = [];
+
+    if (raw.acceptedCount !== undefined) {
+      lines.push(`Accepted shares: ${Number(raw.acceptedCount).toLocaleString()}`);
+    }
+
+    if (raw.shares !== undefined) {
+      lines.push(`Credited difficulty: ${Number(raw.shares).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
+    }
+
+    if (this.networkInfo?.difficulty && context.parsed.y > 0) {
+      lines.push(`Average time to block: ${AverageTimeToBlockPipe.transform(context.parsed.y, this.networkInfo.difficulty)}`);
+    }
+
+    return lines;
   }
 }

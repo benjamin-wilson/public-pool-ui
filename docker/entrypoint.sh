@@ -15,6 +15,11 @@ write_runtime_config() {
 
     if [ "${PUBLIC_POOL_STRATUM_URL+x}" ]; then
         config="${config}${separator}\"STRATUM_URL\":\"$(js_escape "$PUBLIC_POOL_STRATUM_URL")\""
+        separator=","
+    fi
+
+    if [ "${PUBLIC_POOL_SECURE_STRATUM_URL+x}" ]; then
+        config="${config}${separator}\"SECURE_STRATUM_URL\":\"$(js_escape "$PUBLIC_POOL_SECURE_STRATUM_URL")\""
     fi
 
     config="${config}}"

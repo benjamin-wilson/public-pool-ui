@@ -46,12 +46,7 @@ export class SplashComponent {
     );
 
     this.stratumURL = this.appConfig.stratumUrl;
-
-    if (environment.SECURE_STRATUM_URL.length > 1) {
-      this.secureStratumURL = environment.SECURE_STRATUM_URL;
-    } else {
-      this.secureStratumURL = window.location.hostname + ':4333';
-    }
+    this.secureStratumURL = this.appConfig.secureStratumUrl;
 
     this.blockData$ = this.info$.pipe(map(info => info.blockData));
     this.userAgents$ = this.info$.pipe(map(info => info.userAgents));

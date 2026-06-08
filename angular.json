@@ -27,6 +27,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
+              "src/_routes.json",
               "src/assets"
             ],
             "styles": [
@@ -145,6 +146,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
+              "src/_routes.json",
               "src/assets"
             ],
             "styles": [

@@ -13,6 +13,10 @@ export function onRequestGet(context) {
     config.STRATUM_URL = context.env.PUBLIC_POOL_STRATUM_URL;
   }
 
+  if (hasOwn(context.env, 'PUBLIC_POOL_SECURE_STRATUM_URL')) {
+    config.SECURE_STRATUM_URL = context.env.PUBLIC_POOL_SECURE_STRATUM_URL;
+  }
+
   return new Response(
     `window.__PUBLIC_POOL_CONFIG__ = ${JSON.stringify(config)};\n`,
     {

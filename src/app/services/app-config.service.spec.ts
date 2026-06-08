@@ -20,7 +20,8 @@ describe('AppConfigService', () => {
     const service = new AppConfigService();
 
     expect(service.apiUrl).toBe('http://localhost:3334');
-    expect(service.stratumUrl).toBe('public-pool.io:21496');
+    expect(service.stratumUrl).toBe('public-pool.io:3333');
+    expect(service.secureStratumUrl).toBe('public-pool.io:4333');
   });
 
   it('uses same-origin API requests when runtime API_URL is explicitly empty', () => {
@@ -41,6 +42,16 @@ describe('AppConfigService', () => {
     const service = new AppConfigService();
 
     expect(service.stratumUrl).toBe(`${window.location.hostname}:3333`);
+  });
+
+  it('uses the browser hostname when runtime SECURE_STRATUM_URL is explicitly empty', () => {
+    window.__PUBLIC_POOL_CONFIG__ = {
+      SECURE_STRATUM_URL: ''
+    };
+
+    const service = new AppConfigService();
+
+    expect(service.secureStratumUrl).toBe(`${window.location.hostname}:4333`);
   });
 
   it('normalizes a runtime API_URL with trailing slashes', () => {

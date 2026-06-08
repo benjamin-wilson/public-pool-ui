@@ -60,33 +60,41 @@ export class DashboardComponent implements AfterViewInit {
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
 
-    this.chartData$ = combineLatest([this.clientService.getClientInfoChart(this.address),  this.networkInfo$]).pipe(
+    this.chartData$ = combineLatest([
+      this.clientService.getClientInfoChart(this.address),
+      this.networkInfo$
+    ]).pipe(
       map(([chartData, networkInfo]) => {
 
         this.networkInfo = networkInfo;
-        const GROUP_SIZE = 12; //6 = 1 hour
+        const GROUP_SIZE = 6;
 
 
         let hourlyData = [];
 
-        for (let i = GROUP_SIZE; i < chartData.length; i += GROUP_SIZE) {
+        for (let i = GROUP_SIZE - 1; i < chartData.length; i += GROUP_SIZE) {
           let sum = 0;
+          let acceptedCount = 0;
+          let shares = 0;
           for (let j = GROUP_SIZE - 1; j >= 0; j--) {
-            sum += parseInt(chartData[i - j].data);
+            const point = chartData[i - j];
+            sum += Number(point.data);
+            acceptedCount += Number(point.acceptedCount ?? 0);
+            shares += Number(point.shares ?? 0);
           }
           sum = sum / GROUP_SIZE;
-          hourlyData.push({ y: sum, x: chartData[i].label });
+          hourlyData.push({ y: sum, x: chartData[i].label, acceptedCount, shares });
         }
 
 
-        const data = chartData.map((d: any) => { return { y: d.data, x: d.label } });
+        const data = chartData.map((d: any) => this.toChartPoint(d));
 
         return {
           labels: chartData.map((d: any) => d.label),
           datasets: [
             {
               type: 'line',
-              label: '2 Hour',
+              label: '1 Hour Average',
               data: hourlyData,
               fill: false,
               backgroundColor: documentStyle.getPropertyValue('--yellow-600'),
@@ -121,6 +129,12 @@ export class DashboardComponent implements AfterViewInit {
           labels: {
             color: textColor
           }
+        },
+        tooltip: {
+          callbacks: {
+            label: (context: any) => this.getTooltipLabel(context),
+            afterLabel: (context: any) => this.getTooltipDetails(context)
+          }
         }
       },
       scales: {
@@ -142,7 +156,7 @@ export class DashboardComponent implements AfterViewInit {
           ticks: {
             color: textColorSecondary,
             callback: (value: number) => {
-              return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
+              return HashSuffixPipe.transform(value);
             }
           },
           grid: {
@@ -193,5 +207,37 @@ export class DashboardComponent implements AfterViewInit {
       return pre += now - new Date(cur.startTime).getTime();
     }, 0);
     return new Date(now - sum);
+  }
+
+  private toChartPoint(point: any) {
+    return {
+      y: Number(point.data),
+      x: point.label,
+      acceptedCount: point.acceptedCount,
+      shares: point.shares
+    };
+  }
+
+  private getTooltipLabel(context: any) {
+    return `${context.dataset.label}: ${HashSuffixPipe.transform(context.parsed.y)}`;
+  }
+
+  private getTooltipDetails(context: any) {
+    const raw = context.raw || {};
+    const lines = [];
+
+    if (raw.acceptedCount !== undefined) {
+      lines.push(`Accepted shares: ${Number(raw.acceptedCount).toLocaleString()}`);
+    }
+
+    if (raw.shares !== undefined) {
+      lines.push(`Credited difficulty: ${Number(raw.shares).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
+    }
+
+    if (this.networkInfo?.difficulty && context.parsed.y > 0) {
+      lines.push(`Average time to block: ${AverageTimeToBlockPipe.transform(context.parsed.y, this.networkInfo.difficulty)}`);
+    }
+
+    return lines;
   }
 }

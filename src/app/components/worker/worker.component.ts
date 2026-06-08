@@ -52,7 +52,7 @@ export class WorkerComponent {
           datasets: [
             {
               label: workerInfo.name,
-              data: workerInfo.chartData.map((d: any) => d.data),
+              data: workerInfo.chartData.map((d: any) => this.toChartPoint(d)),
               fill: false,
               backgroundColor: documentStyle.getPropertyValue('--primary-color'),
               borderColor: documentStyle.getPropertyValue('--primary-color'),
@@ -74,6 +74,12 @@ export class WorkerComponent {
           labels: {
             color: textColor
           }
+        },
+        tooltip: {
+          callbacks: {
+            label: (context: any) => this.getTooltipLabel(context),
+            afterLabel: (context: any) => this.getTooltipDetails(context)
+          }
         }
       },
       scales: {
@@ -94,7 +100,7 @@ export class WorkerComponent {
           ticks: {
             color: textColorSecondary,
             callback: (value: number) => {
-              return HashSuffixPipe.transform(value) + " - " + AverageTimeToBlockPipe.transform(value, this.networkInfo.difficulty);
+              return HashSuffixPipe.transform(value);
             }
           },
           grid: {
@@ -107,5 +113,36 @@ export class WorkerComponent {
   }
 
 
+  private toChartPoint(point: any) {
+    return {
+      x: point.label,
+      y: Number(point.data),
+      acceptedCount: point.acceptedCount,
+      shares: point.shares
+    };
+  }
+
+  private getTooltipLabel(context: any) {
+    return `${context.dataset.label}: ${HashSuffixPipe.transform(context.parsed.y)}`;
+  }
+
+  private getTooltipDetails(context: any) {
+    const raw = context.raw || {};
+    const lines = [];
+
+    if (raw.acceptedCount !== undefined) {
+      lines.push(`Accepted shares: ${Number(raw.acceptedCount).toLocaleString()}`);
+    }
+
+    if (raw.shares !== undefined) {
+      lines.push(`Credited difficulty: ${Number(raw.shares).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
+    }
+
+    if (this.networkInfo?.difficulty && context.parsed.y > 0) {
+      lines.push(`Average time to block: ${AverageTimeToBlockPipe.transform(context.parsed.y, this.networkInfo.difficulty)}`);
+    }
+
+    return lines;
+  }
 
 }

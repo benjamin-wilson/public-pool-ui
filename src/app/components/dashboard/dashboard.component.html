@@ -107,6 +107,58 @@
             </div>
         </ng-container>
     </div>
+
+    <div class="grid" *ngIf="clientInfo$ | async as clientInfo">
+        <div class="col-12 lg:col-6 xl:col-3">
+            <div class="card mb-4">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Accepted Shares</span>
+                        <div class="text-900 font-medium text-xl">{{clientInfo.accounting?.totalAcceptedShares | number}}</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-green-100 border-round"
+                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                        <i class="pi pi-check text-green-500 text-xl"></i>
+                    </div>
+                </div>
+                <span class="text-green-500 font-medium">{{clientInfo.accounting?.acceptedSharesLast10Minutes | number}}</span>
+                <span class="text-500"> in the last 10m</span>
+            </div>
+        </div>
+        <div class="col-12 lg:col-6 xl:col-3">
+            <div class="card mb-4">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Credited Difficulty</span>
+                        <div class="text-900 font-medium text-xl">{{clientInfo.accounting?.totalCreditedDifficulty | numberSuffix}}</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
+                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                        <i class="pi pi-database text-blue-500 text-xl"></i>
+                    </div>
+                </div>
+                <span class="text-green-500 font-medium">{{clientInfo.accounting?.creditedDifficultyLastHour | numberSuffix}}</span>
+                <span class="text-500"> in the last hour</span>
+            </div>
+        </div>
+        <div class="col-12 lg:col-6 xl:col-3">
+            <div class="card mb-4">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Latest Share</span>
+                        <div class="text-900 font-medium text-xl" *ngIf="clientInfo.accounting?.latestShareAt">{{clientInfo.accounting.latestShareAt | dateAgo}} ago</div>
+                        <div class="text-900 font-medium text-xl" *ngIf="!clientInfo.accounting?.latestShareAt">None</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                        <i class="pi pi-clock text-cyan-500 text-xl"></i>
+                    </div>
+                </div>
+                <span class="text-green-500 font-medium">{{clientInfo.accounting?.bestSubmissionDifficulty | numberSuffix}}</span>
+                <span class="text-500"> best submitted share</span>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <ng-container *ngIf="clientInfo$ | async as clientInfo; else loadingTable">
             <p-table #dataTable [rowHover]="true" groupRowsBy="name" dataKey="name" rowGroupMode="subheader"

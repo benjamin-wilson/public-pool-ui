@@ -12,12 +12,14 @@
 }
 
 .compact-table .p-datatable-wrapper {
-    overflow-x: hidden;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-.compact-table table {
-    min-width: 0 !important;
-    table-layout: auto;
+.compact-table table,
+.compact-table .p-datatable-table {
+    min-width: max-content;
     width: 100%;
 }
 
@@ -35,57 +37,6 @@
 .compact-table .numeric-cell {
     text-align: right;
     white-space: nowrap;
-}
-
-@media screen and (max-width: 640px) {
-    .compact-table .p-datatable-thead {
-        display: none;
-    }
-
-    .compact-table .p-datatable-tbody > tr {
-        border: 1px solid var(--surface-border);
-        border-radius: 6px;
-        display: block;
-        margin-bottom: 0.75rem;
-        padding: 0.35rem 0.75rem;
-    }
-
-    .compact-table .p-datatable-tbody > tr > td {
-        align-items: start;
-        border: 0;
-        display: grid;
-        gap: 0.75rem;
-        grid-template-columns: minmax(6.5rem, 38%) minmax(0, 1fr);
-        min-width: 0;
-        overflow-wrap: anywhere;
-        padding: 0.45rem 0;
-        text-align: right;
-        white-space: normal;
-    }
-
-    .compact-table .p-datatable-tbody > tr > td:empty {
-        display: none;
-    }
-
-    .compact-table .p-datatable-tbody > tr > td::before {
-        color: var(--text-color-secondary);
-        content: attr(data-label);
-        font-size: 0.78rem;
-        font-weight: 600;
-        min-width: 0;
-        text-align: left;
-    }
-
-    .compact-table .numeric-cell {
-        text-align: right;
-        white-space: normal;
-    }
-
-    .compact-table .p-row-toggler {
-        height: 2rem;
-        margin-right: 0.25rem !important;
-        width: 2rem;
-    }
 }
 
 p-chart>div {

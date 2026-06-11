@@ -105,12 +105,13 @@
                 <div class="round-metric-grid">
                     <div class="round-metric">
                         <div class="round-metric-copy">
-                            <span>Accepted Shares</span>
-                            <strong>{{accounting.totalAcceptedShares | numberSuffix}}</strong>
+                            <span>Best Share</span>
+                            <strong>{{accounting.bestSubmissionDifficulty | numberSuffix}}</strong>
                         </div>
-                        <i class="pi pi-check text-green-500"></i>
-                        <small><span class="text-green-500 font-medium">{{accounting.acceptedSharesLast10Minutes |
-                                numberSuffix}}</span> in the last 10m</small>
+                        <i class="pi pi-star text-orange-500"></i>
+                        <small *ngIf="accounting.bestSubmissionDifficultyAt">{{accounting.bestSubmissionDifficultyAt
+                            | dateAgo:true}}</small>
+                        <small *ngIf="!accounting.bestSubmissionDifficultyAt">No shares since last block</small>
                     </div>
                     <div class="round-metric">
                         <div class="round-metric-copy">
@@ -123,21 +124,20 @@
                     </div>
                     <div class="round-metric">
                         <div class="round-metric-copy">
-                            <span>Shares Since Last Block</span>
-                            <strong>{{accounting.workSinceLastBlock | numberSuffix}}</strong>
+                            <span>Accepted Shares</span>
+                            <strong>{{accounting.totalAcceptedShares | numberSuffix}}</strong>
                         </div>
-                        <i class="pi pi-percentage text-purple-500"></i>
-                        <small>{{(accounting.currentRoundAcceptedShares || 0) | number}} accepted round shares</small>
+                        <i class="pi pi-check text-green-500"></i>
+                        <small><span class="text-green-500 font-medium">{{accounting.acceptedSharesLast10Minutes |
+                                numberSuffix}}</span> in the last 10m</small>
                     </div>
-                    <div class="round-metric">
+                    <div class="round-metric" *ngIf="networkInfo$ | async as networkInfo">
                         <div class="round-metric-copy">
-                            <span>Best Share</span>
-                            <strong>{{accounting.bestSubmissionDifficulty | numberSuffix}}</strong>
+                            <span>Avg Time to Block</span>
+                            <strong>{{accounting.hashRateLastHour | averageTimeToBlock:networkInfo.difficulty}}</strong>
                         </div>
-                        <i class="pi pi-star text-orange-500"></i>
-                        <small *ngIf="accounting.bestSubmissionDifficultyAt">{{accounting.bestSubmissionDifficultyAt
-                            | dateAgo:true}}</small>
-                        <small *ngIf="!accounting.bestSubmissionDifficultyAt">No shares since last block</small>
+                        <i class="pi pi-clock text-purple-500"></i>
+                        <small>At 1h pool hashrate</small>
                     </div>
                 </div>
             </div>
@@ -159,10 +159,6 @@
                         <div>
                             <span>1h</span>
                             <strong>{{accounting.hashRateLastHour | hashSuffix}}</strong>
-                        </div>
-                        <div *ngIf="networkInfo$ | async as networkInfo">
-                            <span>Avg Time to Block</span>
-                            <strong>{{accounting.hashRateLastHour | averageTimeToBlock:networkInfo.difficulty}}</strong>
                         </div>
                     </div>
                 </div>

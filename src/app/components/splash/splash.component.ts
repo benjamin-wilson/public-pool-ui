@@ -25,6 +25,7 @@ export class SplashComponent {
   public uptime$: Observable<string>;
   public sv2$: Observable<any>;
   public accounting$: Observable<any>;
+  public networkInfo$: Observable<any>;
 
   public chartOptions: any;
   public copiedLabel: string | null = null;
@@ -58,8 +59,11 @@ export class SplashComponent {
     this.accounting$ = this.appService.getAccounting().pipe(
       shareReplay({ refCount: true, bufferSize: 1 })
     );
+    this.networkInfo$ = this.appService.getNetworkInfo().pipe(
+      shareReplay({ refCount: true, bufferSize: 1 })
+    );
 
-    this.chartData$ = combineLatest([this.appService.getInfoChart(), this.appService.getNetworkInfo()]).pipe(
+    this.chartData$ = combineLatest([this.appService.getInfoChart(), this.networkInfo$]).pipe(
       map(([chartData, networkInfo]) => {
         this.networkInfo = networkInfo;
         const primaryColor = documentStyle.getPropertyValue('--primary-color');

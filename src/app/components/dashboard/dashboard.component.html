@@ -15,12 +15,6 @@
                         <span>Workers</span>
                         <strong>{{(clientInfo.workers?.length || 0) | number}}</strong>
                     </div>
-                    <div class="hero-stat">
-                        <span>Latest Share</span>
-                        <strong *ngIf="clientInfo.accounting?.latestShareAt">{{clientInfo.accounting.latestShareAt |
-                            dateAgo:true}}</strong>
-                        <strong *ngIf="!clientInfo.accounting?.latestShareAt">None</strong>
-                    </div>
                 </div>
             </div>
         </div>
@@ -73,7 +67,7 @@
                 </div>
                 <p-table #dataTable [rowHover]="true" groupRowsBy="name" dataKey="name" rowGroupMode="subheader"
                     [value]="clientInfo.workers" [expandedRowKeys]="expandedRows$ | async"
-                    [tableStyle]="{ 'min-width': '50rem' }" styleClass="compact-table">
+                    styleClass="compact-table">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Name</th>
@@ -87,15 +81,15 @@
 
                     <ng-template pTemplate="groupheader" let-worker let-rowIndex="rowIndex" let-expanded="expanded">
                         <tr [routerLink]="[worker.name]">
-                            <td>
+                            <td data-label="Name">
                                 <button (click)="$event.stopImmediatePropagation()" type="button" pButton pRipple
                                     [pRowToggler]="worker" class="p-button-text p-button-rounded p-button-plain mr-2"
                                     [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                                 <span class="worker-name font-bold ml-2">{{worker.name}}</span>
                             </td>
-                            <td class="numeric-cell">{{getSessionCount(worker.name, clientInfo.workers)}} Sessions</td>
-                            <td class="numeric-cell">{{getTotalHashRate(worker.name, clientInfo.workers) | hashSuffix}}</td>
-                            <td class="numeric-cell">{{getBestDifficulty(worker.name, clientInfo.workers) | numberSuffix}}</td>
+                            <td data-label="Sessions" class="numeric-cell">{{getSessionCount(worker.name, clientInfo.workers)}} Sessions</td>
+                            <td data-label="Hashrate" class="numeric-cell">{{getTotalHashRate(worker.name, clientInfo.workers) | hashSuffix}}</td>
+                            <td data-label="Best Share" class="numeric-cell">{{getBestDifficulty(worker.name, clientInfo.workers) | numberSuffix}}</td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -104,11 +98,11 @@
                     <ng-template pTemplate="rowexpansion" let-worker>
                         <tr [routerLink]="[worker.name, worker.sessionId]">
                             <td></td>
-                            <td class="numeric-cell">{{worker.sessionId}}</td>
-                            <td class="numeric-cell">{{worker.hashRate | hashSuffix}}</td>
-                            <td class="numeric-cell">{{worker.bestDifficulty | numberSuffix}}</td>
-                            <td class="numeric-cell">{{worker.startTime | dateAgo}}</td>
-                            <td class="numeric-cell">{{worker.lastSeen | dateAgo}}</td>
+                            <td data-label="Session ID" class="numeric-cell">{{worker.sessionId}}</td>
+                            <td data-label="Hashrate" class="numeric-cell">{{worker.hashRate | hashSuffix}}</td>
+                            <td data-label="Best Share" class="numeric-cell">{{worker.bestDifficulty | numberSuffix}}</td>
+                            <td data-label="Uptime" class="numeric-cell">{{worker.startTime | dateAgo}}</td>
+                            <td data-label="Last Seen" class="numeric-cell">{{worker.lastSeen | dateAgo}}</td>
                         </tr>
                     </ng-template>
                 </p-table>

@@ -26,10 +26,20 @@
     gap: 1.25rem;
 }
 
+.hero-brand > div {
+    min-width: 0;
+}
+
 .hero-logo {
     flex: 0 0 auto;
     height: 112px;
     width: 112px;
+}
+
+.hero-brand code {
+    display: block;
+    overflow-wrap: anywhere;
+    white-space: normal;
 }
 
 .hero-links {
@@ -227,22 +237,6 @@
     color: gold;
 }
 
-:host ::ng-deep .compact-table .p-datatable-thead > tr > th,
-:host ::ng-deep .compact-table .p-datatable-tbody > tr > td {
-    padding: 0.55rem 0.75rem;
-}
-
-:host ::ng-deep .compact-table .p-datatable-thead > tr > th {
-    color: var(--text-color-secondary);
-    font-size: 0.875rem;
-    font-weight: 600;
-}
-
-:host ::ng-deep .compact-table .numeric-cell {
-    text-align: right;
-    white-space: nowrap;
-}
-
 @media screen and (max-width: 960px) {
     .hero-card {
         padding: 1.25rem;
@@ -260,11 +254,18 @@
 @media screen and (max-width: 768px) {
     .hero-brand {
         align-items: flex-start;
+        flex-direction: column;
+        gap: 0.75rem;
     }
 
     .hero-logo {
-        height: 80px;
-        width: 80px;
+        height: 72px;
+        width: 72px;
+    }
+
+    .hero-brand h1 {
+        font-size: 2rem;
+        line-height: 1.1;
     }
 
     .connection-row {
@@ -285,4 +286,5 @@
         flex-direction: column;
         gap: 0.25rem;
     }
+
 }

@@ -129,22 +129,6 @@
     margin: 0 0 0.25rem;
 }
 
-:host ::ng-deep .compact-table .p-datatable-thead > tr > th,
-:host ::ng-deep .compact-table .p-datatable-tbody > tr > td {
-    padding: 0.55rem 0.75rem;
-}
-
-:host ::ng-deep .compact-table .p-datatable-thead > tr > th {
-    color: var(--text-color-secondary);
-    font-size: 0.875rem;
-    font-weight: 600;
-}
-
-:host ::ng-deep .compact-table .numeric-cell {
-    text-align: right;
-    white-space: nowrap;
-}
-
 @media screen and (max-width: 960px) {
     .page-header-card {
         align-items: stretch;
@@ -165,5 +149,10 @@
 
     .hero-stat strong {
         white-space: normal;
+    }
+
+    .worker-name {
+        line-height: 1.25;
+        margin-left: 0.25rem !important;
     }
 }

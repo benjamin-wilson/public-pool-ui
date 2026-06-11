@@ -46,7 +46,8 @@ import { AverageTimeToBlockPipe } from './pipes/average-time-to-block.pipe';
     AppLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    NgParticlesModule
+    NgParticlesModule,
+    AverageTimeToBlockPipe
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

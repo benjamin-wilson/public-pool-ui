@@ -14,12 +14,6 @@
                     <span>Uptime</span>
                     <strong>{{workerInfo.startTime | dateAgo}}</strong>
                 </div>
-                <div class="hero-stat">
-                    <span>Last Share</span>
-                    <strong *ngIf="workerInfo.accounting?.latestShareAt">{{workerInfo.accounting.latestShareAt |
-                        dateAgo:true}}</strong>
-                    <strong *ngIf="!workerInfo.accounting?.latestShareAt">None</strong>
-                </div>
             </div>
         </div>
     </div>
@@ -45,14 +39,6 @@
                     <span>Accepted Shares</span>
                     <strong>{{workerInfo.accounting?.totalAcceptedShares | numberSuffix}}</strong>
                     <small>{{workerInfo.accounting?.acceptedSharesLast10Minutes | numberSuffix}} last 10m</small>
-                </div>
-
-                <div class="snapshot-metric">
-                    <span>Latest Share</span>
-                    <strong *ngIf="workerInfo.accounting?.latestShareAt">{{workerInfo.accounting.latestShareAt |
-                        dateAgo:true}}</strong>
-                    <strong *ngIf="!workerInfo.accounting?.latestShareAt">None</strong>
-                    <small>Since {{workerInfo.startTime | date : 'short'}}</small>
                 </div>
 
                 <div class="snapshot-metric">

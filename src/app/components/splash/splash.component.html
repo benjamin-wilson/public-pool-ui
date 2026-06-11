@@ -160,10 +160,9 @@
                             <span>1h</span>
                             <strong>{{accounting.hashRateLastHour | hashSuffix}}</strong>
                         </div>
-                        <div>
-                            <span>Latest Share</span>
-                            <strong *ngIf="accounting.latestShareAt">{{accounting.latestShareAt | dateAgo:true}}</strong>
-                            <strong *ngIf="!accounting.latestShareAt">None</strong>
+                        <div *ngIf="networkInfo$ | async as networkInfo">
+                            <span>Avg Time to Block</span>
+                            <strong>{{accounting.hashRateLastHour | averageTimeToBlock:networkInfo.difficulty}}</strong>
                         </div>
                     </div>
                 </div>
@@ -197,10 +196,10 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-userAgent>
                             <tr>
-                                <td><app-user-agent-link [userAgent]="userAgent.userAgent"></app-user-agent-link></td>
-                                <td class="numeric-cell">{{ userAgent.count }}</td>
-                                <td class="numeric-cell">{{ userAgent.totalHashRate | hashSuffix }}</td>
-                                <td class="numeric-cell">{{ userAgent.bestDifficulty | numberSuffix}}</td>
+                                <td data-label="Device"><app-user-agent-link [userAgent]="userAgent.userAgent"></app-user-agent-link></td>
+                                <td data-label="Working" class="numeric-cell">{{ userAgent.count }}</td>
+                                <td data-label="Hashrate" class="numeric-cell">{{ userAgent.totalHashRate | hashSuffix }}</td>
+                                <td data-label="Best Difficulty" class="numeric-cell">{{ userAgent.bestDifficulty | numberSuffix}}</td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -222,10 +221,10 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-row>
                             <tr>
-                                <td><p-skeleton></p-skeleton></td>
-                                <td><p-skeleton></p-skeleton></td>
-                                <td><p-skeleton></p-skeleton></td>
-                                <td><p-skeleton></p-skeleton></td>
+                                <td data-label="Device"><p-skeleton></p-skeleton></td>
+                                <td data-label="Working"><p-skeleton></p-skeleton></td>
+                                <td data-label="Hashrate"><p-skeleton></p-skeleton></td>
+                                <td data-label="Best Difficulty"><p-skeleton></p-skeleton></td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -291,12 +290,12 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-highScore let-i="rowIndex">
                             <tr>
-                                <td class="numeric-cell">#{{i+1}}</td>
-                                <td class="numeric-cell">{{ highScore.bestDifficulty | numberSuffix }}</td>
-                                <td><app-user-agent-link
+                                <td data-label="Rank" class="numeric-cell">#{{i+1}}</td>
+                                <td data-label="Difficulty" class="numeric-cell">{{ highScore.bestDifficulty | numberSuffix }}</td>
+                                <td data-label="Device"><app-user-agent-link
                                         [userAgent]="highScore.bestDifficultyUserAgent ? highScore.bestDifficultyUserAgent : 'unknown'"></app-user-agent-link>
                                 </td>
-                                <td class="numeric-cell">{{ highScore.updatedAt | dateAgo:true}}</td>
+                                <td data-label="When" class="numeric-cell">{{ highScore.updatedAt | dateAgo:true}}</td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -318,10 +317,10 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-row>
                             <tr>
-                                <td><p-skeleton></p-skeleton></td>
-                                <td><p-skeleton></p-skeleton></td>
-                                <td><p-skeleton></p-skeleton></td>
-                                <td><p-skeleton></p-skeleton></td>
+                                <td data-label="Device"><p-skeleton></p-skeleton></td>
+                                <td data-label="Working"><p-skeleton></p-skeleton></td>
+                                <td data-label="Hashrate"><p-skeleton></p-skeleton></td>
+                                <td data-label="Best Difficulty"><p-skeleton></p-skeleton></td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -346,10 +345,10 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-block>
                         <tr>
-                            <td class="numeric-cell">{{ block.height }}</td>
-                            <td>{{ block.minerAddress }}</td>
-                            <td>{{ block.worker }}</td>
-                            <td>{{ block.sessionId }}</td>
+                            <td data-label="Height" class="numeric-cell">{{ block.height }}</td>
+                            <td data-label="Address">{{ block.minerAddress }}</td>
+                            <td data-label="Worker">{{ block.worker }}</td>
+                            <td data-label="Session">{{ block.sessionId }}</td>
                         </tr>
                     </ng-template>
                 </p-table>

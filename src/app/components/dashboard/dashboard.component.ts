@@ -65,6 +65,8 @@ export class DashboardComponent implements AfterViewInit {
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    const primaryColor = documentStyle.getPropertyValue('--primary-color');
+    const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
 
 
     this.chartData$ = combineLatest([
@@ -74,8 +76,6 @@ export class DashboardComponent implements AfterViewInit {
       map(([chartData, networkInfo]) => {
 
         this.networkInfo = networkInfo;
-        const primaryColor = documentStyle.getPropertyValue('--primary-color');
-        const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
         const datasets = this.toPayoutModeDatasets(chartData, {
           pplns: {
             label: 'PPLNS 10 Minute',
@@ -128,9 +128,15 @@ export class DashboardComponent implements AfterViewInit {
             display: true
           }
         },
-        y: {
+        yPplns: {
+          position: 'left',
+          title: {
+            display: true,
+            text: 'PPLNS',
+            color: primaryColor
+          },
           ticks: {
-            color: textColorSecondary,
+            color: primaryColor,
             callback: (value: number) => {
               return HashSuffixPipe.transform(value);
             }
@@ -138,7 +144,28 @@ export class DashboardComponent implements AfterViewInit {
           grid: {
             color: surfaceBorder,
             drawBorder: false
-          }
+          },
+          beginAtZero: true
+        },
+        ySolo: {
+          position: 'right',
+          title: {
+            display: true,
+            text: 'Solo',
+            color: soloColor
+          },
+          ticks: {
+            color: soloColor,
+            callback: (value: number) => {
+              return HashSuffixPipe.transform(value);
+            }
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+            drawOnChartArea: false
+          },
+          beginAtZero: true
         }
       }
     };
@@ -203,6 +230,7 @@ export class DashboardComponent implements AfterViewInit {
           type: 'line',
           label: config.label,
           data: rows.map((d: any) => this.toChartPoint(d)),
+          yAxisID: mode === 'solo' ? 'ySolo' : 'yPplns',
           fill: true,
           backgroundColor: config.backgroundColor,
           borderColor: config.borderColor,

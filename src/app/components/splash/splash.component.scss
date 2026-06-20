@@ -219,6 +219,23 @@
     color: gold;
 }
 
+.splash-footer {
+    color: var(--text-color-secondary);
+    margin: 0 auto;
+    max-width: 1024px;
+    padding: 0.5rem 0 1rem;
+    text-align: center;
+}
+
+.splash-footer a {
+    color: var(--text-color-secondary);
+    text-decoration: none;
+}
+
+.splash-footer a:hover {
+    color: var(--primary-color);
+}
+
 @media screen and (max-width: 960px) {
     .hero-card {
         padding: 1.25rem;

@@ -13,6 +13,7 @@
     "bundle-report": "ng build --configuration=production --source-map=true --named-chunks=true --stats-json && webpack-bundle-analyzer dist/public-pool-ui/stats.json"
   },
   "private": true,
+  "license": "AGPL-3.0-only",
   "dependencies": {
     "@angular/animations": "18.1.0",
     "@angular/common": "18.1.0",

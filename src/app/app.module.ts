@@ -13,6 +13,7 @@ import { BackgroundParticlesComponent } from './components/background-particles/
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SplashComponent } from './components/splash/splash.component';
+import { TermsComponent } from './components/terms/terms.component';
 import { UserAgentLinkComponent } from './components/user-agent-link/user-agent-link.component';
 import { WorkerGroupComponent } from './components/worker-group/worker-group.component';
 import { WorkerComponent } from './components/worker/worker.component';
@@ -36,7 +37,8 @@ import { AverageTimeToBlockPipe } from './pipes/average-time-to-block.pipe';
     BackgroundParticlesComponent,
     HashSuffixPipe,
     SettingsComponent,
-    UserAgentLinkComponent
+    UserAgentLinkComponent,
+    TermsComponent
   ],
   imports: [
     CommonModule,

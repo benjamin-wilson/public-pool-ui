@@ -166,6 +166,22 @@ p-chart>div {
     min-height: 40vh;
 }
 
+.site-footer {
+    color: var(--text-color-secondary);
+    font-size: 0.875rem;
+    padding: 1rem 0 0;
+    text-align: center;
+}
+
+.site-footer a {
+    color: var(--text-color-secondary);
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    color: var(--primary-color);
+}
+
 .card {
     &.chart {
         padding: 10px;

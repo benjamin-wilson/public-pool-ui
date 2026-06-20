@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Table } from 'primeng/table';
-import { combineLatest, map, Observable, shareReplay } from 'rxjs';
+import { combineLatest, forkJoin, map, Observable, shareReplay } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
@@ -20,6 +20,7 @@ export class DashboardComponent implements AfterViewInit {
   public address: string;
 
   public clientInfo$: Observable<any>;
+  public clientInfoByPayoutMode$: Observable<{ pplns: any; solo: any; }>;
   public chartData$: Observable<any>;
 
   public chartOptions: any;
@@ -47,6 +48,12 @@ export class DashboardComponent implements AfterViewInit {
     this.clientInfo$ = this.clientService.getClientInfo(this.address).pipe(
       shareReplay({ refCount: true, bufferSize: 1 })
     );
+    this.clientInfoByPayoutMode$ = forkJoin({
+      pplns: this.clientService.getClientInfo(this.address, 'pplns'),
+      solo: this.clientService.getClientInfo(this.address, 'solo')
+    }).pipe(
+      shareReplay({ refCount: true, bufferSize: 1 })
+    );
 
     this.expandedRows$ = this.clientInfo$.pipe(map((info: any) => {
 
@@ -61,64 +68,30 @@ export class DashboardComponent implements AfterViewInit {
 
 
     this.chartData$ = combineLatest([
-      this.clientService.getClientInfoChart(this.address),
+      this.clientService.getClientInfoChartByPayoutMode(this.address, 'all'),
       this.networkInfo$
     ]).pipe(
       map(([chartData, networkInfo]) => {
 
         this.networkInfo = networkInfo;
-        const GROUP_SIZE = 6;
         const primaryColor = documentStyle.getPropertyValue('--primary-color');
-
-
-        let hourlyData = [];
-
-        for (let i = GROUP_SIZE - 1; i < chartData.length; i += GROUP_SIZE) {
-          let sum = 0;
-          let acceptedCount = 0;
-          let shares = 0;
-          for (let j = GROUP_SIZE - 1; j >= 0; j--) {
-            const point = chartData[i - j];
-            sum += Number(point.data);
-            acceptedCount += Number(point.acceptedCount ?? 0);
-            shares += Number(point.shares ?? 0);
+        const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
+        const datasets = this.toPayoutModeDatasets(chartData, {
+          pplns: {
+            label: 'PPLNS 10 Minute',
+            borderColor: primaryColor,
+            backgroundColor: (context: any) => this.getChartGradient(context, primaryColor)
+          },
+          solo: {
+            label: 'Solo 10 Minute',
+            borderColor: soloColor,
+            backgroundColor: (context: any) => this.getChartGradient(context, soloColor)
           }
-          sum = sum / GROUP_SIZE;
-          hourlyData.push({ y: sum, x: chartData[i].label, acceptedCount, shares });
-        }
-
-
-        const data = chartData.map((d: any) => this.toChartPoint(d));
+        });
 
         return {
           labels: chartData.map((d: any) => d.label),
-          datasets: [
-            {
-              type: 'line',
-              label: '1 Hour Average',
-              data: hourlyData,
-              fill: false,
-              backgroundColor: documentStyle.getPropertyValue('--yellow-600'),
-              borderColor: documentStyle.getPropertyValue('--yellow-600'),
-              tension: .4,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              borderWidth: 2
-            },
-            {
-              type: 'line',
-              label: '10 Minute',
-              data: data,
-              fill: true,
-              backgroundColor: (context: any) => this.getChartGradient(context, primaryColor),
-              borderColor: primaryColor,
-              tension: .4,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              borderWidth: 2
-            },
-
-          ]
+          datasets
         }
       })
     );
@@ -216,9 +189,46 @@ export class DashboardComponent implements AfterViewInit {
     return {
       y: Number(point.data),
       x: point.label,
-      acceptedCount: point.acceptedCount,
-      shares: point.shares
+      creditedWork: point.shares,
+      payoutMode: point.payoutMode
     };
+  }
+
+  private toPayoutModeDatasets(chartData: any[], modes: Record<string, { label: string; borderColor: string; backgroundColor: any; }>) {
+    return Object.entries(modes)
+      .map(([mode, config]) => {
+        const rows = chartData.filter(point => point.payoutMode === mode);
+
+        return {
+          type: 'line',
+          label: config.label,
+          data: rows.map((d: any) => this.toChartPoint(d)),
+          fill: true,
+          backgroundColor: config.backgroundColor,
+          borderColor: config.borderColor,
+          tension: .4,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+          borderWidth: 2
+        };
+      })
+      .filter(dataset => dataset.data.length > 0);
+  }
+
+  public getWorkerPayoutModes(name: string, workers: any[]): string[] {
+    const modes = workers
+      .filter(worker => worker.name === name)
+      .map(worker => worker.payoutMode)
+      .filter(mode => mode != null);
+    return [...new Set(modes)];
+  }
+
+  public formatPayoutMode(mode: string | null | undefined): string {
+    return mode === 'pplns' ? 'PPLNS' : 'Solo';
+  }
+
+  public getPayoutModeClass(mode: string | null | undefined): string {
+    return mode === 'pplns' ? 'mode-badge mode-badge-pplns' : 'mode-badge mode-badge-solo';
   }
 
   private getTooltipLabel(context: any) {
@@ -228,13 +238,8 @@ export class DashboardComponent implements AfterViewInit {
   private getTooltipDetails(context: any) {
     const raw = context.raw || {};
     const lines = [];
-
-    if (raw.acceptedCount !== undefined) {
-      lines.push(`Accepted shares: ${Number(raw.acceptedCount).toLocaleString()}`);
-    }
-
-    if (raw.shares !== undefined) {
-      lines.push(`Credited difficulty: ${Number(raw.shares).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
+    if (raw.creditedWork !== undefined) {
+      lines.push(`Credited work: ${Number(raw.creditedWork).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
     }
 
     if (this.networkInfo?.difficulty && context.parsed.y > 0) {

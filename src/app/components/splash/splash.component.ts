@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { combineLatest, map, Observable, shareReplay } from 'rxjs';
+import { combineLatest, forkJoin, map, Observable, of, shareReplay } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
@@ -25,6 +25,7 @@ export class SplashComponent {
   public uptime$: Observable<string>;
   public sv2$: Observable<any>;
   public accounting$: Observable<any>;
+  public accountingByPayoutMode$: Observable<{ pplns: any; solo: any; }>;
   public networkInfo$: Observable<any>;
 
   public chartOptions: any;
@@ -32,6 +33,12 @@ export class SplashComponent {
 
   public stratumURL = '';
   public secureStratumURL = '';
+  public stratumV2URL = '';
+  public pplnsStratumURL = '';
+  public pplnsSecureStratumURL = '';
+  public pplnsStratumV2URL = '';
+  public pplnsDatumURL = '';
+  public pplnsEnabled = false;
 
   private info$: Observable<any>;
 
@@ -50,6 +57,12 @@ export class SplashComponent {
 
     this.stratumURL = this.appConfig.stratumUrl;
     this.secureStratumURL = this.appConfig.secureStratumUrl;
+    this.stratumV2URL = this.appConfig.stratumV2Url;
+    this.pplnsStratumURL = this.appConfig.pplnsStratumUrl;
+    this.pplnsSecureStratumURL = this.appConfig.pplnsSecureStratumUrl;
+    this.pplnsStratumV2URL = this.appConfig.pplnsStratumV2Url;
+    this.pplnsDatumURL = this.appConfig.pplnsDatumUrl;
+    this.pplnsEnabled = this.hasPplnsConnections();
 
     this.blockData$ = this.info$.pipe(map(info => info.blockData));
     this.userAgents$ = this.info$.pipe(map(info => info.userAgents));
@@ -59,30 +72,46 @@ export class SplashComponent {
     this.accounting$ = this.appService.getAccounting().pipe(
       shareReplay({ refCount: true, bufferSize: 1 })
     );
+    this.accountingByPayoutMode$ = forkJoin({
+      pplns: this.pplnsEnabled ? this.appService.getAccounting('pplns') : of(null),
+      solo: this.appService.getAccounting('solo')
+    }).pipe(
+      shareReplay({ refCount: true, bufferSize: 1 })
+    );
     this.networkInfo$ = this.appService.getNetworkInfo().pipe(
       shareReplay({ refCount: true, bufferSize: 1 })
     );
 
-    this.chartData$ = combineLatest([this.appService.getInfoChart(), this.networkInfo$]).pipe(
+    this.chartData$ = combineLatest([
+      this.appService.getInfoChartByPayoutMode(this.pplnsEnabled ? 'all' : 'solo'),
+      this.networkInfo$
+    ]).pipe(
       map(([chartData, networkInfo]) => {
         this.networkInfo = networkInfo;
         const primaryColor = documentStyle.getPropertyValue('--primary-color');
-        return {
+        const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
+        const pplnsColor = primaryColor;
+        const modes: Record<string, { label: string; borderColor: string; backgroundColor: any; }> = {
+          solo: {
+            label: 'Solo Hashrate',
+            borderColor: soloColor,
+            backgroundColor: (context: any) => this.getChartGradient(context, soloColor)
+          }
+        };
 
-          labels: chartData.map((d: any) => d.label),
-          datasets: [
-            {
-              label: 'Public-Pool Hashrate',
-              data: chartData.map((d: any) => this.toChartPoint(d)),
-              fill: true,
-              backgroundColor: (context: any) => this.getChartGradient(context, primaryColor),
-              borderColor: primaryColor,
-              tension: .4,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              borderWidth: 2
-            }
-          ]
+        if (this.pplnsEnabled) {
+          modes['pplns'] = {
+            label: 'PPLNS Hashrate',
+            borderColor: pplnsColor,
+            backgroundColor: (context: any) => this.getChartGradient(context, pplnsColor)
+          };
+        }
+
+        const datasets = this.toPayoutModeDatasets(chartData, modes);
+
+        return {
+          labels: [...new Set(chartData.map((d: any) => d.label))],
+          datasets
         }
       })
     );
@@ -141,9 +170,42 @@ export class SplashComponent {
     return {
       x: point.label,
       y: Number(point.data),
-      acceptedCount: point.acceptedCount,
-      shares: point.shares
+      creditedWork: point.shares,
+      payoutMode: point.payoutMode
     };
+  }
+
+  private toPayoutModeDatasets(chartData: any[], modes: Record<string, { label: string; borderColor: string; backgroundColor: any; }>) {
+    return Object.entries(modes)
+      .map(([mode, config]) => {
+        const rows = chartData.filter(point => point.payoutMode === mode);
+
+        return {
+          label: config.label,
+          data: rows.map((d: any) => this.toChartPoint(d)),
+          fill: true,
+          backgroundColor: config.backgroundColor,
+          borderColor: config.borderColor,
+          tension: .4,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+          borderWidth: 2
+        };
+      })
+      .filter(dataset => dataset.data.length > 0);
+  }
+
+  public formatPayoutMode(mode: string | null | undefined): string {
+    return mode === 'pplns' ? 'PPLNS' : 'Solo';
+  }
+
+  public hasPplnsConnections(): boolean {
+    return [
+      this.pplnsStratumURL,
+      this.pplnsSecureStratumURL,
+      this.pplnsStratumV2URL,
+      this.pplnsDatumURL
+    ].some(value => value.length > 0);
   }
 
   private getTooltipLabel(context: any) {
@@ -153,13 +215,8 @@ export class SplashComponent {
   private getTooltipDetails(context: any) {
     const raw = context.raw || {};
     const lines = [];
-
-    if (raw.acceptedCount !== undefined) {
-      lines.push(`Accepted shares: ${Number(raw.acceptedCount).toLocaleString()}`);
-    }
-
-    if (raw.shares !== undefined) {
-      lines.push(`Credited difficulty: ${Number(raw.shares).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
+    if (raw.creditedWork !== undefined) {
+      lines.push(`Credited work: ${Number(raw.creditedWork).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
     }
 
     if (this.networkInfo?.difficulty && context.parsed.y > 0) {

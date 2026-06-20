@@ -7,12 +7,20 @@
             </div>
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <span>Best Share</span>
+                    <span>Best Difficulty</span>
                     <strong>{{workerInfo.bestDifficulty | numberSuffix}}</strong>
                 </div>
                 <div class="hero-stat">
-                    <span>Accepted Shares</span>
-                    <strong>{{workerInfo.accounting?.totalAcceptedShares | numberSuffix}}</strong>
+                    <span>Credited Work</span>
+                    <strong>{{workerInfo.accounting?.totalCreditedDifficulty | numberSuffix}}</strong>
+                </div>
+                <div class="hero-stat">
+                    <span>Payout Mode</span>
+                    <strong>
+                        <span *ngFor="let mode of workerInfo.payoutModes" [class]="getPayoutModeClass(mode)">
+                            {{formatPayoutMode(mode)}}
+                        </span>
+                    </strong>
                 </div>
             </div>
         </div>
@@ -25,14 +33,14 @@
                     <span>Accounting</span>
                     <h4>{{workerInfo.accounting?.hashRateLast10Minutes | hashSuffix}}</h4>
                 </div>
-                <small>Current share rate</small>
+                <small>Current work rate by payout mode</small>
             </div>
 
             <div class="snapshot-grid">
                 <div class="snapshot-metric is-primary">
-                    <span>Accepted Shares</span>
-                    <strong>{{workerInfo.accounting?.totalAcceptedShares | numberSuffix}}</strong>
-                    <small>{{workerInfo.accounting?.acceptedSharesLast10Minutes | numberSuffix}} last 10m</small>
+                    <span>Credited Work</span>
+                    <strong>{{workerInfo.accounting?.totalCreditedDifficulty | numberSuffix}}</strong>
+                    <small>{{workerInfo.accounting?.creditedDifficultyLast10Minutes | numberSuffix}} last 10m</small>
                 </div>
 
                 <div class="snapshot-metric">
@@ -42,7 +50,7 @@
                 </div>
 
                 <div class="snapshot-metric">
-                    <span>Best Submitted Share</span>
+                    <span>Best Difficulty</span>
                     <strong>{{workerInfo.accounting?.bestSubmissionDifficulty | numberSuffix}}</strong>
                     <small>Worker group best</small>
                 </div>
@@ -55,7 +63,7 @@
             <div class="section-header">
                 <div>
                     <h4>Worker Hashrate</h4>
-                    <span>10-minute accepted-share hashrate for this worker name.</span>
+                    <span>10-minute credited-work hashrate split by payout mode.</span>
                 </div>
             </div>
             <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">

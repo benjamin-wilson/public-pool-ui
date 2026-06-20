@@ -61,50 +61,6 @@
     opacity: 1;
 }
 
-.connection-panel {
-    border: 1px solid var(--surface-border);
-    border-radius: 6px;
-    overflow: hidden;
-}
-
-.connection-panel-header {
-    align-items: center;
-    background: rgba(255, 255, 255, 0.03);
-    display: flex;
-    justify-content: space-between;
-    padding: 0.55rem 0.75rem;
-}
-
-.connection-panel-header span {
-    color: var(--text-color);
-    font-weight: 600;
-}
-
-.connection-panel-header small {
-    color: var(--primary-color);
-}
-
-.connection-row {
-    align-items: center;
-    display: grid;
-    gap: 0.75rem;
-    grid-template-columns: 7.5rem minmax(0, 1fr) 2.5rem;
-    padding: 0.65rem 0.75rem;
-}
-
-.connection-row + .connection-row {
-    border-top: 1px solid var(--surface-border);
-}
-
-.connection-row span {
-    color: var(--text-color-secondary);
-    font-size: 0.875rem;
-}
-
-.connection-row code {
-    overflow-wrap: anywhere;
-}
-
 .lookup-panel {
     border: 1px solid var(--surface-border);
     border-radius: 6px;
@@ -135,6 +91,32 @@
 
 .round-card {
     padding: 1.5rem;
+}
+
+.mode-round-layout {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0 auto;
+    max-width: 1024px;
+}
+
+.mode-round-layout.solo-only-layout {
+    grid-template-columns: 1fr;
+}
+
+.mode-round-layout .card {
+    margin: 0;
+    max-width: none;
+    width: 100%;
+}
+
+.mode-heading {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
 }
 
 .round-progress-summary {
@@ -219,8 +201,8 @@
 .chart-stat-grid {
     display: grid;
     gap: 0.75rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    min-width: min(100%, 26rem);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    min-width: min(100%, 34rem);
 }
 
 .chart-stat-grid div {
@@ -240,6 +222,10 @@
 @media screen and (max-width: 960px) {
     .hero-card {
         padding: 1.25rem;
+    }
+
+    .mode-round-layout {
+        grid-template-columns: 1fr;
     }
 
     .chart-header {
@@ -272,7 +258,7 @@
         grid-template-columns: minmax(0, 1fr) 2.5rem;
     }
 
-    .connection-row span {
+    .connection-row > span {
         grid-column: 1 / -1;
     }
 

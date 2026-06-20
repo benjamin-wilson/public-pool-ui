@@ -93,7 +93,7 @@
 .snapshot-grid {
     display: grid;
     gap: 1.25rem;
-    grid-template-columns: minmax(13rem, 1.35fr) repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
 }
 
 .snapshot-metric {

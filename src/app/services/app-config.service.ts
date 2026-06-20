@@ -6,6 +6,11 @@ interface RuntimeConfig {
   API_URL?: string;
   STRATUM_URL?: string;
   SECURE_STRATUM_URL?: string;
+  STRATUM_V2_URL?: string;
+  PPLNS_STRATUM_URL?: string;
+  PPLNS_SECURE_STRATUM_URL?: string;
+  PPLNS_STRATUM_V2_URL?: string;
+  PPLNS_DATUM_URL?: string;
 }
 
 declare global {
@@ -43,6 +48,46 @@ export class AppConfigService {
     return this.resolveSecureStratumUrl(environment.SECURE_STRATUM_URL);
   }
 
+  public get stratumV2Url(): string {
+    if (this.hasRuntimeValue('STRATUM_V2_URL')) {
+      return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.STRATUM_V2_URL);
+    }
+
+    return this.stratumUrl;
+  }
+
+  public get pplnsStratumUrl(): string {
+    if (this.hasRuntimeValue('PPLNS_STRATUM_URL')) {
+      return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.PPLNS_STRATUM_URL);
+    }
+
+    return '';
+  }
+
+  public get pplnsSecureStratumUrl(): string {
+    if (this.hasRuntimeValue('PPLNS_SECURE_STRATUM_URL')) {
+      return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.PPLNS_SECURE_STRATUM_URL);
+    }
+
+    return '';
+  }
+
+  public get pplnsStratumV2Url(): string {
+    if (this.hasRuntimeValue('PPLNS_STRATUM_V2_URL')) {
+      return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.PPLNS_STRATUM_V2_URL);
+    }
+
+    return '';
+  }
+
+  public get pplnsDatumUrl(): string {
+    if (this.hasRuntimeValue('PPLNS_DATUM_URL')) {
+      return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.PPLNS_DATUM_URL);
+    }
+
+    return '';
+  }
+
   private hasRuntimeValue(key: keyof RuntimeConfig): boolean {
     return typeof window !== 'undefined'
       && !!window.__PUBLIC_POOL_CONFIG__
@@ -77,5 +122,9 @@ export class AppConfigService {
     }
 
     return `${window.location.hostname}:4333`;
+  }
+
+  private resolveOptionalUrl(value: string | undefined): string {
+    return (value ?? '').trim();
   }
 }

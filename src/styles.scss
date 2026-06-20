@@ -39,6 +39,128 @@
     white-space: nowrap;
 }
 
+.mode-badge {
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0.125rem 0.25rem 0.125rem 0;
+    padding: 0.35rem 0.55rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.mode-badge-pplns {
+    background: rgba(34, 197, 94, 0.16);
+    color: var(--green-400);
+}
+
+.mode-badge-solo {
+    background: rgba(245, 158, 11, 0.16);
+    color: var(--yellow-500);
+}
+
+.connection-panel {
+    border: 1px solid var(--surface-border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.connection-panel-header {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    display: flex;
+    justify-content: space-between;
+    padding: 0.55rem 0.75rem;
+}
+
+.connection-panel-header span {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.connection-panel-header small {
+    color: var(--primary-color);
+}
+
+.connection-mode-header {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid var(--surface-border);
+    display: flex;
+    gap: 0.65rem;
+    padding: 0.55rem 0.75rem;
+}
+
+.connection-mode-header:first-of-type {
+    border-top: 0;
+}
+
+.connection-mode-header small {
+    color: var(--text-color-secondary);
+    min-width: 0;
+}
+
+.connection-row {
+    align-items: center;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 7.5rem minmax(0, 1fr) 2.5rem;
+    padding: 0.65rem 0.75rem;
+}
+
+.connection-row + .connection-row {
+    border-top: 1px solid var(--surface-border);
+}
+
+.connection-row > span {
+    color: var(--text-color-secondary);
+    font-size: 0.875rem;
+}
+
+.connection-row code {
+    overflow-wrap: anywhere;
+}
+
+.connection-row > button,
+.connection-subvalue button {
+    justify-self: end;
+}
+
+.connection-row > button {
+    align-self: start;
+    margin-top: -0.15rem;
+}
+
+.connection-value-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 0;
+}
+
+.connection-subvalue {
+    align-items: center;
+    border-top: 1px solid var(--surface-border);
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 2rem minmax(0, 1fr) 2.5rem;
+    padding-top: 0.45rem;
+}
+
+.connection-subvalue span {
+    color: var(--text-color-secondary);
+    font-size: 0.78rem;
+}
+
+.connection-empty {
+    border-top: 1px solid var(--surface-border);
+    color: var(--text-color-secondary);
+    font-size: 0.875rem;
+    padding: 0.75rem;
+}
+
 p-chart>div {
     position: relative;
     min-height: 40vh;

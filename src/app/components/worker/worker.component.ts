@@ -47,22 +47,24 @@ export class WorkerComponent {
 
         this.networkInfo = networkInfo;
         const primaryColor = documentStyle.getPropertyValue('--primary-color');
+        const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
+        const chartData = workerInfo.chartDataByPayoutMode ?? workerInfo.chartData;
+        const datasets = this.toPayoutModeDatasets(chartData, workerInfo.name, {
+          pplns: {
+            label: `${workerInfo.name} PPLNS`,
+            borderColor: primaryColor,
+            backgroundColor: (context: any) => this.getChartGradient(context, primaryColor)
+          },
+          solo: {
+            label: `${workerInfo.name} Solo`,
+            borderColor: soloColor,
+            backgroundColor: (context: any) => this.getChartGradient(context, soloColor)
+          }
+        });
 
         return {
-          labels: workerInfo.chartData.map((d: any) => d.label),
-          datasets: [
-            {
-              label: workerInfo.name,
-              data: workerInfo.chartData.map((d: any) => this.toChartPoint(d)),
-              fill: true,
-              backgroundColor: (context: any) => this.getChartGradient(context, primaryColor),
-              borderColor: primaryColor,
-              tension: .4,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              borderWidth: 2
-            }
-          ]
+          labels: chartData.map((d: any) => d.label),
+          datasets
         }
       })
     );
@@ -119,9 +121,51 @@ export class WorkerComponent {
     return {
       x: point.label,
       y: Number(point.data),
-      acceptedCount: point.acceptedCount,
-      shares: point.shares
+      creditedWork: point.shares,
+      payoutMode: point.payoutMode
     };
+  }
+
+  private toPayoutModeDatasets(chartData: any[], fallbackLabel: string, modes: Record<string, { label: string; borderColor: string; backgroundColor: any; }>) {
+    if (chartData.some(point => point.payoutMode != null)) {
+      return Object.entries(modes)
+        .map(([mode, config]) => {
+          const rows = chartData.filter(point => point.payoutMode === mode);
+
+          return {
+            label: config.label,
+            data: rows.map((d: any) => this.toChartPoint(d)),
+            fill: true,
+            backgroundColor: config.backgroundColor,
+            borderColor: config.borderColor,
+            tension: .4,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            borderWidth: 2
+          };
+        })
+        .filter(dataset => dataset.data.length > 0);
+    }
+
+    return [{
+      label: fallbackLabel,
+      data: chartData.map((d: any) => this.toChartPoint(d)),
+      fill: true,
+      backgroundColor: modes['pplns'].backgroundColor,
+      borderColor: modes['pplns'].borderColor,
+      tension: .4,
+      pointRadius: 0,
+      pointHoverRadius: 4,
+      borderWidth: 2
+    }];
+  }
+
+  public formatPayoutMode(mode: string | null | undefined): string {
+    return mode === 'pplns' ? 'PPLNS' : 'Solo';
+  }
+
+  public getPayoutModeClass(mode: string | null | undefined): string {
+    return mode === 'pplns' ? 'mode-badge mode-badge-pplns' : 'mode-badge mode-badge-solo';
   }
 
   private getTooltipLabel(context: any) {
@@ -131,13 +175,8 @@ export class WorkerComponent {
   private getTooltipDetails(context: any) {
     const raw = context.raw || {};
     const lines = [];
-
-    if (raw.acceptedCount !== undefined) {
-      lines.push(`Accepted shares: ${Number(raw.acceptedCount).toLocaleString()}`);
-    }
-
-    if (raw.shares !== undefined) {
-      lines.push(`Credited difficulty: ${Number(raw.shares).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
+    if (raw.creditedWork !== undefined) {
+      lines.push(`Credited work: ${Number(raw.creditedWork).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
     }
 
     if (this.networkInfo?.difficulty && context.parsed.y > 0) {

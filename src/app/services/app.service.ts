@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 
 import { AppConfigService } from './app-config.service';
 
+export type PayoutMode = 'solo' | 'pplns';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -23,7 +25,14 @@ export class AppService {
     public getInfoChart() {
         return this.httpClient.get(`${this.appConfig.apiUrl}/api/info/chart`) as Observable<any>;
     }
-    public getAccounting() {
-        return this.httpClient.get(`${this.appConfig.apiUrl}/api/info/accounting`) as Observable<any>;
+    public getInfoChartByPayoutMode(payoutMode?: PayoutMode | 'all') {
+        return this.httpClient.get(`${this.appConfig.apiUrl}/api/info/chart/payout-modes${this.toPayoutModeQuery(payoutMode)}`) as Observable<any[]>;
+    }
+    public getAccounting(payoutMode?: PayoutMode | 'all') {
+        return this.httpClient.get(`${this.appConfig.apiUrl}/api/info/accounting${this.toPayoutModeQuery(payoutMode)}`) as Observable<any>;
+    }
+
+    private toPayoutModeQuery(payoutMode?: PayoutMode | 'all'): string {
+        return payoutMode == null ? '' : `?payoutMode=${encodeURIComponent(payoutMode)}`;
     }
 }

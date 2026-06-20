@@ -8,7 +8,7 @@
                 </div>
                 <div class="hero-stats">
                     <div class="hero-stat">
-                        <span>Best Share</span>
+                        <span>Best Difficulty</span>
                         <strong>{{clientInfo.bestDifficulty | numberSuffix}}</strong>
                     </div>
                     <div class="hero-stat">
@@ -21,39 +21,47 @@
 
         <div class="col-12" *ngIf="networkInfo$ | async as networkInfo">
             <div class="card snapshot-card">
-                <div class="snapshot-header">
-                    <div>
-                        <span>Block Height</span>
-                        <h4>{{networkInfo.blocks | number}}</h4>
-                    </div>
-                    <small>Current block weight {{networkInfo.currentblockweight | number}}</small>
-                </div>
-
-                <div class="snapshot-grid">
-                    <div class="snapshot-metric is-primary">
-                        <span>Network Difficulty</span>
-                        <strong>{{networkInfo.difficulty | numberSuffix}}</strong>
-                        <small>{{networkInfo.networkhashps | hashSuffix}} network hashrate</small>
+                <ng-container *ngIf="clientInfoByPayoutMode$ | async as modeInfo">
+                    <div class="snapshot-header">
+                        <div>
+                            <span>Block Height</span>
+                            <h4>{{networkInfo.blocks | number}}</h4>
+                        </div>
+                        <small>Current block weight {{networkInfo.currentblockweight | number}}</small>
                     </div>
 
-                    <div class="snapshot-metric">
-                        <span>Accepted Shares</span>
-                        <strong>{{clientInfo.accounting?.totalAcceptedShares | numberSuffix}}</strong>
-                        <small>{{clientInfo.accounting?.acceptedSharesLast10Minutes | numberSuffix}} last 10m</small>
-                    </div>
+                    <div class="snapshot-grid">
+                        <div class="snapshot-metric is-primary">
+                            <span>Network Difficulty</span>
+                            <strong>{{networkInfo.difficulty | numberSuffix}}</strong>
+                            <small>{{networkInfo.networkhashps | hashSuffix}} network hashrate</small>
+                        </div>
 
-                    <div class="snapshot-metric">
-                        <span>Accumulated Work</span>
-                        <strong>{{clientInfo.accounting?.totalCreditedDifficulty | numberSuffix}}</strong>
-                        <small>{{clientInfo.accounting?.creditedDifficultyLastHour | numberSuffix}} last hour</small>
-                    </div>
+                        <div class="snapshot-metric">
+                            <span>PPLNS Work</span>
+                            <strong>{{modeInfo.pplns.accounting?.totalCreditedDifficulty | numberSuffix}}</strong>
+                            <small>{{modeInfo.pplns.accounting?.creditedDifficultyLast10Minutes | numberSuffix}} last 10m</small>
+                        </div>
 
-                    <div class="snapshot-metric">
-                        <span>Best Submitted Share</span>
-                        <strong>{{clientInfo.accounting?.bestSubmissionDifficulty | numberSuffix}}</strong>
-                        <small>Best accepted share for this address</small>
+                        <div class="snapshot-metric" *ngIf="clientInfo.expectedPayout">
+                            <span>Expected Payout</span>
+                            <strong>{{clientInfo.expectedPayout.payoutSats | number}} sats</strong>
+                            <small>{{clientInfo.expectedPayout.percent | number:'1.2-2'}}% if the next PPLNS block is found</small>
+                        </div>
+
+                        <div class="snapshot-metric">
+                            <span>Solo Work</span>
+                            <strong>{{modeInfo.solo.accounting?.totalCreditedDifficulty | numberSuffix}}</strong>
+                            <small>{{modeInfo.solo.accounting?.creditedDifficultyLast10Minutes | numberSuffix}} last 10m</small>
+                        </div>
+
+                        <div class="snapshot-metric">
+                            <span>Best Difficulty</span>
+                            <strong>{{clientInfo.accounting?.bestSubmissionDifficulty | numberSuffix}}</strong>
+                            <small>Best submitted difficulty for this address</small>
+                        </div>
                     </div>
-                </div>
+                </ng-container>
             </div>
         </div>
 
@@ -71,9 +79,10 @@
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Name</th>
+                            <th>Mode</th>
                             <th class="numeric-cell">Session ID</th>
                             <th class="numeric-cell">Hashrate</th>
-                            <th class="numeric-cell">Best Share</th>
+                            <th class="numeric-cell">Best Difficulty</th>
                             <th class="numeric-cell">Uptime</th>
                             <th class="numeric-cell">Last Seen</th>
                         </tr>
@@ -87,9 +96,15 @@
                                     [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                                 <span class="worker-name font-bold ml-2">{{worker.name}}</span>
                             </td>
+                            <td data-label="Mode">
+                                <span *ngFor="let mode of getWorkerPayoutModes(worker.name, clientInfo.workers)"
+                                    [class]="getPayoutModeClass(mode)">
+                                    {{formatPayoutMode(mode)}}
+                                </span>
+                            </td>
                             <td data-label="Sessions" class="numeric-cell">{{getSessionCount(worker.name, clientInfo.workers)}} Sessions</td>
                             <td data-label="Hashrate" class="numeric-cell">{{getTotalHashRate(worker.name, clientInfo.workers) | hashSuffix}}</td>
-                            <td data-label="Best Share" class="numeric-cell">{{getBestDifficulty(worker.name, clientInfo.workers) | numberSuffix}}</td>
+                            <td data-label="Best Difficulty" class="numeric-cell">{{getBestDifficulty(worker.name, clientInfo.workers) | numberSuffix}}</td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -98,9 +113,10 @@
                     <ng-template pTemplate="rowexpansion" let-worker>
                         <tr [routerLink]="[worker.name, worker.sessionId]">
                             <td></td>
+                            <td data-label="Mode"><span [class]="getPayoutModeClass(worker.payoutMode)">{{formatPayoutMode(worker.payoutMode)}}</span></td>
                             <td data-label="Session ID" class="numeric-cell">{{worker.sessionId}}</td>
                             <td data-label="Hashrate" class="numeric-cell">{{worker.hashRate | hashSuffix}}</td>
-                            <td data-label="Best Share" class="numeric-cell">{{worker.bestDifficulty | numberSuffix}}</td>
+                            <td data-label="Best Difficulty" class="numeric-cell">{{worker.bestDifficulty | numberSuffix}}</td>
                             <td data-label="Uptime" class="numeric-cell">{{worker.startTime | dateAgo}}</td>
                             <td data-label="Last Seen" class="numeric-cell">{{worker.lastSeen | dateAgo}}</td>
                         </tr>
@@ -114,7 +130,7 @@
                 <div class="section-header">
                     <div>
                         <h4>Address Hashrate</h4>
-                        <span>10-minute buckets with 1-hour average.</span>
+                        <span>10-minute credited-work hashrate split by payout mode.</span>
                     </div>
                 </div>
                 <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">

@@ -14,6 +14,10 @@
                     <span>Uptime</span>
                     <strong>{{workerInfo.startTime | dateAgo}}</strong>
                 </div>
+                <div class="hero-stat">
+                    <span>Payout Mode</span>
+                    <strong><span [class]="getPayoutModeClass(workerInfo.payoutMode)">{{formatPayoutMode(workerInfo.payoutMode)}}</span></strong>
+                </div>
             </div>
         </div>
     </div>
@@ -25,20 +29,20 @@
                     <span>Session Accounting</span>
                     <h4>{{workerInfo.accounting?.hashRateLast10Minutes | hashSuffix}}</h4>
                 </div>
-                <small>Current share rate</small>
+                <small>{{formatPayoutMode(workerInfo.payoutMode)}} current work rate</small>
             </div>
 
             <div class="snapshot-grid">
                 <div class="snapshot-metric is-primary">
-                    <span>Best Share</span>
+                    <span>Best Difficulty</span>
                     <strong>{{workerInfo.bestDifficulty | numberSuffix}}</strong>
                     <small>{{workerInfo.bestDifficulty | number}}</small>
                 </div>
 
                 <div class="snapshot-metric">
-                    <span>Accepted Shares</span>
-                    <strong>{{workerInfo.accounting?.totalAcceptedShares | numberSuffix}}</strong>
-                    <small>{{workerInfo.accounting?.acceptedSharesLast10Minutes | numberSuffix}} last 10m</small>
+                    <span>Credited Work</span>
+                    <strong>{{workerInfo.accounting?.totalCreditedDifficulty | numberSuffix}}</strong>
+                    <small>{{workerInfo.accounting?.creditedDifficultyLast10Minutes | numberSuffix}} last 10m</small>
                 </div>
 
                 <div class="snapshot-metric">
@@ -55,7 +59,7 @@
             <div class="section-header">
                 <div>
                     <h4>Session Hashrate</h4>
-                    <span>10-minute accepted-share hashrate for this worker session.</span>
+                    <span>10-minute credited-work hashrate split by payout mode.</span>
                 </div>
             </div>
             <ng-container *ngIf="chartData$ | async as chartData; else loadingChart">

@@ -38,6 +38,7 @@ export class SplashComponent {
   public pplnsSecureStratumURL = '';
   public pplnsStratumV2URL = '';
   public pplnsDatumURL = '';
+  public pplnsDatumPublicKey = '';
   public pplnsEnabled = false;
 
   private info$: Observable<any>;
@@ -64,6 +65,7 @@ export class SplashComponent {
     this.pplnsSecureStratumURL = this.appConfig.pplnsSecureStratumUrl;
     this.pplnsStratumV2URL = this.appConfig.pplnsStratumV2Url;
     this.pplnsDatumURL = this.appConfig.pplnsDatumUrl;
+    this.pplnsDatumPublicKey = this.appConfig.pplnsDatumPublicKey;
     this.pplnsEnabled = this.hasPplnsConnections();
 
     this.blockData$ = this.info$.pipe(map(info => info.blockData));

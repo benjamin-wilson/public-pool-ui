@@ -8,4 +8,5 @@ export const environment = {
     PPLNS_SECURE_STRATUM_URL: '',
     PPLNS_STRATUM_V2_URL: '',
     PPLNS_DATUM_URL: '',
+    PPLNS_DATUM_PUBLIC_KEY: '',
 };

@@ -11,6 +11,7 @@ interface RuntimeConfig {
   PPLNS_SECURE_STRATUM_URL?: string;
   PPLNS_STRATUM_V2_URL?: string;
   PPLNS_DATUM_URL?: string;
+  PPLNS_DATUM_PUBLIC_KEY?: string;
 }
 
 declare global {
@@ -86,6 +87,14 @@ export class AppConfigService {
     }
 
     return this.resolveOptionalUrl(environment.PPLNS_DATUM_URL);
+  }
+
+  public get pplnsDatumPublicKey(): string {
+    if (this.hasRuntimeValue('PPLNS_DATUM_PUBLIC_KEY')) {
+      return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.PPLNS_DATUM_PUBLIC_KEY);
+    }
+
+    return this.resolveOptionalUrl(environment.PPLNS_DATUM_PUBLIC_KEY);
   }
 
   private hasRuntimeValue(key: keyof RuntimeConfig): boolean {

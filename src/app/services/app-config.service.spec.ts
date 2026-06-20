@@ -27,6 +27,7 @@ describe('AppConfigService', () => {
     expect(service.pplnsSecureStratumUrl).toBe('');
     expect(service.pplnsStratumV2Url).toBe('');
     expect(service.pplnsDatumUrl).toBe('');
+    expect(service.pplnsDatumPublicKey).toBe('');
   });
 
   it('uses same-origin API requests when runtime API_URL is explicitly empty', () => {
@@ -74,7 +75,8 @@ describe('AppConfigService', () => {
       PPLNS_STRATUM_URL: 'public-pool.io:13333',
       PPLNS_SECURE_STRATUM_URL: 'public-pool.io:14333',
       PPLNS_STRATUM_V2_URL: 'public-pool.io:23331',
-      PPLNS_DATUM_URL: 'public-pool.io:23336'
+      PPLNS_DATUM_URL: 'public-pool.io:23336',
+      PPLNS_DATUM_PUBLIC_KEY: 'datum-key'
     };
 
     const service = new AppConfigService();
@@ -83,5 +85,6 @@ describe('AppConfigService', () => {
     expect(service.pplnsSecureStratumUrl).toBe('public-pool.io:14333');
     expect(service.pplnsStratumV2Url).toBe('public-pool.io:23331');
     expect(service.pplnsDatumUrl).toBe('public-pool.io:23336');
+    expect(service.pplnsDatumPublicKey).toBe('datum-key');
   });
 });

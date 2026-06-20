@@ -107,7 +107,15 @@
                                 </div>
                                 <div class="connection-row" *ngIf="pplnsDatumURL">
                                     <span>DATUM</span>
-                                    <code>datum://{{pplnsDatumURL}}</code>
+                                    <div class="connection-value-stack">
+                                        <code>datum://{{pplnsDatumURL}}</code>
+                                        <div class="connection-subvalue" *ngIf="pplnsDatumPublicKey">
+                                            <span>Key</span>
+                                            <code class="sv2-authority-key">{{pplnsDatumPublicKey}}</code>
+                                            <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
+                                                (click)="copyText(pplnsDatumPublicKey, 'DATUM key')" title="Copy DATUM key"></button>
+                                        </div>
+                                    </div>
                                     <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
                                         (click)="copyText('datum://' + pplnsDatumURL, 'PPLNS DATUM')" title="Copy PPLNS DATUM URL"></button>
                                 </div>

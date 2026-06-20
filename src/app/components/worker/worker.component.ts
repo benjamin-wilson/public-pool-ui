@@ -33,6 +33,8 @@ export class WorkerComponent {
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    const primaryColor = documentStyle.getPropertyValue('--primary-color');
+    const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
 
     this.workerInfo$ = this.workerService.getWorkerInfo(this.route.snapshot.params['address'], this.route.snapshot.params['workerName'], this.route.snapshot.params['workerId']).pipe(
       shareReplay({ bufferSize: 1, refCount: true })
@@ -46,8 +48,6 @@ export class WorkerComponent {
       map(([workerInfo, networkInfo]) => {
 
         this.networkInfo = networkInfo;
-        const primaryColor = documentStyle.getPropertyValue('--primary-color');
-        const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
         const chartData = workerInfo.chartDataByPayoutMode ?? workerInfo.chartData;
         const datasets = this.toPayoutModeDatasets(chartData, workerInfo.name, {
           pplns: {
@@ -100,9 +100,15 @@ export class WorkerComponent {
             drawBorder: false
           }
         },
-        y: {
+        yPplns: {
+          position: 'left',
+          title: {
+            display: true,
+            text: 'PPLNS',
+            color: primaryColor
+          },
           ticks: {
-            color: textColorSecondary,
+            color: primaryColor,
             callback: (value: number) => {
               return HashSuffixPipe.transform(value);
             }
@@ -110,7 +116,28 @@ export class WorkerComponent {
           grid: {
             color: surfaceBorder,
             drawBorder: false
-          }
+          },
+          beginAtZero: true
+        },
+        ySolo: {
+          position: 'right',
+          title: {
+            display: true,
+            text: 'Solo',
+            color: soloColor
+          },
+          ticks: {
+            color: soloColor,
+            callback: (value: number) => {
+              return HashSuffixPipe.transform(value);
+            }
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+            drawOnChartArea: false
+          },
+          beginAtZero: true
         }
       }
     };
@@ -135,6 +162,7 @@ export class WorkerComponent {
           return {
             label: config.label,
             data: rows.map((d: any) => this.toChartPoint(d)),
+            yAxisID: mode === 'solo' ? 'ySolo' : 'yPplns',
             fill: true,
             backgroundColor: config.backgroundColor,
             borderColor: config.borderColor,
@@ -150,6 +178,7 @@ export class WorkerComponent {
     return [{
       label: fallbackLabel,
       data: chartData.map((d: any) => this.toChartPoint(d)),
+      yAxisID: 'yPplns',
       fill: true,
       backgroundColor: modes['pplns'].backgroundColor,
       borderColor: modes['pplns'].borderColor,

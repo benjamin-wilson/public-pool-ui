@@ -50,6 +50,8 @@ export class SplashComponent {
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    const primaryColor = documentStyle.getPropertyValue('--primary-color');
+    const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
 
     this.info$ = this.appService.getInfo().pipe(
       shareReplay({ refCount: true, bufferSize: 1 })
@@ -88,8 +90,6 @@ export class SplashComponent {
     ]).pipe(
       map(([chartData, networkInfo]) => {
         this.networkInfo = networkInfo;
-        const primaryColor = documentStyle.getPropertyValue('--primary-color');
-        const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
         const pplnsColor = primaryColor;
         const modes: Record<string, { label: string; borderColor: string; backgroundColor: any; }> = {
           solo: {
@@ -148,9 +148,16 @@ export class SplashComponent {
             display: true
           }
         },
-        y: {
+        yPplns: {
+          position: 'left',
+          display: this.pplnsEnabled,
+          title: {
+            display: this.pplnsEnabled,
+            text: 'PPLNS',
+            color: primaryColor
+          },
           ticks: {
-            color: textColorSecondary,
+            color: primaryColor,
             callback: (value: number) => {
               return HashSuffixPipe.transform(value);
             }
@@ -159,7 +166,27 @@ export class SplashComponent {
             color: surfaceBorder,
             drawBorder: false
           },
-          type: 'logarithmic',
+          beginAtZero: true
+        },
+        ySolo: {
+          position: this.pplnsEnabled ? 'right' : 'left',
+          title: {
+            display: true,
+            text: 'Solo',
+            color: soloColor
+          },
+          ticks: {
+            color: soloColor,
+            callback: (value: number) => {
+              return HashSuffixPipe.transform(value);
+            }
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+            drawOnChartArea: !this.pplnsEnabled
+          },
+          beginAtZero: true
         }
       }
     };
@@ -183,6 +210,7 @@ export class SplashComponent {
         return {
           label: config.label,
           data: rows.map((d: any) => this.toChartPoint(d)),
+          yAxisID: mode === 'solo' ? 'ySolo' : 'yPplns',
           fill: true,
           backgroundColor: config.backgroundColor,
           borderColor: config.borderColor,

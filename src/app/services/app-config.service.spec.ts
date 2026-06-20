@@ -19,9 +19,14 @@ describe('AppConfigService', () => {
   it('uses compiled environment values when runtime config is absent', () => {
     const service = new AppConfigService();
 
-    expect(service.apiUrl).toBe('http://localhost:3334');
-    expect(service.stratumUrl).toBe('public-pool.io:3333');
-    expect(service.secureStratumUrl).toBe('public-pool.io:4333');
+    expect(service.apiUrl).toBe('');
+    expect(service.stratumUrl).toBe('localhost:3333');
+    expect(service.secureStratumUrl).toBe('localhost:4333');
+    expect(service.stratumV2Url).toBe('localhost:23330');
+    expect(service.pplnsStratumUrl).toBe('');
+    expect(service.pplnsSecureStratumUrl).toBe('');
+    expect(service.pplnsStratumV2Url).toBe('');
+    expect(service.pplnsDatumUrl).toBe('');
   });
 
   it('uses same-origin API requests when runtime API_URL is explicitly empty', () => {
@@ -62,5 +67,21 @@ describe('AppConfigService', () => {
     const service = new AppConfigService();
 
     expect(service.apiUrl).toBe('https://example.com');
+  });
+
+  it('uses runtime PPLNS connection URLs when present', () => {
+    window.__PUBLIC_POOL_CONFIG__ = {
+      PPLNS_STRATUM_URL: 'public-pool.io:13333',
+      PPLNS_SECURE_STRATUM_URL: 'public-pool.io:14333',
+      PPLNS_STRATUM_V2_URL: 'public-pool.io:23331',
+      PPLNS_DATUM_URL: 'public-pool.io:23336'
+    };
+
+    const service = new AppConfigService();
+
+    expect(service.pplnsStratumUrl).toBe('public-pool.io:13333');
+    expect(service.pplnsSecureStratumUrl).toBe('public-pool.io:14333');
+    expect(service.pplnsStratumV2Url).toBe('public-pool.io:23331');
+    expect(service.pplnsDatumUrl).toBe('public-pool.io:23336');
   });
 });

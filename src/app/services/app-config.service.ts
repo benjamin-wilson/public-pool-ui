@@ -53,7 +53,7 @@ export class AppConfigService {
       return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.STRATUM_V2_URL);
     }
 
-    return this.stratumUrl;
+    return this.resolveOptionalUrl(environment.STRATUM_V2_URL);
   }
 
   public get pplnsStratumUrl(): string {
@@ -61,7 +61,7 @@ export class AppConfigService {
       return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.PPLNS_STRATUM_URL);
     }
 
-    return '';
+    return this.resolveOptionalUrl(environment.PPLNS_STRATUM_URL);
   }
 
   public get pplnsSecureStratumUrl(): string {
@@ -69,7 +69,7 @@ export class AppConfigService {
       return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.PPLNS_SECURE_STRATUM_URL);
     }
 
-    return '';
+    return this.resolveOptionalUrl(environment.PPLNS_SECURE_STRATUM_URL);
   }
 
   public get pplnsStratumV2Url(): string {
@@ -77,7 +77,7 @@ export class AppConfigService {
       return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.PPLNS_STRATUM_V2_URL);
     }
 
-    return '';
+    return this.resolveOptionalUrl(environment.PPLNS_STRATUM_V2_URL);
   }
 
   public get pplnsDatumUrl(): string {
@@ -85,7 +85,7 @@ export class AppConfigService {
       return this.resolveOptionalUrl(window.__PUBLIC_POOL_CONFIG__?.PPLNS_DATUM_URL);
     }
 
-    return '';
+    return this.resolveOptionalUrl(environment.PPLNS_DATUM_URL);
   }
 
   private hasRuntimeValue(key: keyof RuntimeConfig): boolean {

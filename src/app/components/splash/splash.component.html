@@ -53,7 +53,7 @@
                             <div class="connection-row" *ngIf="stratumV2URL">
                                 <span>Stratum V2</span>
                                 <div class="connection-value-stack">
-                                    <code>stratum+tcp://{{stratumV2URL}}</code>
+                                    <code>stratum2+tcp://{{stratumV2URL}}</code>
                                     <ng-container *ngIf="sv2$ | async as sv2">
                                         <div class="connection-subvalue" *ngIf="sv2?.poolAuthorityPublicKey">
                                             <span>Key</span>
@@ -67,7 +67,7 @@
                                     </ng-container>
                                 </div>
                                 <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                    (click)="copyText('stratum+tcp://' + stratumV2URL, 'Solo Stratum V2')" title="Copy Solo Stratum V2 URL"></button>
+                                    (click)="copyText('stratum2+tcp://' + stratumV2URL, 'Solo Stratum V2')" title="Copy Solo Stratum V2 URL"></button>
                             </div>
                             <ng-container *ngIf="pplnsEnabled">
                                 <div class="connection-mode-header">
@@ -89,7 +89,7 @@
                                 <div class="connection-row" *ngIf="pplnsStratumV2URL">
                                     <span>Stratum V2</span>
                                     <div class="connection-value-stack">
-                                        <code>stratum+tcp://{{pplnsStratumV2URL}}</code>
+                                        <code>stratum2+tcp://{{pplnsStratumV2URL}}</code>
                                         <ng-container *ngIf="sv2$ | async as sv2">
                                             <div class="connection-subvalue" *ngIf="sv2?.poolAuthorityPublicKey">
                                                 <span>Key</span>
@@ -103,7 +103,7 @@
                                         </ng-container>
                                     </div>
                                     <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                        (click)="copyText('stratum+tcp://' + pplnsStratumV2URL, 'PPLNS Stratum V2')" title="Copy PPLNS Stratum V2 URL"></button>
+                                        (click)="copyText('stratum2+tcp://' + pplnsStratumV2URL, 'PPLNS Stratum V2')" title="Copy PPLNS Stratum V2 URL"></button>
                                 </div>
                                 <div class="connection-row" *ngIf="pplnsDatumURL">
                                     <span>DATUM</span>

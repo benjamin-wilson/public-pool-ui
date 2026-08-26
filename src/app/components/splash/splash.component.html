@@ -42,13 +42,15 @@
                                 <span>Stratum V1</span>
                                 <code>stratum+tcp://{{stratumURL}}</code>
                                 <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                    (click)="copyText('stratum+tcp://' + stratumURL, 'Solo Stratum V1')" title="Copy Solo Stratum V1 URL"></button>
+                                    (click)="copyText('stratum+tcp://' + stratumURL, 'Solo Stratum V1')"
+                                    title="Copy Solo Stratum V1 URL"></button>
                             </div>
                             <div class="connection-row" *ngIf="secureStratumURL">
                                 <span>Stratum V1 + TLS</span>
                                 <code>stratum+tls://{{secureStratumURL}}</code>
                                 <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                    (click)="copyText('stratum+tls://' + secureStratumURL, 'Solo Stratum V1 + TLS')" title="Copy Solo Stratum V1 + TLS URL"></button>
+                                    (click)="copyText('stratum+tls://' + secureStratumURL, 'Solo Stratum V1 + TLS')"
+                                    title="Copy Solo Stratum V1 + TLS URL"></button>
                             </div>
                             <div class="connection-row" *ngIf="stratumV2URL">
                                 <span>Stratum V2</span>
@@ -58,8 +60,10 @@
                                         <div class="connection-subvalue" *ngIf="sv2?.poolAuthorityPublicKey">
                                             <span>Key</span>
                                             <code class="sv2-authority-key">{{sv2.poolAuthorityPublicKey}}</code>
-                                            <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                                (click)="copyText(sv2.poolAuthorityPublicKey, 'Stratum V2 key')" title="Copy Stratum V2 key"></button>
+                                            <button pButton type="button" icon="pi pi-copy"
+                                                class="p-button-text p-button-sm"
+                                                (click)="copyText(sv2.poolAuthorityPublicKey, 'Stratum V2 key')"
+                                                title="Copy Stratum V2 key"></button>
                                         </div>
                                         <small class="text-orange-300" *ngIf="sv2.authorityKeyConfigured === false">
                                             Stratum V2 is using a temporary authority key.
@@ -67,24 +71,28 @@
                                     </ng-container>
                                 </div>
                                 <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                    (click)="copyText('stratum2+tcp://' + stratumV2URL, 'Solo Stratum V2')" title="Copy Solo Stratum V2 URL"></button>
+                                    (click)="copyText('stratum2+tcp://' + stratumV2URL, 'Solo Stratum V2')"
+                                    title="Copy Solo Stratum V2 URL"></button>
                             </div>
                             <ng-container *ngIf="pplnsEnabled">
                                 <div class="connection-mode-header">
                                     <span class="mode-badge mode-badge-pplns">PPLNS</span>
-                                    <small>Mine together and split block rewards by each miner's recent valid work.</small>
+                                    <small>Mine together and split block rewards by each miner's recent valid
+                                        work.</small>
                                 </div>
                                 <div class="connection-row" *ngIf="pplnsStratumURL">
                                     <span>Stratum V1</span>
                                     <code>stratum+tcp://{{pplnsStratumURL}}</code>
                                     <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                        (click)="copyText('stratum+tcp://' + pplnsStratumURL, 'PPLNS Stratum V1')" title="Copy PPLNS Stratum V1 URL"></button>
+                                        (click)="copyText('stratum+tcp://' + pplnsStratumURL, 'PPLNS Stratum V1')"
+                                        title="Copy PPLNS Stratum V1 URL"></button>
                                 </div>
                                 <div class="connection-row" *ngIf="pplnsSecureStratumURL">
                                     <span>Stratum V1 + TLS</span>
                                     <code>stratum+tls://{{pplnsSecureStratumURL}}</code>
                                     <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                        (click)="copyText('stratum+tls://' + pplnsSecureStratumURL, 'PPLNS Stratum V1 + TLS')" title="Copy PPLNS Stratum V1 + TLS URL"></button>
+                                        (click)="copyText('stratum+tls://' + pplnsSecureStratumURL, 'PPLNS Stratum V1 + TLS')"
+                                        title="Copy PPLNS Stratum V1 + TLS URL"></button>
                                 </div>
                                 <div class="connection-row" *ngIf="pplnsStratumV2URL">
                                     <span>Stratum V2</span>
@@ -94,8 +102,10 @@
                                             <div class="connection-subvalue" *ngIf="sv2?.poolAuthorityPublicKey">
                                                 <span>Key</span>
                                                 <code class="sv2-authority-key">{{sv2.poolAuthorityPublicKey}}</code>
-                                                <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                                    (click)="copyText(sv2.poolAuthorityPublicKey, 'Stratum V2 key')" title="Copy Stratum V2 key"></button>
+                                                <button pButton type="button" icon="pi pi-copy"
+                                                    class="p-button-text p-button-sm"
+                                                    (click)="copyText(sv2.poolAuthorityPublicKey, 'Stratum V2 key')"
+                                                    title="Copy Stratum V2 key"></button>
                                             </div>
                                             <small class="text-orange-300" *ngIf="sv2.authorityKeyConfigured === false">
                                                 Stratum V2 is using a temporary authority key.
@@ -103,7 +113,8 @@
                                         </ng-container>
                                     </div>
                                     <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                        (click)="copyText('stratum2+tcp://' + pplnsStratumV2URL, 'PPLNS Stratum V2')" title="Copy PPLNS Stratum V2 URL"></button>
+                                        (click)="copyText('stratum2+tcp://' + pplnsStratumV2URL, 'PPLNS Stratum V2')"
+                                        title="Copy PPLNS Stratum V2 URL"></button>
                                 </div>
                                 <div class="connection-row" *ngIf="pplnsDatumURL">
                                     <span>DATUM</span>
@@ -112,12 +123,15 @@
                                         <div class="connection-subvalue" *ngIf="pplnsDatumPublicKey">
                                             <span>Key</span>
                                             <code class="sv2-authority-key">{{pplnsDatumPublicKey}}</code>
-                                            <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                                (click)="copyText(pplnsDatumPublicKey, 'DATUM key')" title="Copy DATUM key"></button>
+                                            <button pButton type="button" icon="pi pi-copy"
+                                                class="p-button-text p-button-sm"
+                                                (click)="copyText(pplnsDatumPublicKey, 'DATUM key')"
+                                                title="Copy DATUM key"></button>
                                         </div>
                                     </div>
                                     <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                        (click)="copyText('datum://' + pplnsDatumURL, 'PPLNS DATUM')" title="Copy PPLNS DATUM URL"></button>
+                                        (click)="copyText('datum://' + pplnsDatumURL, 'PPLNS DATUM')"
+                                        title="Copy PPLNS DATUM URL"></button>
                                 </div>
                             </ng-container>
 
@@ -125,7 +139,8 @@
                                 <span>Miner Username</span>
                                 <code>&lt;your BTC address&gt;.&lt;worker name&gt;</code>
                                 <button pButton type="button" icon="pi pi-copy" class="p-button-text p-button-sm"
-                                    (click)="copyText('<your BTC address>.<worker name>', 'Miner username')" title="Copy miner username format"></button>
+                                    (click)="copyText('<your BTC address>.<worker name>', 'Miner username')"
+                                    title="Copy miner username format"></button>
                             </div>
                         </div>
                         <div class="lookup-panel">
@@ -143,24 +158,29 @@
         </div>
 
         <div class="col-12" *ngIf="accountingByPayoutMode$ | async as modeAccounting">
-            <div class="mode-round-layout" [ngClass]="{'solo-only-layout': !pplnsEnabled}" *ngIf="networkInfo$ | async as networkInfo">
+            <div class="mode-round-layout" [ngClass]="{'solo-only-layout': !pplnsEnabled}"
+                *ngIf="networkInfo$ | async as networkInfo">
                 <div class="card round-card" *ngIf="pplnsEnabled">
-                    <div class="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-2 mb-4">
+                    <div
+                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-2 mb-4">
                         <div>
                             <div class="mode-heading">
                                 <span class="mode-badge mode-badge-pplns">PPLNS</span>
                                 <h4 class="m-0">Shared Payout</h4>
                             </div>
-                            <span class="text-500">Recent valid work that would receive payout from the next pool-found block.</span>
+                            <span class="text-500">Recent valid work that would receive payout from the next pool-found
+                                block.</span>
                         </div>
                         <div class="round-progress-summary">
-                            <span class="text-green-500 font-medium">{{(modeAccounting.pplns.networkDifficultyPercent || 0) |
+                            <span class="text-green-500 font-medium">{{(modeAccounting.pplns.networkDifficultyPercent ||
+                                0) |
                                 number:'1.0-3'}}%</span>
                             <span class="text-500"> of current Bitcoin difficulty</span>
                         </div>
                     </div>
-                    <div class="round-progress" [attr.aria-valuenow]="getNetworkDifficultyProgress(modeAccounting.pplns)"
-                        aria-valuemin="0" aria-valuemax="100">
+                    <div class="round-progress"
+                        [attr.aria-valuenow]="getNetworkDifficultyProgress(modeAccounting.pplns)" aria-valuemin="0"
+                        aria-valuemax="100">
                         <div class="round-progress-fill"
                             [ngStyle]="{width: getNetworkDifficultyProgress(modeAccounting.pplns) + '%'}"></div>
                     </div>
@@ -171,9 +191,11 @@
                                 <strong>{{modeAccounting.pplns.bestSubmissionDifficulty | numberSuffix}}</strong>
                             </div>
                             <i class="pi pi-star text-orange-500"></i>
-                            <small *ngIf="modeAccounting.pplns.bestSubmissionDifficultyAt">{{modeAccounting.pplns.bestSubmissionDifficultyAt
+                            <small
+                                *ngIf="modeAccounting.pplns.bestSubmissionDifficultyAt">{{modeAccounting.pplns.bestSubmissionDifficultyAt
                                 | dateAgo:true}}</small>
-                            <small *ngIf="!modeAccounting.pplns.bestSubmissionDifficultyAt">No shared-payout work yet</small>
+                            <small *ngIf="!modeAccounting.pplns.bestSubmissionDifficultyAt">No shared-payout work
+                                yet</small>
                         </div>
                         <div class="round-metric">
                             <div class="round-metric-copy">
@@ -181,7 +203,9 @@
                                 <strong>{{modeAccounting.pplns.totalCreditedDifficulty | numberSuffix}}</strong>
                             </div>
                             <i class="pi pi-database text-blue-500"></i>
-                            <small><span class="text-green-500 font-medium">{{modeAccounting.pplns.creditedDifficultyLastHour |
+                            <small><span
+                                    class="text-green-500 font-medium">{{modeAccounting.pplns.creditedDifficultyLastHour
+                                    |
                                     numberSuffix}}</span> in the last hour</small>
                         </div>
                         <div class="round-metric">
@@ -195,7 +219,8 @@
                         <div class="round-metric">
                             <div class="round-metric-copy">
                                 <span>Expected Time to Block</span>
-                                <strong>{{modeAccounting.pplns.hashRateLastHour | averageTimeToBlock:networkInfo.difficulty}}</strong>
+                                <strong>{{modeAccounting.pplns.hashRateLastHour |
+                                    averageTimeToBlock:networkInfo.difficulty}}</strong>
                             </div>
                             <i class="pi pi-clock text-purple-500"></i>
                             <small>Based on 1h shared-payout hashrate</small>
@@ -204,7 +229,8 @@
                 </div>
 
                 <div class="card round-card">
-                    <div class="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-2 mb-4">
+                    <div
+                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between gap-2 mb-4">
                         <div>
                             <div class="mode-heading">
                                 <span class="mode-badge mode-badge-solo">Solo</span>
@@ -220,7 +246,8 @@
                                 <strong>{{modeAccounting.solo.bestSubmissionDifficulty | numberSuffix}}</strong>
                             </div>
                             <i class="pi pi-star text-orange-500"></i>
-                            <small *ngIf="modeAccounting.solo.bestSubmissionDifficultyAt">{{modeAccounting.solo.bestSubmissionDifficultyAt
+                            <small
+                                *ngIf="modeAccounting.solo.bestSubmissionDifficultyAt">{{modeAccounting.solo.bestSubmissionDifficultyAt
                                 | dateAgo:true}}</small>
                             <small *ngIf="!modeAccounting.solo.bestSubmissionDifficultyAt">No solo work yet</small>
                         </div>
@@ -230,7 +257,9 @@
                                 <strong>{{modeAccounting.solo.totalCreditedDifficulty | numberSuffix}}</strong>
                             </div>
                             <i class="pi pi-database text-blue-500"></i>
-                            <small><span class="text-green-500 font-medium">{{modeAccounting.solo.creditedDifficultyLastHour |
+                            <small><span
+                                    class="text-green-500 font-medium">{{modeAccounting.solo.creditedDifficultyLastHour
+                                    |
                                     numberSuffix}}</span> in the last hour</small>
                         </div>
                         <div class="round-metric">
@@ -244,7 +273,8 @@
                         <div class="round-metric">
                             <div class="round-metric-copy">
                                 <span>Expected Time to Block</span>
-                                <strong>{{modeAccounting.solo.hashRateLastHour | averageTimeToBlock:networkInfo.difficulty}}</strong>
+                                <strong>{{modeAccounting.solo.hashRateLastHour |
+                                    averageTimeToBlock:networkInfo.difficulty}}</strong>
                             </div>
                             <i class="pi pi-clock text-purple-500"></i>
                             <small>Based on 1h solo hashrate</small>
@@ -261,8 +291,10 @@
                     <div>
                         <h4 class="m-0" *ngIf="pplnsEnabled">Hashrate by Payout Mode</h4>
                         <h4 class="m-0" *ngIf="!pplnsEnabled">Solo Hashrate</h4>
-                        <span class="text-500" *ngIf="pplnsEnabled">Solo and shared-payout mining shown separately. Uptime: {{uptime$ | async | dateAgo}}</span>
-                        <span class="text-500" *ngIf="!pplnsEnabled">Solo mining hashrate. Uptime: {{uptime$ | async | dateAgo}}</span>
+                        <span class="text-500" *ngIf="pplnsEnabled">Solo and shared-payout mining shown separately.
+                            Uptime: {{uptime$ | async | dateAgo}}</span>
+                        <span class="text-500" *ngIf="!pplnsEnabled">Solo mining hashrate. Uptime: {{uptime$ | async |
+                            dateAgo}}</span>
                     </div>
                     <div class="chart-stat-grid">
                         <div *ngIf="pplnsEnabled">
@@ -313,10 +345,13 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-userAgent>
                             <tr>
-                                <td data-label="Device"><app-user-agent-link [userAgent]="userAgent.userAgent"></app-user-agent-link></td>
+                                <td data-label="Device"><app-user-agent-link
+                                        [userAgent]="userAgent.userAgent"></app-user-agent-link></td>
                                 <td data-label="Working" class="numeric-cell">{{ userAgent.count }}</td>
-                                <td data-label="Hashrate" class="numeric-cell">{{ userAgent.totalHashRate | hashSuffix }}</td>
-                                <td data-label="Best Difficulty" class="numeric-cell">{{ userAgent.bestDifficulty | numberSuffix}}</td>
+                                <td data-label="Hashrate" class="numeric-cell">{{ userAgent.totalHashRate | hashSuffix
+                                    }}</td>
+                                <td data-label="Best Difficulty" class="numeric-cell">{{ userAgent.bestDifficulty |
+                                    numberSuffix}}</td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -349,6 +384,28 @@
             </div>
         </div>
 
+        <div class="col-12">
+            <div class="card">
+                <h4 style="text-align: center;">Affiliate Program</h4>
+                <p>Purchase products through the affiliate links below to enjoy discounts on mining hardware. Affiliate
+                    earnings are used for pool hosting costs and allow 0% fees. Your support is appreciated.</p>
+
+                <div class="grid" style="padding-top: 20px;">
+                    <div class="col-12 md:col-4">
+                        <a href="https://www.solosatoshi.com/aff/7/" target="_blank">
+                            <div class="text-center">
+                                <h4 class="text-center">Solo Satoshi (USA)</h4>
+                                <img id="solosatoshi" style="height: 200px; width: 200px; object-fit: contain;"
+                                    src="assets/layout/images/solo-logo.webp" alt="Solo Satoshi">
+                                <h5>Discount Code (6.5%): <code>RealPleb</code></h5>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <div class="col-12" *ngIf="highScores$ | async as highScores">
             <div class="card">
                 <h4 style="text-align: center;">High Scores</h4>
@@ -365,7 +422,8 @@
                         <ng-template pTemplate="body" let-highScore let-i="rowIndex">
                             <tr>
                                 <td data-label="Rank" class="numeric-cell">#{{i+1}}</td>
-                                <td data-label="Best Difficulty" class="numeric-cell">{{ highScore.bestDifficulty | numberSuffix }}</td>
+                                <td data-label="Best Difficulty" class="numeric-cell">{{ highScore.bestDifficulty |
+                                    numberSuffix }}</td>
                                 <td data-label="Device"><app-user-agent-link
                                         [userAgent]="highScore.bestDifficultyUserAgent ? highScore.bestDifficultyUserAgent : 'unknown'"></app-user-agent-link>
                                 </td>

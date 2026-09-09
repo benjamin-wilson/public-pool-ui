@@ -171,3 +171,55 @@ p-chart>div {
         padding: 10px;
     }
 }
+
+/* The appearance button is the only thing on the right of the topbar, so it takes the
+   free space rather than the layout template needing a spacer element. */
+.layout-topbar .layout-topbar-appearance-button {
+    margin-left: auto;
+    margin-right: 1rem;
+}
+
+/* The topbar reserves the right edge for the profile toggle below 991px, which is where
+   the layout switches to the mobile arrangement. */
+@media (max-width: 991px) {
+    .layout-topbar .layout-topbar-appearance-button {
+        margin-right: 0.5rem;
+    }
+}
+
+/* The splash route renders outside the layout shell, so its appearance trigger floats
+   in the corner instead of sitting in a topbar. */
+.splash-appearance-button {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--surface-border);
+    border-radius: 50%;
+    background: var(--surface-card);
+    color: var(--text-color-secondary);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+
+    i {
+        font-size: 1.25rem;
+    }
+
+    &:hover {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        background: var(--surface-hover);
+    }
+}
+
+/* Set while a theme stylesheet is being swapped. Without it every colour transition in
+   the app runs at once and controls sit part-way between two palettes. */
+body.theme-switching,
+body.theme-switching * {
+    transition: none !important;
+}

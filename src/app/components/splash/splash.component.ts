@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { combineLatest, forkJoin, map, Observable, of, shareReplay } from 'rxjs';
+import { combineLatest, forkJoin, map, Observable, of, shareReplay, startWith } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
 import { AppConfigService } from '../../services/app-config.service';
+import { LayoutService } from '../../layout/service/app.layout.service';
 import { bitcoinAddressValidator } from '../../validators/bitcoin-address.validator';
 import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe';
 
@@ -45,13 +46,7 @@ export class SplashComponent {
   private networkInfo: any;
   private copiedTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  constructor(private appService: AppService, private appConfig: AppConfigService, private cdr: ChangeDetectorRef) {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-    const primaryColor = documentStyle.getPropertyValue('--primary-color');
-    const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
+  constructor(private appService: AppService, private appConfig: AppConfigService, private cdr: ChangeDetectorRef, public layoutService: LayoutService) {
 
     this.info$ = this.appService.getInfo().pipe(
       shareReplay({ refCount: true, bufferSize: 1 })
@@ -86,10 +81,14 @@ export class SplashComponent {
 
     this.chartData$ = combineLatest([
       this.appService.getInfoChartByPayoutMode(this.pplnsEnabled ? 'all' : 'solo'),
-      this.networkInfo$
+      this.networkInfo$,
+      // Re-emits on a theme change so the datasets are rebuilt in the new palette,
+      // replaying the cached data rather than fetching it again.
+      this.layoutService.configUpdate$.pipe(startWith(null))
     ]).pipe(
       map(([chartData, networkInfo]) => {
         this.networkInfo = networkInfo;
+        const { primaryColor, soloColor } = this.themeColors();
         const pplnsColor = primaryColor;
         const modes: Record<string, { label: string; borderColor: string; backgroundColor: any; }> = {
           solo: {
@@ -118,7 +117,17 @@ export class SplashComponent {
 
     this.address = new FormControl(null, bitcoinAddressValidator());
 
-    this.chartOptions = {
+    this.chartOptions = this.buildChartOptions();
+    // Axis, grid and legend colours live in the options object rather than the data,
+    // so they need rebuilding on their own when the theme changes.
+    this.layoutService.configUpdate$.subscribe(() => {
+      this.chartOptions = this.buildChartOptions();
+    });
+  }
+
+  private buildChartOptions(): any {
+    const { textColor, textColorSecondary, surfaceBorder, primaryColor, soloColor } = this.themeColors();
+    return {
       maintainAspectRatio: false,
       plugins: {
         legend: {
@@ -335,4 +344,21 @@ export class SplashComponent {
 
     return trimmed || `rgba(99, 102, 241, ${alpha})`;
   }
+
+  /**
+   * Read the palette out of the stylesheet each time it is asked for. The theme link is
+   * swapped at runtime, so values captured once at construction would keep describing
+   * whichever theme happened to be loaded first.
+   */
+  private themeColors() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    return {
+      textColor: documentStyle.getPropertyValue('--text-color'),
+      textColorSecondary: documentStyle.getPropertyValue('--text-color-secondary'),
+      surfaceBorder: documentStyle.getPropertyValue('--surface-border'),
+      primaryColor: documentStyle.getPropertyValue('--primary-color'),
+      soloColor: documentStyle.getPropertyValue('--yellow-600') || '#d97706',
+    };
+  }
+
 }

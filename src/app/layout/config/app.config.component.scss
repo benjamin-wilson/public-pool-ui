@@ -1,0 +1,177 @@
+// The panel is deliberately built from PrimeNG's own custom properties rather than
+// fixed colours, so it re-skins along with whatever theme the reader picks in it.
+
+:host ::ng-deep .appearance-sidebar {
+    width: 22rem;
+    max-width: 100vw;
+}
+
+.appearance-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.appearance-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.appearance-heading {
+    margin: 0 0 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-color-secondary);
+}
+
+.appearance-modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.appearance-mode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.5rem;
+    border: 1px solid var(--surface-border);
+    border-radius: 8px;
+    background: var(--surface-card);
+    color: var(--text-color-secondary);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+
+    &:hover {
+        border-color: var(--primary-color);
+        color: var(--text-color);
+    }
+
+    &.is-active {
+        border-color: var(--primary-color);
+        background: var(--highlight-bg, var(--surface-hover));
+        color: var(--primary-color);
+    }
+}
+
+.appearance-swatches {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+// Each swatch paints the theme's real surface colour, with its accent as the dot, so
+// the choice is previewed rather than described.
+.appearance-swatch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid var(--surface-border);
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    overflow: hidden;
+    transition: transform 0.12s, border-color 0.15s, box-shadow 0.15s;
+
+    &:hover {
+        transform: translateY(-1px);
+        border-color: var(--primary-color);
+    }
+
+    &.is-active {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 1px var(--primary-color);
+    }
+
+    &.is-active::after {
+        content: '';
+        position: absolute;
+        inset-block-start: 0.35rem;
+        inset-inline-end: 0.4rem;
+        width: 0.35rem;
+        height: 0.35rem;
+        border-radius: 50%;
+        background: var(--primary-color);
+    }
+}
+
+.appearance-swatch-dot {
+    flex: 0 0 auto;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    // The ring keeps a pale accent legible against a pale surface, and vice versa.
+    box-shadow: 0 0 0 1px rgb(128 128 128 / 45%);
+}
+
+// A swatch sits on the previewed theme's surface, not the current one, so the label
+// cannot use --text-color. It uses that theme's own text colour instead, which keeps
+// the pairing legible by construction rather than by guesswork.
+.appearance-swatch-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.appearance-scale {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--surface-border);
+    border-radius: 8px;
+    background: var(--surface-card);
+}
+
+.appearance-scale-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+        background: var(--surface-hover);
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: default;
+    }
+}
+
+.appearance-scale-dots {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.appearance-scale-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--surface-border);
+    transition: background 0.15s, transform 0.15s;
+
+    &.is-active {
+        background: var(--primary-color);
+        transform: scale(1.15);
+    }
+}

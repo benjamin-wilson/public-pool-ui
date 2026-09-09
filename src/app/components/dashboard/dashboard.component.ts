@@ -10,6 +10,22 @@ import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe
 
 
 
+/**
+ * Highest `bestDifficulty` among the given workers, as a number.
+ *
+ * The API sends difficulty as a string, for example "294141974944674.8". Comparing the
+ * raw values with `>` only works while one side is still a number: once the accumulator
+ * holds one of those strings, both operands are strings and the comparison becomes
+ * lexicographic, so "80" ranks above "272" because "8" sorts above "2". Coercing first
+ * keeps the comparison numeric no matter what the API sends.
+ */
+export function maxBestDifficulty(workers: any[]): number {
+  return workers.reduce((best: number, worker: any) => {
+    const difficulty = Number(worker?.bestDifficulty);
+    return Number.isFinite(difficulty) && difficulty > best ? difficulty : best;
+  }, 0);
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -192,15 +208,7 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   public getBestDifficulty(name: string, workers: any[]) {
-    const workersByName = workers.filter(w => w.name == name);
-    const best = workersByName.reduce((pre, cur, idx, arr) => {
-      if (cur.bestDifficulty > pre) {
-        return cur.bestDifficulty;
-      }
-      return pre;
-    }, 0);
-
-    return best;
+    return maxBestDifficulty(workers.filter(w => w.name == name));
   }
 
   public getTotalUptime(name: string, workers: any[]) {

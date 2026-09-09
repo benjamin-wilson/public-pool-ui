@@ -17,6 +17,7 @@ import { UserAgentLinkComponent } from './components/user-agent-link/user-agent-
 import { WorkerGroupComponent } from './components/worker-group/worker-group.component';
 import { WorkerComponent } from './components/worker/worker.component';
 import { AppLayoutModule } from './layout/app.layout.module';
+import { AppConfigModule } from './layout/config/config.module';
 import { DateAgoPipe } from './pipes/date-ago.pipe';
 import { HashSuffixPipe } from './pipes/hash-suffix.pipe';
 import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
@@ -44,6 +45,7 @@ import { AverageTimeToBlockPipe } from './pipes/average-time-to-block.pipe';
     AppRoutingModule,
     PrimeNGModule,
     AppLayoutModule,
+    AppConfigModule,
     FormsModule,
     ReactiveFormsModule,
     NgParticlesModule,

@@ -1,0 +1,55 @@
+<p-sidebar [(visible)]="visible" position="right" styleClass="appearance-sidebar" [transitionOptions]="'.2s'">
+    <ng-template pTemplate="header">
+        <span class="appearance-title">Appearance</span>
+    </ng-template>
+
+    <div class="appearance-panel">
+        <section class="appearance-section">
+            <h6 class="appearance-heading">Mode</h6>
+            <div class="appearance-modes">
+                <button type="button" class="appearance-mode" [class.is-active]="mode === 'dark'"
+                    (click)="setMode('dark')">
+                    <i class="pi pi-moon"></i>
+                    <span>Dark</span>
+                </button>
+                <button type="button" class="appearance-mode" [class.is-active]="mode === 'light'"
+                    (click)="setMode('light')">
+                    <i class="pi pi-sun"></i>
+                    <span>Light</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="appearance-section" *ngFor="let group of groups">
+            <h6 class="appearance-heading">{{ group.family }}</h6>
+            <div class="appearance-swatches">
+                <button type="button" class="appearance-swatch" *ngFor="let theme of group.themes; trackBy: trackByName"
+                    [class.is-active]="theme.name === activeTheme" [style.background]="theme.surface" [style.color]="theme.text"
+                    (click)="selectTheme(theme)" [title]="group.family + ' ' + theme.label"
+                    [attr.aria-label]="group.family + ' ' + theme.label"
+                    [attr.aria-pressed]="theme.name === activeTheme">
+                    <span class="appearance-swatch-dot" [style.background]="theme.primary"></span>
+                    <span class="appearance-swatch-label">{{ theme.label }}</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="appearance-section">
+            <h6 class="appearance-heading">Text size</h6>
+            <div class="appearance-scale">
+                <button type="button" class="appearance-scale-button" (click)="decrementScale()"
+                    [disabled]="!layoutService.canDecreaseScale()" aria-label="Decrease text size">
+                    <i class="pi pi-minus"></i>
+                </button>
+                <div class="appearance-scale-dots">
+                    <span class="appearance-scale-dot" *ngFor="let step of [12, 13, 14, 15, 16]"
+                        [class.is-active]="step <= scale"></span>
+                </div>
+                <button type="button" class="appearance-scale-button" (click)="incrementScale()"
+                    [disabled]="!layoutService.canIncreaseScale()" aria-label="Increase text size">
+                    <i class="pi pi-plus"></i>
+                </button>
+            </div>
+        </section>
+    </div>
+</p-sidebar>

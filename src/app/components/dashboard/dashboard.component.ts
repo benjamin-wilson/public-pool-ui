@@ -10,6 +10,20 @@ import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe
 
 
 
+/**
+ * Highest `bestDifficulty` among the given workers, as a number.
+ *
+ * The API sends difficulty as a string, so once the accumulator holds one the
+ * comparison turns lexicographic and "80" ranks above "272". Coercing first
+ * keeps it numeric.
+ */
+export function maxBestDifficulty(workers: any[]): number {
+  return workers.reduce((best: number, worker: any) => {
+    const difficulty = Number(worker?.bestDifficulty);
+    return Number.isFinite(difficulty) && difficulty > best ? difficulty : best;
+  }, 0);
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -192,15 +206,7 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   public getBestDifficulty(name: string, workers: any[]) {
-    const workersByName = workers.filter(w => w.name == name);
-    const best = workersByName.reduce((pre, cur, idx, arr) => {
-      if (cur.bestDifficulty > pre) {
-        return cur.bestDifficulty;
-      }
-      return pre;
-    }, 0);
-
-    return best;
+    return maxBestDifficulty(workers.filter(w => w.name == name));
   }
 
   public getTotalUptime(name: string, workers: any[]) {

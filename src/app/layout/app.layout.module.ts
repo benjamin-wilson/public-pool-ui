@@ -17,8 +17,8 @@ import { AppMenuComponent } from './app.menu.component';
 import { AppMenuitemComponent } from './app.menuitem.component';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopBarComponent } from './app.topbar.component';
+import { AppConfigModule } from './config/config.module';
 
-//import { AppConfigModule } from './config/config.module';
 @NgModule({
     declarations: [
         AppMenuitemComponent,
@@ -40,7 +40,7 @@ import { AppTopBarComponent } from './app.topbar.component';
         InputSwitchModule,
         RippleModule,
         RouterModule,
-        //   AppConfigModule
+        AppConfigModule,
     ],
     exports: [AppLayoutComponent]
 })

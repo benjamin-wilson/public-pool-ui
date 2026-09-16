@@ -13,6 +13,11 @@
         <i class="pi pi-ellipsis-v"></i>
     </button>
 
+    <button class="p-link layout-topbar-button layout-topbar-appearance-button"
+        (click)="layoutService.showConfigSidebar()" title="Appearance" aria-label="Appearance">
+        <i class="pi pi-palette"></i>
+    </button>
+
     <!-- <div #topbarmenu class="layout-topbar-menu"
         [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
          <button class="p-link layout-topbar-button">

@@ -171,3 +171,51 @@ p-chart>div {
         padding: 10px;
     }
 }
+
+/* Only item on the right of the topbar, so it takes the free space. */
+.layout-topbar .layout-topbar-appearance-button {
+    margin-left: auto;
+    margin-right: 1rem;
+}
+
+/* Below 991px the topbar reserves the right edge for the profile toggle. */
+@media (max-width: 991px) {
+    .layout-topbar .layout-topbar-appearance-button {
+        margin-right: 0.5rem;
+    }
+}
+
+/* Splash renders outside the layout shell, so its trigger floats. */
+.splash-appearance-button {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--surface-border);
+    border-radius: 50%;
+    background: var(--surface-card);
+    color: var(--text-color-secondary);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+
+    i {
+        font-size: 1.25rem;
+    }
+
+    &:hover {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        background: var(--surface-hover);
+    }
+}
+
+/* Set while a theme stylesheet is swapping, to mute colour transitions. */
+body.theme-switching,
+body.theme-switching * {
+    transition: none !important;
+}

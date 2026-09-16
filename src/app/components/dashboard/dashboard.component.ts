@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Table } from 'primeng/table';
-import { combineLatest, forkJoin, map, Observable, shareReplay } from 'rxjs';
+import { combineLatest, forkJoin, map, Observable, shareReplay, startWith } from 'rxjs';
 
 import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
 import { ClientService } from '../../services/client.service';
 import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe';
+import { LayoutService } from '../../layout/service/app.layout.service';
 
 
 
@@ -37,7 +38,8 @@ export class DashboardComponent implements AfterViewInit {
   constructor(
     private clientService: ClientService,
     private route: ActivatedRoute,
-    private appService: AppService
+    private appService: AppService,
+    public layoutService: LayoutService
   ) {
 
     this.networkInfo$ = this.appService.getNetworkInfo().pipe(
@@ -61,21 +63,18 @@ export class DashboardComponent implements AfterViewInit {
 
     }));
 
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-    const primaryColor = documentStyle.getPropertyValue('--primary-color');
-    const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
 
 
     this.chartData$ = combineLatest([
       this.clientService.getClientInfoChartByPayoutMode(this.address, 'all'),
-      this.networkInfo$
+      this.networkInfo$,
+      // Re-emits on a theme change, replaying cached data rather than refetching.
+      this.layoutService.configUpdate$.pipe(startWith(null))
     ]).pipe(
       map(([chartData, networkInfo]) => {
 
         this.networkInfo = networkInfo;
+        const { primaryColor, soloColor } = this.themeColors();
         const datasets = this.toPayoutModeDatasets(chartData, {
           pplns: {
             label: 'PPLNS 10 Minute',
@@ -98,7 +97,16 @@ export class DashboardComponent implements AfterViewInit {
 
 
 
-    this.chartOptions = {
+    this.chartOptions = this.buildChartOptions();
+    // Axis, grid and legend colours live in the options, so rebuild them separately.
+    this.layoutService.configUpdate$.subscribe(() => {
+      this.chartOptions = this.buildChartOptions();
+    });
+  }
+
+  private buildChartOptions(): any {
+    const { textColor, textColorSecondary, surfaceBorder, primaryColor, soloColor } = this.themeColors();
+    return {
       maintainAspectRatio: false,
       plugins: {
         legend: {
@@ -313,4 +321,17 @@ export class DashboardComponent implements AfterViewInit {
 
     return trimmed || `rgba(99, 102, 241, ${alpha})`;
   }
+
+  /** Read the palette on demand: the theme link is swapped at runtime. */
+  private themeColors() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    return {
+      textColor: documentStyle.getPropertyValue('--text-color'),
+      textColorSecondary: documentStyle.getPropertyValue('--text-color-secondary'),
+      surfaceBorder: documentStyle.getPropertyValue('--surface-border'),
+      primaryColor: documentStyle.getPropertyValue('--primary-color'),
+      soloColor: documentStyle.getPropertyValue('--yellow-600') || '#d97706',
+    };
+  }
+
 }

@@ -32,4 +32,13 @@ COPY --from=build /build/dist/public-pool-ui .
 COPY docker/Caddyfile.tpl /etc/Caddyfile.tpl
 COPY docker/entrypoint.sh /entrypoint.sh
 
+# caddy:alpine ships no non-root user and runs as root by default. Create
+# the conventional caddy user (uid/gid 1000) and su-exec so the entrypoint
+# can drop privileges after its root-only config rendering.
+RUN if getent group 1000 >/dev/null; then echo "group 1000 already exists" >&2; exit 1; fi \
+    && if getent passwd 1000 >/dev/null; then echo "uid 1000 already exists" >&2; exit 1; fi \
+    && addgroup -S -g 1000 caddy \
+    && adduser -S -D -u 1000 -G caddy -h /nonexistent caddy \
+    && apk add --no-cache su-exec
+
 CMD ["/bin/sh", "/entrypoint.sh"]

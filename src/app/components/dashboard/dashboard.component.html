@@ -58,10 +58,31 @@
                         <div class="snapshot-metric">
                             <span>Best Difficulty</span>
                             <strong>{{clientInfo.accounting?.bestSubmissionDifficulty | numberSuffix}}</strong>
-                            <small>Best submitted difficulty for this address</small>
+                            <small>{{getBestDifficultyPercent(clientInfo.accounting?.bestSubmissionDifficulty ?? clientInfo.bestDifficulty, networkInfo.difficulty)}}
+                                of network difficulty</small>
                         </div>
                     </div>
                 </ng-container>
+            </div>
+        </div>
+
+        <div class="col-12" *ngIf="soloOdds$ | async as odds">
+            <div class="card snapshot-card">
+                <div class="snapshot-header">
+                    <div>
+                        <span>Solo Block Odds <i class="pi pi-question-circle ml-1"
+                                pTooltip="Every hash has the same 1 in (difficulty × 2^32) chance. Chance of at least one block in time t = 1 − e^(−hashrate × t / (difficulty × 2^32))."></i></span>
+                        <h4>{{odds.expected}} expected</h4>
+                    </div>
+                    <small>{{odds.chain}} · {{odds.hashRate | hashSuffix}} solo ({{odds.hashRateSource}})</small>
+                </div>
+                <div class="snapshot-grid">
+                    <div class="snapshot-metric" *ngFor="let item of odds.windows">
+                        <span>{{item.label}}</span>
+                        <strong>{{item.percent}}</strong>
+                        <small>{{item.oneIn}}</small>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -83,6 +104,7 @@
                             <th class="numeric-cell">Session ID</th>
                             <th class="numeric-cell">Hashrate</th>
                             <th class="numeric-cell">Best Difficulty</th>
+                            <th class="numeric-cell">Solo Chance / Day</th>
                             <th class="numeric-cell">Uptime</th>
                             <th class="numeric-cell">Last Seen</th>
                         </tr>
@@ -105,6 +127,9 @@
                             <td data-label="Sessions" class="numeric-cell">{{getSessionCount(worker.name, clientInfo.workers)}} Sessions</td>
                             <td data-label="Hashrate" class="numeric-cell">{{getTotalHashRate(worker.name, clientInfo.workers) | hashSuffix}}</td>
                             <td data-label="Best Difficulty" class="numeric-cell">{{getBestDifficulty(worker.name, clientInfo.workers) | numberSuffix}}</td>
+                            <td data-label="Solo Chance / Day" class="numeric-cell">
+                                <ng-container *ngIf="networkInfo$ | async as networkInfo">{{getDailySoloChance(worker.name, clientInfo.workers, networkInfo.difficulty)}}</ng-container>
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -117,6 +142,7 @@
                             <td data-label="Session ID" class="numeric-cell">{{worker.sessionId}}</td>
                             <td data-label="Hashrate" class="numeric-cell">{{worker.hashRate | hashSuffix}}</td>
                             <td data-label="Best Difficulty" class="numeric-cell">{{worker.bestDifficulty | numberSuffix}}</td>
+                            <td></td>
                             <td data-label="Uptime" class="numeric-cell">{{worker.startTime | dateAgo}}</td>
                             <td data-label="Last Seen" class="numeric-cell">{{worker.lastSeen | dateAgo}}</td>
                         </tr>

@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DateAgoPipe } from './date-ago.pipe';
+import { expectedSeconds } from '../utils/block-odds';
 
 @Pipe({
   name: 'averageTimeToBlock',
@@ -24,11 +25,6 @@ export class AverageTimeToBlockPipe implements PipeTransform {
   }
 
   private calculateBlockTime(hashRate: number, difficulty: number): number {
-    const hashesPerDifficulty = Math.pow(2, 32);
-
-    // Calculate the average block time in seconds
-    const averageBlockTime = (difficulty * hashesPerDifficulty) / hashRate;
-
-    return averageBlockTime;
+    return expectedSeconds(hashRate, difficulty);
   }
 }

@@ -7,6 +7,23 @@ import { HashSuffixPipe } from '../../pipes/hash-suffix.pipe';
 import { AppService } from '../../services/app.service';
 import { ClientService } from '../../services/client.service';
 import { AverageTimeToBlockPipe } from 'src/app/pipes/average-time-to-block.pipe';
+import {
+  chanceWithin, expectedSeconds, formatDuration, formatOneIn, formatPercent,
+  SECONDS_PER_BLOCK, SECONDS_PER_DAY, SECONDS_PER_MONTH, SECONDS_PER_YEAR
+} from '../../utils/block-odds';
+
+// Odds use the average of the last hour of chart points; a single 10-minute
+// reading swings too much to base odds on.
+const CHART_POINT_MINUTES = 10;
+const ODDS_AVERAGE_POINTS = 60 / CHART_POINT_MINUTES;
+
+const CHAIN_NAMES: { [chain: string]: string } = {
+  main: 'mainnet',
+  test: 'testnet3',
+  testnet4: 'testnet4',
+  signet: 'signet',
+  regtest: 'regtest'
+};
 
 
 
@@ -22,6 +39,7 @@ export class DashboardComponent implements AfterViewInit {
   public clientInfo$: Observable<any>;
   public clientInfoByPayoutMode$: Observable<{ pplns: any; solo: any; }>;
   public chartData$: Observable<any>;
+  public soloOdds$: Observable<any>;
 
   public chartOptions: any;
 
@@ -69,8 +87,16 @@ export class DashboardComponent implements AfterViewInit {
     const soloColor = documentStyle.getPropertyValue('--yellow-600') || '#d97706';
 
 
+    const clientChart$ = this.clientService.getClientInfoChartByPayoutMode(this.address, 'all').pipe(
+      shareReplay({ refCount: true, bufferSize: 1 })
+    );
+
+    this.soloOdds$ = combineLatest([clientChart$, this.clientInfo$, this.networkInfo$]).pipe(
+      map(([chartData, clientInfo, networkInfo]) => this.calculateSoloOdds(chartData, clientInfo, networkInfo))
+    );
+
     this.chartData$ = combineLatest([
-      this.clientService.getClientInfoChartByPayoutMode(this.address, 'all'),
+      clientChart$,
       this.networkInfo$
     ]).pipe(
       map(([chartData, networkInfo]) => {
@@ -176,6 +202,56 @@ export class DashboardComponent implements AfterViewInit {
 
   ngAfterViewInit() {
 
+  }
+
+  // Only solo work can find a block for this address; PPLNS work is paid
+  // from the pool's blocks.
+  private calculateSoloOdds(chartData: any[], clientInfo: any, networkInfo: any) {
+    const recent = (chartData ?? [])
+      .filter((point: any) => point.payoutMode === 'solo')
+      .slice(-ODDS_AVERAGE_POINTS)
+      .map((point: any) => Number(point.data))
+      .filter(value => value > 0);
+    const averaged = recent.length > 0;
+    const hashRate = averaged
+      ? recent.reduce((sum: number, value: number) => sum + value, 0) / recent.length
+      : this.getSoloHashRate(clientInfo?.workers ?? []);
+    const difficulty = networkInfo.difficulty;
+    const oddsFor = (label: string, seconds: number) => {
+      const chance = chanceWithin(hashRate, difficulty, seconds);
+      return { label, percent: formatPercent(chance), oneIn: formatOneIn(chance) };
+    };
+    return {
+      chain: CHAIN_NAMES[networkInfo.chain] ?? networkInfo.chain,
+      hashRate,
+      hashRateSource: averaged ? `${recent.length * CHART_POINT_MINUTES} min avg` : 'current',
+      windows: [
+        oddsFor('Per block', SECONDS_PER_BLOCK),
+        oddsFor('Per day', SECONDS_PER_DAY),
+        oddsFor('Per month', SECONDS_PER_MONTH),
+        oddsFor('Per year', SECONDS_PER_YEAR)
+      ],
+      expected: formatDuration(expectedSeconds(hashRate, difficulty))
+    };
+  }
+
+  private getSoloHashRate(workers: any[]) {
+    return workers
+      .filter(worker => worker.payoutMode !== 'pplns')
+      .reduce((sum, worker) => sum + (Number(worker.hashRate) || 0), 0);
+  }
+
+  public getDailySoloChance(name: string, workers: any[], difficulty: number) {
+    const hashRate = this.getSoloHashRate(workers.filter(worker => worker.name === name));
+    if (hashRate <= 0) {
+      return '—';
+    }
+    const chance = chanceWithin(hashRate, difficulty, SECONDS_PER_DAY);
+    return `${formatPercent(chance)} (${formatOneIn(chance)})`;
+  }
+
+  public getBestDifficultyPercent(bestDifficulty: number, difficulty: number) {
+    return formatPercent(difficulty > 0 ? bestDifficulty / difficulty : 0);
   }
 
   public getSessionCount(name: string, workers: any[]) {
